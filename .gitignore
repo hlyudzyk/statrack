@@ -1,8 +1,15 @@
 # Backend (Java project - statrack)
-
+.idea
+/statrack/target/
+/statrack/mvnw
+/statrack/mvnw.cmd
+/statrack/.mvn
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea
+statrack/.idea
 
 ### Eclipse ###
 .apt_generated
