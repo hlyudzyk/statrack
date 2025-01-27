@@ -4,6 +4,8 @@
 /statrack/mvnw
 /statrack/mvnw.cmd
 /statrack/.mvn
+application.yml
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
