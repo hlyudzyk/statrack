@@ -2,7 +2,7 @@ import {getAccessToken} from "@/app/lib/actions";
 
 const apiService = {
   get: async function (url:string): Promise<any>{
-    console.log('get',`${process.env.NEXT_PUBLIC_API_HOST}${url}`);
+    console.log('get',`${process.env.APP_URL}${url}`);
     const access_token = await getAccessToken()
 
     return new Promise((resolve,reject)=>{
@@ -30,7 +30,7 @@ const apiService = {
     const token = await getAccessToken();
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`,{
+      fetch(`${process.env.APP_URL}${url}`,{
         method: 'POST',
         body:data,
         headers:{
@@ -53,7 +53,7 @@ const apiService = {
     const token = await getAccessToken();
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`,{
+      fetch(`${process.env.APP_URL}${url}`,{
         method: 'PUT',
         body:data,
         headers:{
@@ -74,7 +74,7 @@ const apiService = {
     console.log('post', url, data);
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`,{
+      fetch(`${process.env.APP_URL}${url}`,{
         method: 'POST',
         body:data,
         headers:{
