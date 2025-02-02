@@ -68,7 +68,7 @@ yarn-error.log*
 *.pem
 
 # Environment files
-.env*
+frontend/.env
 
 # Vercel
 .vercel

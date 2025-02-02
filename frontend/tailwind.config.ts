@@ -8,10 +8,11 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      colors:{
+        'lightbase': '#398ded',
+        'lightbase-hover': '#89BEF4',
+        'footer':'#F7F7F7',
+      }
     },
   },
   plugins: [],
