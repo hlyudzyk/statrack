@@ -55,7 +55,6 @@ const Teachers = () => {
           {teachers.length > 0 ? (
               teachers.map((t: TeacherType) => (
                   <Teacher
-                      key={t.id}
                       id={t.id}
                       firstname={t.firstname}
                       lastname={t.lastname}

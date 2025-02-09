@@ -41,7 +41,6 @@ public class StatrackApplication {
 					.role(ADMIN)
 					.birthday(LocalDate.of(2000, 5, 21))
 					.build();
-				System.out.println("Admin token: " + service.register(admin).getAccessToken());
 			} catch (ConstraintViolationException ex) {
 				System.out.println("Admin already registered!");
 			}

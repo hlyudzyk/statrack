@@ -33,7 +33,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(@Valid RegisterRequest request) {
+  public RegistrationResponse register(@Valid RegisterRequest request) {
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
@@ -53,13 +53,7 @@ public class AuthenticationService {
       throw new ConstraintViolationException("Email is already in use",null);
     }
 
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    saveUserToken(savedUser, jwtToken);
-
-    return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
-        .refreshToken(refreshToken)
+    return RegistrationResponse.builder()
         .id(savedUser.getId().toString())
         .build();
   }

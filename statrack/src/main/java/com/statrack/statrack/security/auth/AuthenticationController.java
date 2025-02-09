@@ -1,7 +1,6 @@
 package com.statrack.statrack.security.auth;
 
 
-import com.statrack.statrack.security.user.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -21,10 +20,11 @@ public class AuthenticationController {
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(
+  public ResponseEntity<RegistrationResponse> register(
       @Valid @RequestBody RegisterRequest request
   ) {
-    if(request.getRole().equals(Role.ADMIN)) throw new UnauthorizedException("Forbidden. You are not allowed to register.");
+    System.out.println(request.toString());
+    //if(request.getRole().equals(Role.ADMIN)) throw new UnauthorizedException("Forbidden. You are not allowed to register.");
     return ResponseEntity.ok(service.register(request));
   }
   @PostMapping("/authenticate")

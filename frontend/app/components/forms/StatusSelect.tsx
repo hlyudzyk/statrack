@@ -15,7 +15,7 @@ interface SelectStatusProps{
 export const statusOptions: SelectStatusValue[] = [
   { label: 'Online', value: 'ONLINE' },
   { label: 'Offline', value: 'OFFLINE' },
-  { label: 'On Break', value: 'on_break' },
+  { label: 'On Break', value: 'ON_BREAK' },
 ];
 
 const SelectCountry:({value, onChange}: { value: any; onChange: any }) => JSX.Element = ({value,onChange})=>{

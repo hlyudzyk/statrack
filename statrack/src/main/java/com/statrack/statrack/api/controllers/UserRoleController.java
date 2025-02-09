@@ -1,4 +1,4 @@
-package com.statrack.statrack.views.controllers;
+package com.statrack.statrack.api.controllers;
 
 import com.statrack.statrack.security.user.Role;
 import com.statrack.statrack.security.user.User;
