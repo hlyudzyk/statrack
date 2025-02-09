@@ -29,7 +29,7 @@ const CreateNewUserModal = () => {
       birthday: birthday,
       role: role
     }
-    const response = await apiService.postWithoutToken('api/v1/auth/register',JSON.stringify(formData));
+    const response = await apiService.post('api/v1/auth/register',JSON.stringify(formData));
 
     if(response){
       signupModal.close();

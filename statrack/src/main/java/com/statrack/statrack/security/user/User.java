@@ -92,7 +92,7 @@ public class User implements UserDetails {
   }
 
   public enum Status {
-    ONLINE, OFFLINE
+    ONLINE, OFFLINE, ON_BREAK
   }
 
 }

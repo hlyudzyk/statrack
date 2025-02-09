@@ -1,10 +1,10 @@
-package com.statrack.statrack.views.controllers;
+package com.statrack.statrack.api.controllers;
 
 
 import com.statrack.statrack.security.user.Role;
 import com.statrack.statrack.security.user.User;
 import com.statrack.statrack.services.UserService;
-import com.statrack.statrack.views.dto.UserDto;
+import com.statrack.statrack.api.dto.UserDto;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllTeachers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getTeacherById(@PathVariable UUID id) {
+    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

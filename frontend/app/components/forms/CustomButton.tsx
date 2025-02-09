@@ -1,5 +1,7 @@
 'use client'
 
+import {JSX} from "react";
+
 interface CustomButtonProps{
   label:string;
   className?:string;

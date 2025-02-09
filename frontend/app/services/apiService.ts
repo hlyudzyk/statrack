@@ -2,11 +2,10 @@ import {getAccessToken} from "@/app/lib/actions";
 
 const apiService = {
   get: async function (url:string): Promise<any>{
-    console.log('get',`${process.env.APP_URL}${url}`);
     const access_token = await getAccessToken()
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.APP_URL}${url}`,{
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`,{
         method: 'GET',
         headers:{
           'Accept': 'application/json',
@@ -30,11 +29,13 @@ const apiService = {
     const token = await getAccessToken();
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.APP_URL}${url}`,{
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`,{
         method: 'POST',
         body:data,
         headers:{
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
         }
       })
       .then(response=>response.json())
@@ -53,7 +54,7 @@ const apiService = {
     const token = await getAccessToken();
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.APP_URL}${url}`,{
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`,{
         method: 'PUT',
         body:data,
         headers:{
@@ -74,7 +75,7 @@ const apiService = {
     console.log('post', url, data);
 
     return new Promise((resolve,reject)=>{
-      fetch(`${process.env.APP_URL}${url}`,{
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`,{
         method: 'POST',
         body:data,
         headers:{

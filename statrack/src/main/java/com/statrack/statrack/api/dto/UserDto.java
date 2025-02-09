@@ -1,4 +1,4 @@
-package com.statrack.statrack.views.dto;
+package com.statrack.statrack.api.dto;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

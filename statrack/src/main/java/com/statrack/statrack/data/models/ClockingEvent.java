@@ -31,9 +31,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users_status_records",
+@Table(name = "clocking_events",
     indexes = {@Index(name = "idx_user_timestamp", columnList = "user_id, timestamp")})
-public class UserStatusRecord {
+public class ClockingEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
