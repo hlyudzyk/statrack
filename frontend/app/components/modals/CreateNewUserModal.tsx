@@ -23,7 +23,6 @@ const CreateNewUserModal = () => {
       firstname: firstname,
       lastname: lastname,
       email: email,
-      password: password,
       birthday: birthday,
       role: role
     }

@@ -1,6 +1,6 @@
 package com.statrack.statrack.security.auth;
 
-import com.statrack.statrack.security.user.Role;
+import com.statrack.statrack.data.models.user.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,5 @@
-package com.statrack.statrack.security.user;
+package com.statrack.statrack.data.models.user;
 
-
-import static com.statrack.statrack.security.user.Permission.ADMIN_PERMISSION;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +17,7 @@ public enum Role {
   ),
   ADMIN(
           Set.of(
-            ADMIN_PERMISSION
+            Permission.ADMIN_PERMISSION
           )
   );
 

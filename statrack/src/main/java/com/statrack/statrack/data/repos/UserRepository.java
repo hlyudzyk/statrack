@@ -1,5 +1,7 @@
-package com.statrack.statrack.security.user;
+package com.statrack.statrack.data.repos;
 
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.models.user.Role;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

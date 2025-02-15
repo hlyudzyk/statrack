@@ -2,8 +2,8 @@ package com.statrack.statrack.data.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.User.Status;
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.models.user.User.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

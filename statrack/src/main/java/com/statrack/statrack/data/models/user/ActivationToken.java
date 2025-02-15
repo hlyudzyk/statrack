@@ -1,4 +1,4 @@
-package com.statrack.statrack.security.user;
+package com.statrack.statrack.data.models.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,8 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.Data;
 
 @Entity
+@Data
 public class ActivationToken {
 
     @Id

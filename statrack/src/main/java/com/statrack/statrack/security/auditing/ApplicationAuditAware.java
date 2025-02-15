@@ -1,6 +1,6 @@
 package com.statrack.statrack.security.auditing;
 
-import com.statrack.statrack.security.user.User;
+import com.statrack.statrack.data.models.user.User;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.AuditorAware;

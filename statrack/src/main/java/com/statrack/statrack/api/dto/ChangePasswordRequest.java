@@ -1,4 +1,4 @@
-package com.statrack.statrack.security.user;
+package com.statrack.statrack.api.dto;
 
 import lombok.Builder;
 import lombok.Getter;

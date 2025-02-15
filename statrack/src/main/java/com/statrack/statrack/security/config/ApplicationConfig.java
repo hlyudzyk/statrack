@@ -1,11 +1,10 @@
 package com.statrack.statrack.security.config;
 
 import com.statrack.statrack.security.auditing.ApplicationAuditAware;
-import com.statrack.statrack.security.user.UserRepository;
+import com.statrack.statrack.data.repos.UserRepository;
 import java.util.Properties;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 
 @Configuration

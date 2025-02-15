@@ -2,8 +2,8 @@ package com.statrack.statrack.services;
 
 import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.User.Status;
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.models.user.User.Status;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

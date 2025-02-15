@@ -1,4 +1,4 @@
-package com.statrack.statrack.security.user;
+package com.statrack.statrack.data.models.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

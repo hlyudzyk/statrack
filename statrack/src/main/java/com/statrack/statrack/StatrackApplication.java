@@ -1,11 +1,10 @@
 package com.statrack.statrack;
 
 import com.statrack.statrack.security.auth.AuthenticationService;
-import com.statrack.statrack.security.auth.RegisterRequest;
-import com.statrack.statrack.security.user.Role;
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.User.UserAccountStatus;
-import com.statrack.statrack.security.user.UserRepository;
+import com.statrack.statrack.data.models.user.Role;
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.models.user.User.UserAccountStatus;
+import com.statrack.statrack.data.repos.UserRepository;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
