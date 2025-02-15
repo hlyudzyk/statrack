@@ -91,7 +91,7 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return this.accountStatus == UserAccountStatus.ACTIVE;
+    return this.accountStatus != UserAccountStatus.DISABLED;
   }
 
   public enum Status {

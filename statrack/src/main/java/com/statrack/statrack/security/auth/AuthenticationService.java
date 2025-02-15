@@ -18,6 +18,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,7 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
   private final ActivationTokenRepository activationTokenRepository;
   private final EmailService emailService;
+  private final UserRepository userRepository;
 
   @Value("${frontend.url}")
   private String frontendUrl;
@@ -154,4 +156,29 @@ public class AuthenticationService {
       }
     }
   }
+
+
+  public Optional<ActivationToken> getActivationTokenIfValid(String token){
+    return activationTokenRepository.findByTokenAndExpiryDateGreaterThan(token, LocalDateTime.now());
+  }
+
+  public AuthenticationResponse activateAccount(ActivationToken token, String password) {
+    User user = token.getUser();
+    user.setAccountStatus(UserAccountStatus.ACTIVE);
+    user.setPassword(passwordEncoder.encode(password));
+    userRepository.save(user);
+    activationTokenRepository.delete(token);
+
+    var jwtToken = jwtService.generateToken(user);
+    var refreshToken = jwtService.generateRefreshToken(user);
+
+    saveUserToken(user, jwtToken);
+    return AuthenticationResponse.builder()
+        .accessToken(jwtToken)
+        .refreshToken(refreshToken)
+        .id(user.getId().toString())
+        .build();
+  }
+
+
 }
