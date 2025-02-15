@@ -41,6 +41,7 @@ public class StatrackApplication {
 					.role(ADMIN)
 					.birthday(LocalDate.of(2000, 5, 21))
 					.build();
+				service.register(admin);
 			} catch (ConstraintViolationException ex) {
 				System.out.println("Admin already registered!");
 			}
