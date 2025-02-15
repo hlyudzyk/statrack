@@ -23,8 +23,6 @@ public class AuthenticationController {
   public ResponseEntity<RegistrationResponse> register(
       @Valid @RequestBody RegisterRequest request
   ) {
-    System.out.println(request.toString());
-    //if(request.getRole().equals(Role.ADMIN)) throw new UnauthorizedException("Forbidden. You are not allowed to register.");
     return ResponseEntity.ok(service.register(request));
   }
   @PostMapping("/authenticate")

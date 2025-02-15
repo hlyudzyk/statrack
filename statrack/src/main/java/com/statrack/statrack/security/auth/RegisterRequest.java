@@ -30,10 +30,6 @@ public class RegisterRequest {
   @Email(message = "Invalid email format")
   private String email;
 
-  @NotBlank(message = "Password is required")
-  @Size(min = 6, max = 100, message = "Password length must be between 6 and 100 characters")
-  private String password;
-
   @NotNull(message = "Birthday is required")
   @Past(message = "Birthday must be in the past")
   private LocalDate birthday;

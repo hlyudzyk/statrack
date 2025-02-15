@@ -1,65 +1,66 @@
-create table public._users
+CREATE TABLE _users
 (
-    id           uuid not null
-        primary key,
-    birthday     date,
-    email        varchar(255)
-        constraint ukhchfjvwnaa27i27bfwv0y6n1x
-            unique,
-    firstname    varchar(255),
-    last_session timestamp(6),
-    lastname     varchar(255),
-    password     varchar(255),
-    role         varchar(255)
-        constraint _users_role_check
-            check ((role)::text = ANY ((ARRAY ['TEACHER'::character varying, 'ADMIN'::character varying])::text[])),
-    status       varchar(255)
-        constraint _users_status_check
-            check ((status)::text = ANY
-                ((ARRAY ['ONLINE'::character varying, 'OFFLINE'::character varying, 'ON_BREAK'::character varying])::text[]))
+    id             UUID         NOT NULL,
+    firstname      VARCHAR(255),
+    lastname       VARCHAR(255),
+    email          VARCHAR(255),
+    password       VARCHAR(255),
+    role           VARCHAR(255),
+    birthday       date,
+    last_session   TIMESTAMP WITHOUT TIME ZONE,
+    status         VARCHAR(255),
+    account_status VARCHAR(255) NOT NULL,
+    CONSTRAINT pk__users PRIMARY KEY (id)
 );
 
-alter table public._users
-    owner to statrack;
-
-create table public.clocking_events
+CREATE TABLE activation_token
 (
-    id        uuid not null
-        primary key,
-    status    varchar(255)
-        constraint clocking_events_status_check
-            check ((status)::text = ANY
-                ((ARRAY ['ONLINE'::character varying, 'OFFLINE'::character varying, 'ON_BREAK'::character varying])::text[])),
-    timestamp timestamp(6),
-    user_id   uuid not null
-        constraint fkarx5krcilsc27gwgiql3xjiie
-            references public._users
-            on delete cascade
+    id          UUID         NOT NULL,
+    user_id     UUID         NOT NULL,
+    token       VARCHAR(255) NOT NULL,
+    expiry_date TIMESTAMP WITHOUT TIME ZONE,
+    CONSTRAINT pk_activationtoken PRIMARY KEY (id)
 );
 
-alter table public.clocking_events
-    owner to statrack;
-
-create index idx_user_timestamp
-    on public.clocking_events (user_id, timestamp);
-
-create table public.tokens
+CREATE TABLE clocking_events
 (
-    id         uuid    not null
-        primary key,
-    expired    boolean not null,
-    revoked    boolean not null,
-    token      varchar(255)
-        constraint ukna3v9f8s7ucnj16tylrs822qj
-            unique,
-    token_type varchar(255)
-        constraint tokens_token_type_check
-            check ((token_type)::text = 'BEARER'::text),
-    user_id    uuid
-        constraint fke36hkxwo4n77fwpo66q2s3vk7
-            references public._users
+    id        UUID NOT NULL,
+    timestamp TIMESTAMP WITHOUT TIME ZONE,
+    user_id   UUID NOT NULL,
+    status    VARCHAR(255),
+    CONSTRAINT pk_clocking_events PRIMARY KEY (id)
 );
 
-alter table public.tokens
-    owner to statrack;
+CREATE TABLE tokens
+(
+    id         UUID    NOT NULL,
+    token      VARCHAR(255),
+    token_type VARCHAR(255),
+    revoked    BOOLEAN NOT NULL,
+    expired    BOOLEAN NOT NULL,
+    user_id    UUID,
+    CONSTRAINT pk_tokens PRIMARY KEY (id)
+);
 
+ALTER TABLE _users
+    ADD CONSTRAINT uc__users_email UNIQUE (email);
+
+ALTER TABLE activation_token
+    ADD CONSTRAINT uc_activationtoken_token UNIQUE (token);
+
+ALTER TABLE activation_token
+    ADD CONSTRAINT uc_activationtoken_user UNIQUE (user_id);
+
+ALTER TABLE tokens
+    ADD CONSTRAINT uc_tokens_token UNIQUE (token);
+
+CREATE INDEX idx_user_timestamp ON clocking_events (user_id, timestamp);
+
+ALTER TABLE activation_token
+    ADD CONSTRAINT FK_ACTIVATIONTOKEN_ON_USER FOREIGN KEY (user_id) REFERENCES _users (id);
+
+ALTER TABLE clocking_events
+    ADD CONSTRAINT FK_CLOCKING_EVENTS_ON_USER FOREIGN KEY (user_id) REFERENCES _users (id) ON DELETE CASCADE;
+
+ALTER TABLE tokens
+    ADD CONSTRAINT FK_TOKENS_ON_USER FOREIGN KEY (user_id) REFERENCES _users (id);

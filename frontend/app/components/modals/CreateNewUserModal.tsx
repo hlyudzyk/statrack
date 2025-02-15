@@ -5,7 +5,6 @@ import {useRouter} from "next/navigation";
 import Modal from "@/app/components/modals/Modal";
 import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
-import {handleLogin} from "@/app/lib/actions";
 import apiService from "@/app/services/apiService";
 import RoleSelect from "@/app/components/forms/RoleSelect";
 
@@ -13,7 +12,6 @@ const CreateNewUserModal = () => {
   const router = useRouter();
   const signupModal = useSignupModal();
   const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
   const [firstname,setFirstname] = useState('');
   const [lastname,setLastname] = useState('');
   const [role,setRole] = useState('');
@@ -54,8 +52,6 @@ const CreateNewUserModal = () => {
         <RoleSelect onChange={(role) => setRole(role.value)}/>
         <input onChange={(e) => setBirthday(e.target.value)} placeholder="Users birthday"
                type="text" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
-        <input onChange={(e) => setPassword(e.target.value)} placeholder="Password"
-               type="password" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
 
         {errors.map((error, index) => {
               return (
