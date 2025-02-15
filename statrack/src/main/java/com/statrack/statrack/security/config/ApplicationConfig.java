@@ -6,10 +6,13 @@ import java.util.Properties;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,9 +28,11 @@ import org.springframework.stereotype.Component;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableConfigurationProperties(EmailConfigProperties.class)
 public class ApplicationConfig {
 
   private final UserRepository repository;
+  private final EmailConfigProperties emailConfigProperties;
 
   @Bean
   public UserDetailsService userDetailsService() {
@@ -41,6 +46,23 @@ public class ApplicationConfig {
     authProvider.setUserDetailsService(userDetailsService());
     authProvider.setPasswordEncoder(passwordEncoder());
     return authProvider;
+  }
+
+  @Bean
+  public JavaMailSender getJavaMailSender() {
+    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+    mailSender.setHost(emailConfigProperties.getHost());
+    mailSender.setPort(emailConfigProperties.getPort());
+
+    mailSender.setUsername(emailConfigProperties.getUsername());
+    mailSender.setPassword(emailConfigProperties.getPassword());
+
+    Properties props = mailSender.getJavaMailProperties();
+    props.put("mail.transport.protocol", "smtp");
+    props.put("mail.smtp.auth", emailConfigProperties.getProperties().get("mail.smtp.auth"));
+    props.put("mail.smtp.starttls.enable", emailConfigProperties.getProperties().get("mail.smtp.starttls.enable"));
+    props.put("mail.debug", emailConfigProperties.getProperties().getOrDefault("mail.debug", "false"));
+    return mailSender;
   }
 
   @Bean
