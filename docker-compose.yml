@@ -1,19 +1,19 @@
 version: '3.8'
 
 services:
-  app:
-    build:
-      context: statrack/
-      dockerfile: Dockerfile
-
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/statrack
-      SPRING_DATASOURCE_USERNAME: statrack
-      SPRING_DATASOURCE_PASSWORD: statrack
+#  app:
+#    build:
+#      context: statrack/
+#      dockerfile: Dockerfile
+#
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - postgres
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/statrack
+#      SPRING_DATASOURCE_USERNAME: statrack
+#      SPRING_DATASOURCE_PASSWORD: statrack
 
   postgres:
     image: postgres:16
