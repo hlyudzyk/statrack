@@ -1,7 +1,7 @@
 package com.statrack.statrack.data.repos;
 
 import com.statrack.statrack.data.models.ClockingEvent;
-import com.statrack.statrack.security.user.User;
+import com.statrack.statrack.data.models.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

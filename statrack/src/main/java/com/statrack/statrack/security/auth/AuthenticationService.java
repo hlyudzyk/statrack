@@ -2,18 +2,26 @@ package com.statrack.statrack.security.auth;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.statrack.statrack.data.models.user.ActivationToken;
+import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.security.config.JwtService;
 import com.statrack.statrack.security.token.Token;
 import com.statrack.statrack.security.token.TokenRepository;
 import com.statrack.statrack.security.token.TokenType;
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.UserRepository;
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.models.user.User.UserAccountStatus;
+import com.statrack.statrack.data.repos.UserRepository;
+import com.statrack.statrack.services.util.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,14 +40,20 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final ActivationTokenRepository activationTokenRepository;
+  private final EmailService emailService;
+  private final UserRepository userRepository;
+
+  @Value("${frontend.url}")
+  private String frontendUrl;
 
   public RegistrationResponse register(@Valid RegisterRequest request) {
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
         .birthday(request.getBirthday())
+        .accountStatus(UserAccountStatus.PENDING_ACTIVATION)
         .role(request.getRole())
         .build();
 
@@ -52,6 +66,18 @@ public class AuthenticationService {
     catch (DataIntegrityViolationException e) {
       throw new ConstraintViolationException("Email is already in use",null);
     }
+
+    String token = UUID.randomUUID().toString();
+    ActivationToken activationToken = new ActivationToken();
+    activationToken.setUser(user);
+    activationToken.setToken(token);
+    activationToken.setExpiryDate(LocalDateTime.now().plusDays(1)); // Expire in 24h
+
+    activationTokenRepository.save(activationToken);
+
+    String activationLink = frontendUrl + "/account/activate?token=" + token;
+    emailService.sendMessage(user.getEmail(), "Activate Your Account",
+        "Click the link to activate: " + activationLink);
 
     return RegistrationResponse.builder()
         .id(savedUser.getId().toString())
@@ -130,4 +156,29 @@ public class AuthenticationService {
       }
     }
   }
+
+
+  public Optional<ActivationToken> getActivationTokenIfValid(String token){
+    return activationTokenRepository.findByTokenAndExpiryDateGreaterThan(token, LocalDateTime.now());
+  }
+
+  public AuthenticationResponse activateAccount(ActivationToken token, String password) {
+    User user = token.getUser();
+    user.setAccountStatus(UserAccountStatus.ACTIVE);
+    user.setPassword(passwordEncoder.encode(password));
+    userRepository.save(user);
+    activationTokenRepository.delete(token);
+
+    var jwtToken = jwtService.generateToken(user);
+    var refreshToken = jwtService.generateRefreshToken(user);
+
+    saveUserToken(user, jwtToken);
+    return AuthenticationResponse.builder()
+        .accessToken(jwtToken)
+        .refreshToken(refreshToken)
+        .id(user.getId().toString())
+        .build();
+  }
+
+
 }

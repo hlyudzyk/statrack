@@ -1,6 +1,6 @@
 package com.statrack.statrack.security.auth;
 
-import com.statrack.statrack.security.user.Role;
+import com.statrack.statrack.data.models.user.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,10 +29,6 @@ public class RegisterRequest {
   @NotBlank(message = "Email is required")
   @Email(message = "Invalid email format")
   private String email;
-
-  @NotBlank(message = "Password is required")
-  @Size(min = 6, max = 100, message = "Password length must be between 6 and 100 characters")
-  private String password;
 
   @NotNull(message = "Birthday is required")
   @Past(message = "Birthday must be in the past")

@@ -1,8 +1,8 @@
 package com.statrack.statrack.services;
 
-import com.statrack.statrack.security.user.Role;
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.UserRepository;
+import com.statrack.statrack.data.models.user.Role;
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.repos.UserRepository;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.statrack.statrack.services;
 
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.UserRepository;
+import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.repos.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

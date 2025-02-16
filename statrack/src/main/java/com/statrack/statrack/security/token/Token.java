@@ -1,7 +1,7 @@
 package com.statrack.statrack.security.token;
 
 
-import com.statrack.statrack.security.user.User;
+import com.statrack.statrack.data.models.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

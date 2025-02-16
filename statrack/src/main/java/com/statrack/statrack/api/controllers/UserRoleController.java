@@ -1,7 +1,7 @@
 package com.statrack.statrack.api.controllers;
 
-import com.statrack.statrack.security.user.Role;
-import com.statrack.statrack.security.user.User;
+import com.statrack.statrack.data.models.user.Role;
+import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.services.UserRoleService;
 import java.util.List;
 import java.util.UUID;

@@ -2,8 +2,7 @@ package com.statrack.statrack.api.controllers;
 
 import com.statrack.statrack.api.dto.ClockingEventDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
-import com.statrack.statrack.security.user.User;
-import com.statrack.statrack.security.user.User.Status;
+import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.services.UserService;
 import com.statrack.statrack.services.ClockingEventService;
 import java.time.LocalDateTime;

@@ -1,13 +1,13 @@
 package com.statrack.statrack.api.controllers;
 
 
-import com.statrack.statrack.security.user.Role;
-import com.statrack.statrack.security.user.User;
+import com.statrack.statrack.data.models.user.Role;
+import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.services.UserService;
 import com.statrack.statrack.api.dto.UserDto;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -37,7 +37,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
-
         return userService.getUserById(id)
             .map(user -> {
                 user.setFirstname(updateUserDto.getFirstname());

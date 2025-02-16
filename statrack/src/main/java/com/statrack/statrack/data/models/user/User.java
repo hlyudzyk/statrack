@@ -1,4 +1,4 @@
-package com.statrack.statrack.security.user;
+package com.statrack.statrack.data.models.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,7 +31,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "_users")
 public class User implements UserDetails {
-
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -51,6 +50,10 @@ public class User implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private Status status;
+
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private UserAccountStatus accountStatus;
 
   @OneToMany(mappedBy = "user")
   @JsonIgnore
@@ -88,11 +91,15 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return this.accountStatus != UserAccountStatus.DISABLED;
   }
 
   public enum Status {
     ONLINE, OFFLINE, ON_BREAK
+  }
+
+  public enum UserAccountStatus {
+    PENDING_ACTIVATION, ACTIVE, DISABLED
   }
 
 }
