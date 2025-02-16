@@ -1,8 +1,9 @@
 'use client'
 import {useEffect, useState} from "react";
-import {useSearchParams} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import CustomButton from "@/app/components/forms/CustomButton";
 import apiService from "@/app/services/apiService";
+import {handleLogin} from "@/app/lib/actions";
 
 
 const ActivateAccount = () => {
@@ -13,6 +14,8 @@ const ActivateAccount = () => {
   const [error, setError] = useState('');
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
 
   const handlePasswordChange = (e) => {
@@ -26,14 +29,18 @@ const ActivateAccount = () => {
 
   };
 
-  const handleActivateAccount = (e) => {
+  const handleActivateAccount = async (e) => {
     if (password != repeatPassword) {
       setError("Passwords don't match")
       return;
     }
     e.preventDefault();
     if (password === repeatPassword) {
-      apiService.postWithoutToken("api/v1/auth/activate-account",JSON.stringify({"token":token,"password":password}))
+      const response = await apiService.postWithoutToken("api/v1/auth/activate-account",JSON.stringify({"token":token,"password":password}))
+      if(response.access_token){
+        await handleLogin(response.id, response.access_token, response.refresh_token);
+        router.push('/');
+      }
     } else {
 
     }
