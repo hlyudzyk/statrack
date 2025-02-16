@@ -25,5 +25,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql@16/data
+
+  rabbitmq:
+    container_name: 'app-message-broker'
+    image: 'rabbitmq:latest'
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=statrack'
+      - 'RABBITMQ_DEFAULT_USER=statrack'
+    ports:
+      - '5672:5672'
 volumes:
   postgres_data:
