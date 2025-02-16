@@ -11,7 +11,7 @@ import com.statrack.statrack.security.token.TokenType;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.UserRepository;
-import com.statrack.statrack.services.util.EmailService;
+import com.statrack.statrack.services.emails.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
