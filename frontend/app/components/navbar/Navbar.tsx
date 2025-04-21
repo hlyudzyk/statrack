@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import UserNav from "@/app/components/navbar/UserNav";
 import {getUserId} from "@/app/lib/actions";
+import SearchFilters from "@/app/components/navbar/SearchFilters";
 
 const Navbar = async () =>{
   const userid = await getUserId()
@@ -25,7 +26,9 @@ const Navbar = async () =>{
         </Link>
 
         <div className="flex space-x-6">
+          <SearchFilters/>
         </div>
+
         <div className="flex items-center space-x-6">
           <UserNav userId={userid}/>
         </div>

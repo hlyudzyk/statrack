@@ -1,5 +1,5 @@
 import React from 'react';
-import {Authority} from "@/app/components/Teachers";
+import {Authority} from "@/app/components/Users";
 
 interface AuthorityCheckboxProps {
   authority: Authority;

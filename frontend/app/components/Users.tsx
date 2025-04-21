@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import apiService from "@/app/services/apiService";
-import Teacher from "@/app/components/Teacher";
 import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import {getUserId} from "@/app/lib/actions";
+import UserCard from "@/app/components/UserCard";
 
-export type TeacherType = {
+
+export type UserType = {
   id: string;
   firstname: string;
   lastname: string;
@@ -22,14 +23,14 @@ export interface Authority {
   authority: string;
 }
 
-const Teachers = () => {
-  const [teachers, setTeachers] = useState<TeacherType[]>([]);
+const Users = () => {
+  const [teachers, setTeachers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const signupModal = useSignupModal();
   const [authorities,setAuthorities] = useState<Authority[]>()
   const fetchTeachers = async () => {
     try {
-      const teachers: TeacherType[] = await apiService.get("api/v1/users");
+      const teachers: UserType[] = await apiService.get("api/v1/users");
       const userid = await getUserId();
       const authorities_res: Authority[] = await apiService.get(`api/v1/user-roles/${userid}/authorities`)
       setAuthorities(authorities_res)
@@ -49,12 +50,22 @@ const Teachers = () => {
     return <div>Loading...</div>;
   }
 
+  if(!teachers.length){
+    return (
+          <div>No teachers found.</div>
+    )
+  }
+
   return (
-      <div className="flex flex-row gap 5">
-        <div>
-          {teachers.length > 0 ? (
-              teachers.map((t: TeacherType) => (
-                  <Teacher
+      <div className="flex flex-col w-full bg-gray-200 rounded-xl">
+        <div className="flex flex-row m-5 justify-between">
+          <h2 className="text-2xl">Statrack users</h2>
+          {authorities?.some((auth) => auth.authority === "ROLE_ADMIN")&&<CustomButton label={"Add teacher"} onClick={()=>signupModal.open()} className="max-w-32"/>}
+        </div>
+        <div className="flex justify-start space-x-10 p-5">
+          {teachers.map((t: UserType) => (
+                  <UserCard
+                      key={t.id}
                       id={t.id}
                       firstname={t.firstname}
                       lastname={t.lastname}
@@ -63,15 +74,12 @@ const Teachers = () => {
                       role={t.role}
                       department={t.department}
                   />
-              ))
-          ) : (
-              <div>No teachers found.</div>
-          )}
+              )
+          )
+          }
         </div>
-        {authorities?.some((auth) => auth.authority === "ROLE_ADMIN")&&<CustomButton label={"Add teacher"} onClick={()=>signupModal.open()} className="max-w-32"/>}
-
       </div>
   );
 }
 
-export default Teachers;
+export default Users;
