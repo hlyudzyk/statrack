@@ -4,6 +4,7 @@ import "./globals.css";
 import LoginModal from "@/app/components/modals/LoginModal";
 import Navbar from "@/app/components/navbar/Navbar";
 import CreateNewUserModal from "@/app/components/modals/CreateNewUserModal";
+import FooterComponent from "@/app/components/navbar/FooterComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
       <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <div>
+      <div className="flex flex-col min-h-screen">
         <Navbar/>
         <div className="pt-32 mx-10">
           {children}
@@ -37,7 +38,7 @@ export default function RootLayout({
         <LoginModal/>
         <CreateNewUserModal/>
       </div>
-
+      <FooterComponent/>
       </body>
       </html>
   );

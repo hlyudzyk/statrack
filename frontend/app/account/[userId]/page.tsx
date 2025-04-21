@@ -5,10 +5,10 @@ import Image from 'next/image';
 import {getUserId} from "@/app/lib/actions";
 import {AccountPageSkeleton, PropertyListSkeleton} from "@/app/components/skeletons";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
 import apiService from "@/app/services/apiService";
 import InputField from "@/app/components/forms/InputField";
-import {Authority} from "@/app/components/Teachers";
+import {Authority} from "@/app/components/Users";
 import AuthorityList from "@/app/components/forms/AuthorityList";
 
 export type UserType = {
@@ -24,6 +24,8 @@ export type UserType = {
 }
 
 const AccountPage = () => {
+  const params = useParams()
+  const userId = params.userId;
   const [user, setUser] = useState<UserType>();
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -35,7 +37,7 @@ const AccountPage = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>('/no_pfp.png');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [authorities, setAuthorities] = useState<Authority[]>([]);
-
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
   const loginModal = useLoginModal();
   const router = useRouter();
 
@@ -46,7 +48,8 @@ const AccountPage = () => {
         loginModal.open();
         router.push('/');
       }
-      const userData: UserType = await apiService.get(`api/v1/users/${id}`);
+      const userData: UserType = await apiService.get(`api/v1/users/${userId}`);
+      setHasPermission(id===userId);
       setUser(userData);
       setFirstname(userData.firstname);
       setLastname(userData.lastname);
@@ -84,7 +87,7 @@ const AccountPage = () => {
     }
   };
 
-  return user ? (
+  return user && hasPermission ? (
       <main className="max-w-[1500px] mx-auto px-6 pb-6">
         <div className="flex flex-col items-center p-6 rounded-xl border-gray-300 shadow-xl">
           <div className="lg:w-[50%] sm:w-full">

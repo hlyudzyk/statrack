@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AuthorityCheckbox from './AuthorityCheckbox';
-import { Authority } from '@/app/components/Teachers';
+import { Authority } from '@/app/components/Users';
 
 interface AuthorityListProps {
   authorities: Authority[];
