@@ -1,7 +1,9 @@
 'use client'
 
-const SearchFilters = () => {
+import {useRouter} from "next/navigation";
 
+const SearchFilters = () => {
+  const router = useRouter();
 
   return(
       <div className="h-[48px] lg:h-[64px] flex flex-row items-center justify-between
@@ -10,17 +12,23 @@ const SearchFilters = () => {
           <div className="flex flex-row items-center justify-between">
             <div
                 className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-gray-100"
-                onClick={()=>{}}>
+                onClick={()=> {
+                  router.push('/dashboard');
+                }}>
               <p className="text-xm font-bold">Dashboard</p>
             </div>
             <div
                 className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-gray-100"
-                onClick={()=>{}}>
+                onClick={()=> {
+                  router.push('/account');
+                }}>
               <p className="text-xm font-bold">Account</p>
             </div>
             <div
                 className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-gray-100"
-                onClick={()=>{}}>
+                onClick={()=> {
+                  router.push('/inbox');
+                }}>
               <p className="text-xm font-bold">Inbox</p>
             </div>
             <div
