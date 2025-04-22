@@ -11,7 +11,7 @@ const FooterComponent = () => {
           <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
             <Footer.Brand
                 href="£"
-                src="favicon.ico"
+                src="favicon_next.ico"
                 alt="Statrack Logo"
                 name="Statrack"
             />

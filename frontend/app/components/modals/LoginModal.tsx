@@ -39,10 +39,10 @@ const LoginModal = () => {
             <input onChange={(e) => setEmail(e.target.value)} placeholder="Your e-mail address" type="email" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
             <input onChange={(e) => setPassword(e.target.value)} placeholder="Your password" type="password" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
 
-            {errors.map((error, index) => {
+            {errors.map((error) => {
                   return (
                       <div className="p-5 bg-lightbase text-white rounded-xl opacity-80"
-                           key={`error_${index}`}>
+                           key={`error_${error}`}>
                         {error}
                       </div>
                   )
