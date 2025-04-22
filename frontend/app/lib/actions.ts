@@ -62,17 +62,16 @@ export async function handleLogin(userId:string,accessToken:string,refreshToken:
 }
 
 export async function resetAuthCookies(){
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  cookies().set('session_userid', '', { path: '/', expires: new Date(0) });
+  cookies().set('session_access_token', '', { path: '/', expires: new Date(0) });
+  cookies().set('session_refresh_token', '', { path: '/', expires: new Date(0) });
 }
 
-export async function getUserId(){
-  const userId = await cookies().get('session_userid')?.value;
-  return userId?userId:null;
+export async function getUserId() {
+  const cookieStore = cookies();
+  const userId = await cookieStore.get('session_userid')?.value;
+  return userId ?? null;
 }
-
 export async function getAccessToken(){
   let accessToken = await cookies().get('session_access_token')?.value;
 

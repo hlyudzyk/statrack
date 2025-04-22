@@ -8,7 +8,7 @@ import {JSX} from "react";
 const LogoutButton:() => JSX.Element = () => {
   const router = useRouter();
   const submitLogOut = async () => {
-    resetAuthCookies();
+    await resetAuthCookies();
     router.push('/')
   }
   return (<MenuLink label="Log out" onClick={submitLogOut}/>)

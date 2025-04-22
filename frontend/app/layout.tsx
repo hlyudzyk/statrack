@@ -5,9 +5,8 @@ import LoginModal from "@/app/components/modals/LoginModal";
 import Navbar from "@/app/components/navbar/Navbar";
 import CreateNewUserModal from "@/app/components/modals/CreateNewUserModal";
 import FooterComponent from "@/app/components/navbar/FooterComponent";
-import {getUserId} from "@/app/lib/actions";
 import {UserProvider} from "@/app/lib/context/UserContext";
-import {getUserData} from "@/app/lib/userActions";
+import {getCurrentUser} from "@/app/lib/userActions";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +29,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const userId = await getUserId();
-  let user = null;
-  if (userId) {
-    user = await getUserData(userId);
-  }
+  const user = await getCurrentUser();
 
   return (
       <html lang="en">

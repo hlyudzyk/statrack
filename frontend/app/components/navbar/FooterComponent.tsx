@@ -16,7 +16,7 @@ const FooterComponent = () => {
                 name="Statrack"
             />
             <Footer.LinkGroup>
-              <Footer.Link onClick={()=>router.push("about")}>About</Footer.Link>
+              <Footer.Link onClick={()=>router.push("about")} href="#">About</Footer.Link>
               <Footer.Link href="#">Privacy Policy</Footer.Link>
               <Footer.Link href="#">Licensing</Footer.Link>
               <Footer.Link href="#">Contact</Footer.Link>
