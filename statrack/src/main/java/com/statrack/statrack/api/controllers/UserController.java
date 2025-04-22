@@ -24,27 +24,26 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
+        UserDto userDto = userService.getUserById(id);
+        return ResponseEntity.ok(userDto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
-        return userService.getUserById(id)
-            .map(user -> {
-                user.setFirstname(updateUserDto.getFirstname());
-                user.setLastname(updateUserDto.getLastname());
-                user.setRole(Role.valueOf(updateUserDto.getRole()));
-                userService.saveUser(user);
-                return ResponseEntity.ok(user);
-            })
-            .orElse(ResponseEntity.notFound().build());
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<User> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
+//        return userService.getUserById(id)
+//            .map(user -> {
+//                user.setFirstname(updateUserDto.getFirstname());
+//                user.setLastname(updateUserDto.getLastname());
+//                user.setRole(Role.valueOf(updateUserDto.getRole()));
+//                userService.saveUser(user);
+//                return ResponseEntity.ok(user);
+//            })
+//            .orElse(ResponseEntity.notFound().build());
+//    }
 }

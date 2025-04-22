@@ -1,6 +1,7 @@
 package com.statrack.statrack.api.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,9 @@ public class UserDto implements Serializable {
     private String lastname;
     private String role;
     private String status;
+    private String email;
+    private String department;
+    private String avatarUrl;
+    private String[] authorities;
+    private LocalDate birthday;
 }

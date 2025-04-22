@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import AuthorityCheckbox from './AuthorityCheckbox';
-import { Authority } from '@/app/components/Users';
 
 interface AuthorityListProps {
-  authorities: Authority[];
+  authorities: string[];
 }
 
 const ALL_AUTHORITIES = ["ROLE_ADMIN", "Admin permission"];
@@ -14,27 +13,27 @@ const AuthorityList: React.FC<AuthorityListProps> = ({ authorities }) => {
   useEffect(() => {
     const initialSelected = new Set<string>();
     authorities.forEach((auth) => {
-      if (ALL_AUTHORITIES.includes(auth.authority)) {
-        initialSelected.add(auth.authority);
+      if (ALL_AUTHORITIES.includes(auth)) {
+        initialSelected.add(auth);
       }
     });
     setSelectedAuthorities(initialSelected);
   }, [authorities]);
 
-  const handleCheckboxChange = (authority: Authority) => {
+  const handleCheckboxChange = (authority: string) => {
     setSelectedAuthorities((prevSelected) => {
       const newSelected = new Set(prevSelected);
-      if (newSelected.has(authority.authority)) {
-        newSelected.delete(authority.authority);
+      if (newSelected.has(authority)) {
+        newSelected.delete(authority);
       } else {
-        newSelected.add(authority.authority);
+        newSelected.add(authority);
       }
       return newSelected;
     });
   };
 
-  const isAuthoritySelected = (authority: Authority) => {
-    return selectedAuthorities.has(authority.authority);
+  const isAuthoritySelected = (authority: string) => {
+    return selectedAuthorities.has(authority);
   };
 
   return (
@@ -42,7 +41,7 @@ const AuthorityList: React.FC<AuthorityListProps> = ({ authorities }) => {
         <h2>Select Authorities</h2>
         {authorities.map((auth) => (
             <AuthorityCheckbox
-                key={auth.authority}
+                key={auth}
                 authority={auth}
                 isSelected={isAuthoritySelected(auth)}
                 onChange={handleCheckboxChange}

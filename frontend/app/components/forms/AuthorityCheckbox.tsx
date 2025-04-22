@@ -1,10 +1,9 @@
 import React from 'react';
-import {Authority} from "@/app/components/Users";
 
 interface AuthorityCheckboxProps {
-  authority: Authority;
+  authority: string;
   isSelected: boolean;
-  onChange: (authority: Authority) => void;
+  onChange: (authority: string) => void;
 }
 
 const AuthorityCheckbox: React.FC<AuthorityCheckboxProps> = ({ authority, isSelected, onChange }) => {
@@ -19,7 +18,7 @@ const AuthorityCheckbox: React.FC<AuthorityCheckboxProps> = ({ authority, isSele
             checked={isSelected}
             onChange={handleCheckboxChange}
         />
-        {authority.authority}
+        {authority}
       </label>
   );
 };

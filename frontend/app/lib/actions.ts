@@ -5,6 +5,8 @@ import {cookies} from "next/headers";
 
 export async function handleRefresh(){
   const refreshToken = await getRefreshToken();
+  console.log(refreshToken)
+
   const token = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/v1/auth/refresh-token`, {
         method:'POST',
         headers:{
@@ -60,16 +62,16 @@ export async function handleLogin(userId:string,accessToken:string,refreshToken:
 }
 
 export async function resetAuthCookies(){
-  cookies().set('session_userid','');
-  cookies().set('session_access_token','');
-  cookies().set('session_refresh_token','');
+  cookies().set('session_userid', '', { path: '/', expires: new Date(0) });
+  cookies().set('session_access_token', '', { path: '/', expires: new Date(0) });
+  cookies().set('session_refresh_token', '', { path: '/', expires: new Date(0) });
 }
 
-export async function getUserId(){
-  const userId = await cookies().get('session_userid')?.value;
-  return userId?userId:null;
+export async function getUserId() {
+  const cookieStore = cookies();
+  const userId = await cookieStore.get('session_userid')?.value;
+  return userId ?? null;
 }
-
 export async function getAccessToken(){
   let accessToken = await cookies().get('session_access_token')?.value;
 

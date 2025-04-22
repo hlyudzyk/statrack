@@ -2,92 +2,50 @@
 
 import {useState, useEffect, ChangeEvent, Suspense} from 'react';
 import Image from 'next/image';
-import {getUserId} from "@/app/lib/actions";
 import {AccountPageSkeleton, PropertyListSkeleton} from "@/app/components/skeletons";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import {useParams, useRouter, useSearchParams} from "next/navigation";
-import apiService from "@/app/services/apiService";
 import InputField from "@/app/components/forms/InputField";
-import {Authority} from "@/app/components/Users";
 import AuthorityList from "@/app/components/forms/AuthorityList";
+import {useUser} from "@/app/lib/context/UserContext";
+import {Datepicker} from "flowbite-react";
 
-export type UserType = {
-  id: string
-  firstname: string
-  lastname: string
-  email: string
-  role: string
-  birthday: string
-  avatar_url: string
-  description: string
-  authorities: Authority[]
-}
 
 const AccountPage = () => {
   const params = useParams()
   const userId = params.userId;
-  const [user, setUser] = useState<UserType>();
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [description, setDescription] = useState('');
-  const [avatar, setAvatar] = useState<File | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string>('/no_pfp.png');
+  const user = useUser();
+  const [firstname, setFirstname] = useState(user?.firstname || '');
+  const [lastname, setLastname] = useState(user?.lastname || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [role, setRole] = useState(user?.role || '');
+  const [birthday, setBirthday] = useState(user?.birthday || '');
+  const [avatarUrl, setAvatarUrl] = useState<string>('/no_pfp.png'); //fixme
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [authorities, setAuthorities] = useState<Authority[]>([]);
-  const [hasPermission, setHasPermission] = useState<boolean>(false);
   const loginModal = useLoginModal();
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const id = await getUserId();
-      if (!id) {
-        loginModal.open();
-        router.push('/');
-      }
-      const userData: UserType = await apiService.get(`api/v1/users/${userId}`);
-      setHasPermission(id===userId);
-      setUser(userData);
-      setFirstname(userData.firstname);
-      setLastname(userData.lastname);
-      setEmail(userData.email);
-      setRole(userData.role);
-      setBirthday(userData.birthday);
-      setAvatarUrl(userData.avatar_url ? userData.avatar_url : '/no_pfp.png');
-      setDescription(userData.description);
-      setAuthorities(userData.authorities)
-    };
-    fetchUser();
-  }, []);
 
   const setImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const image = event.target.files[0];
-      setAvatar(image);
-      setAvatarUrl(URL.createObjectURL(image));
+      //setAvatar(image);
+      //setAvatarUrl(URL.createObjectURL(image));
     }
   };
 
   const handleSave = async () => {
     setStatus('loading');
     const formData = new FormData();
-    formData.append('firstname', firstname);
-    formData.append('lastname', lastname);
-    formData.append('role', role);
-    if (avatar) formData.append('avatar', avatar);
-
-    try {
-      await apiService.put(`api/v1/users/${user?.id}`, formData);
-      setStatus('success');
-    } catch (error) {
-      setStatus('error');
-    }
+    formData.append('firstname', user?.firstname);
+    formData.append('lastname', user?.lastname);
+    formData.append('role', user?.role);
+    //if (avatar) formData.append('avatar', avatar);
+    if (user==null){return;}
+    //updateUserData(user?.id, formData)
   };
 
-  return user && hasPermission ? (
+  return user ? (
       <main className="max-w-[1500px] mx-auto px-6 pb-6">
         <div className="flex flex-col items-center p-6 rounded-xl border-gray-300 shadow-xl">
           <div className="lg:w-[50%] sm:w-full">
@@ -139,10 +97,12 @@ const AccountPage = () => {
                   label="Role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  readonly={user.rol=="ROLE_ADMIN"}
+                  //readonly={user.rol=="ROLE_ADMIN"} fixme: add user.hasRole....
               />
+              <label>Birthday</label>
+              <Datepicker defaultValue={new Date(user.birthday)} />
               <h1>Authority Management</h1>
-              <AuthorityList authorities={authorities}/>
+              <AuthorityList authorities={user.authorities}/>
 
             </div>
             <button

@@ -35,7 +35,7 @@ const NewsSlider = () => {
   ]);
   return (
       <div className="h-156 sm:h-64 xl:h-80 2xl:h-96">
-        <Carousel>
+        <Carousel slideInterval={1000}>
           {news.map((item) => (
                 <NewsSlide key={item.id} header={item.header} author={item.author} content={item.content} />
           ))}
