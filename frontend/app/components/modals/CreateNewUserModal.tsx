@@ -7,6 +7,8 @@ import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import apiService from "@/app/services/apiService";
 import RoleSelect from "@/app/components/forms/RoleSelect";
+import {Datepicker} from "flowbite-react";
+import {roleOptions} from "@/app/lib/constants";
 
 const CreateNewUserModal = () => {
   const router = useRouter();
@@ -14,7 +16,7 @@ const CreateNewUserModal = () => {
   const [email,setEmail] = useState('');
   const [firstname,setFirstname] = useState('');
   const [lastname,setLastname] = useState('');
-  const [role,setRole] = useState('');
+  const [role,setRole] = useState(roleOptions[0]);
   const [birthday,setBirthday] = useState('');
   const [errors,setErrors] = useState<string[]>([])
 
@@ -49,8 +51,8 @@ const CreateNewUserModal = () => {
         <input onChange={(e) => setEmail(e.target.value)} placeholder="Users e-mail address"
                type="email" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
         <RoleSelect onChange={(role) => setRole(role.value)}/>
-        <input onChange={(e) => setBirthday(e.target.value)} placeholder="Users birthday"
-               type="text" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
+
+        <Datepicker onChange={(e) => setBirthday(e.target.value)} placeholder="Users birthday"/>
 
         {errors.map((error, index) => {
               return (

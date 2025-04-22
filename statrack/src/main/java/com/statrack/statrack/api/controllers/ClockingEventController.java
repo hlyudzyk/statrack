@@ -1,6 +1,7 @@
 package com.statrack.statrack.api.controllers;
 
 import com.statrack.statrack.api.dto.ClockingEventDTO;
+import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.services.UserService;
@@ -27,39 +28,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClockingEventController {
     private final ClockingEventService clockingEventService;
     private final UserService userService;
-
-    @PostMapping("/{userId}")
-    public ResponseEntity<ClockingEvent> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
-        Optional<User> user = userService.getUserById(userId);
-        if (user.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        ClockingEvent clockingEvent = clockingEventService.createClockingEvent(user.get(), clockingEventDTO.getStatus());
-        return new ResponseEntity<>(clockingEvent, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<ClockingEvent>> getClockingEventByUser(@PathVariable UUID userId) {
-        Optional<User> user = userService.getUserById(userId);
-        if (user.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUser(user.get());
-        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
-    }
-
-    @GetMapping("/{userId}/range")
-    public ResponseEntity<List<ClockingEvent>> getClockingEventsByUserAndTimeRange(
-        @PathVariable UUID userId,
-        @RequestParam LocalDateTime start,
-        @RequestParam LocalDateTime end) {
-        Optional<User> user = userService.getUserById(userId);
-        if (user.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUserAndTimeRange(user.get(), start, end);
-        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
-    }
+//
+//    @PostMapping("/{userId}")
+//    public ResponseEntity<ClockingEvent> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
+//        UserDto user = userService.getUserById(userId);
+//        ClockingEvent clockingEvent = clockingEventService.createClockingEvent(user.(), clockingEventDTO.getStatus());
+//        return new ResponseEntity<>(clockingEvent, HttpStatus.CREATED);
+//    }
+//
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<List<ClockingEvent>> getClockingEventByUser(@PathVariable UUID userId) {
+//        Optional<User> user = userService.getUserById(userId);
+//        if (user.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUser(user.get());
+//        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/{userId}/range")
+//    public ResponseEntity<List<ClockingEvent>> getClockingEventsByUserAndTimeRange(
+//        @PathVariable UUID userId,
+//        @RequestParam LocalDateTime start,
+//        @RequestParam LocalDateTime end) {
+//        Optional<User> user = userService.getUserById(userId);
+//        if (user.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUserAndTimeRange(user.get(), start, end);
+//        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClockingEvent(@PathVariable UUID id) {

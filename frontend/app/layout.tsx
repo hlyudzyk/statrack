@@ -5,6 +5,9 @@ import LoginModal from "@/app/components/modals/LoginModal";
 import Navbar from "@/app/components/navbar/Navbar";
 import CreateNewUserModal from "@/app/components/modals/CreateNewUserModal";
 import FooterComponent from "@/app/components/navbar/FooterComponent";
+import {getUserId} from "@/app/lib/actions";
+import {UserProvider} from "@/app/lib/context/UserContext";
+import {getUserData} from "@/app/lib/userActions";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,14 +24,23 @@ export const metadata: Metadata = {
   description: "Track your activity",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
                                      children,
                                    }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const userId = await getUserId();
+  let user = null;
+  if (userId) {
+    user = await getUserData(userId);
+  }
+
   return (
       <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <UserProvider initialUser={user}>
+
       <div className="flex flex-col min-h-screen">
         <Navbar/>
         <div className="pt-32 mx-10">
@@ -39,6 +51,8 @@ export default function RootLayout({
         <CreateNewUserModal/>
       </div>
       <FooterComponent/>
+      </UserProvider>
+
       </body>
       </html>
   );

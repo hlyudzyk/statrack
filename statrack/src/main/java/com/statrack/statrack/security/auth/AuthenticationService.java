@@ -3,6 +3,7 @@ package com.statrack.statrack.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.statrack.statrack.data.models.user.ActivationToken;
+import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.security.config.JwtService;
 import com.statrack.statrack.security.token.Token;
@@ -93,6 +94,8 @@ public class AuthenticationService {
     );
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
+    user.setStatus(Status.ONLINE);
+    repository.save(user);
 
 
     var jwtToken = jwtService.generateToken(user);
