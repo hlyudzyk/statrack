@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import UserNav from "@/app/components/navbar/UserNav";
 import {getUserId} from "@/app/lib/actions";
 import SearchFilters from "@/app/components/navbar/SearchFilters";
 
@@ -15,7 +14,7 @@ const Navbar = async () =>{
           <div className="flex flex-row items-center">
 
             <Image
-                src="/favicon.ico"
+                src="/favicon_next.ico"
                 alt="Statify logo"
                 width={30}
                 height={30}
@@ -27,10 +26,6 @@ const Navbar = async () =>{
 
         <div className="flex space-x-6">
           <SearchFilters/>
-        </div>
-
-        <div className="flex items-center space-x-6">
-          <UserNav userId={userid}/>
         </div>
       </div>
     </div>
