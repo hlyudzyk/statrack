@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/clocking-events/by-user-id")
 @RequiredArgsConstructor
 public class ClockingEventController {
-    private final ClockingEventService clockingEventService;
-    private final UserService userService;
+//    private final ClockingEventService clockingEventService;
+//    private final UserService userService;
 //
 //    @PostMapping("/{userId}")
 //    public ResponseEntity<ClockingEvent> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
@@ -58,10 +58,10 @@ public class ClockingEventController {
 //        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUserAndTimeRange(user.get(), start, end);
 //        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
 //    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClockingEvent(@PathVariable UUID id) {
-        clockingEventService.deleteClockingEvent(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteClockingEvent(@PathVariable UUID id) {
+//        clockingEventService.deleteClockingEvent(id);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 }

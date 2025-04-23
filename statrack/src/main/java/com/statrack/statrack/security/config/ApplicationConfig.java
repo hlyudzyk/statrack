@@ -1,5 +1,8 @@
 package com.statrack.statrack.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.statrack.statrack.security.auditing.ApplicationAuditAware;
 import com.statrack.statrack.data.repos.UserRepository;
 import java.util.Properties;
@@ -78,4 +81,10 @@ public class ApplicationConfig {
     return new BCryptPasswordEncoder();
   }
 
+  @Bean
+  public ObjectMapper objectMapper() {
+    return new ObjectMapper()
+        .registerModule(new JavaTimeModule())
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+  }
 }

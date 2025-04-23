@@ -3,11 +3,10 @@ package com.statrack.statrack.services;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.repos.UserRepository;
-import com.statrack.statrack.services.exceptions.NotFoundException;
+import com.statrack.statrack.exceptions.NotFoundException;
 import com.statrack.statrack.services.mappers.UserMapper;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
