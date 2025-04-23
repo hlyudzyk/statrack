@@ -17,7 +17,7 @@ const CreateNewUserModal = () => {
   const [firstname,setFirstname] = useState('');
   const [lastname,setLastname] = useState('');
   const [role,setRole] = useState(roleOptions[0]);
-  const [birthday,setBirthday] = useState('');
+  const [birthday,setBirthday] = useState<Date>(new Date());
   const [errors,setErrors] = useState<string[]>([])
 
   const submitSignup = async () => {
@@ -28,7 +28,7 @@ const CreateNewUserModal = () => {
       birthday: birthday,
       role: role
     }
-    const response = await apiService.post('api/v1/auth/register',JSON.stringify(formData));
+    const response = await apiService.post('api/v1/users/register',JSON.stringify(formData));
 
     if(response){
       signupModal.close();
@@ -42,6 +42,13 @@ const CreateNewUserModal = () => {
 
   }
 
+  const handleDateChange = (date) => {
+    console.log(date);
+    console.log("AAAAAAAA");
+
+    setBirthday(date);
+  };
+
   const content = (
       <form action={submitSignup} className="space-y-4">
         <input onChange={(e) => setFirstname(e.target.value)} placeholder="Users firstname"
@@ -52,7 +59,7 @@ const CreateNewUserModal = () => {
                type="email" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
         <RoleSelect onChange={(role) => setRole(role.value)}/>
 
-        <Datepicker onChange={(e) => setBirthday(e.target.value)} placeholder="Users birthday"/>
+        <Datepicker onChange={(date)=>handleDateChange(date)} placeholder="Users birthday"/>
 
         {errors.map((error, index) => {
               return (
