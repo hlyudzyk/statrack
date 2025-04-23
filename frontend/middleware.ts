@@ -12,5 +12,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [ '/((?!^$|login|_next|api).*)',],
+  matcher: [
+    '/((?!api|_next|login|account/activate).*)',
+  ],
 };

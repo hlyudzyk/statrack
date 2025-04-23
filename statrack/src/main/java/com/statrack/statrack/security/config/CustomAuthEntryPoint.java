@@ -22,6 +22,7 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException)
         throws IOException {
+        System.out.println(authException.getMessage());
         ApiError error = ApiError.UNAUTHORIZED_ACCESS;
         ErrorResponse errorResponse = new ErrorResponse(
             error.getCode(),

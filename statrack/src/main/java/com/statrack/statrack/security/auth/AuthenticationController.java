@@ -28,12 +28,7 @@ public class AuthenticationController {
   private final AuthenticationService authService;
   private final ActivationTokenRepository activationTokenRepository;
 
-  @PostMapping("/register")
-  public ResponseEntity<RegistrationResponse> register(
-      @Valid @RequestBody RegisterRequest request
-  ) {
-    return ResponseEntity.ok(authService.register(request));
-  }
+
   @PostMapping("/refresh-token")
   public void refreshToken(
       HttpServletRequest request,

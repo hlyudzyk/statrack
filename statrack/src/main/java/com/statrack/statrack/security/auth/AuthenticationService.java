@@ -42,48 +42,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final ActivationTokenRepository activationTokenRepository;
-  private final EmailService emailService;
   private final UserRepository userRepository;
-
-  @Value("${frontend.url}")
-  private String frontendUrl;
-
-  public RegistrationResponse register(@Valid RegisterRequest request) {
-    var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
-        .email(request.getEmail())
-        .birthday(request.getBirthday())
-        .accountStatus(UserAccountStatus.PENDING_ACTIVATION)
-        .role(request.getRole())
-        .build();
-
-
-    User savedUser = null;
-    try {
-      savedUser = repository.save(user);
-    }
-
-    catch (DataIntegrityViolationException e) {
-      throw new ConstraintViolationException("Email is already in use",null);
-    }
-
-    String token = UUID.randomUUID().toString();
-    ActivationToken activationToken = new ActivationToken();
-    activationToken.setUser(user);
-    activationToken.setToken(token);
-    activationToken.setExpiryDate(LocalDateTime.now().plusDays(1)); // Expire in 24h
-
-    activationTokenRepository.save(activationToken);
-
-    String activationLink = frontendUrl + "/account/activate?token=" + token;
-    emailService.sendMessage(user.getEmail(), "Activate Your Account",
-        "Click the link to activate: " + activationLink);
-
-    return RegistrationResponse.builder()
-        .id(savedUser.getId().toString())
-        .build();
-  }
 
   public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
     authenticationManager.authenticate(
