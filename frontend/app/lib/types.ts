@@ -15,3 +15,9 @@ export type RoleStatusValue = {
   label:string;
   value:string;
 };
+
+export type ApiError = {
+  code: string;
+  message: string;
+  timestamp: Date;
+}
