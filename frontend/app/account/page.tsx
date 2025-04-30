@@ -14,7 +14,7 @@ import {Datepicker} from "flowbite-react";
 const AccountPage = () => {
   const params = useParams()
   const userId = params.userId;
-  const user = useUser();
+  const { user, setUser } = useUser();
   const [firstname, setFirstname] = useState(user?.firstname || '');
   const [lastname, setLastname] = useState(user?.lastname || '');
   const [email, setEmail] = useState(user?.email || '');

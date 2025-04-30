@@ -19,7 +19,8 @@ public class ClockingEventService {
     private final ClockingEventRepository clockingEventRepository;
     private final UserService userService;
 
-    public ClockingEvent createClockingEvent(User user, Status status) {
+    public ClockingEvent createClockingEvent(UUID id, Status status) {
+        User user = userService.getUserById(id);
         user.setStatus(status);
         userService.saveUser(user);
 

@@ -1,27 +1,39 @@
 'use client'
 
-import StatusSelect, {statusOptions, UserStatus} from "@/app/components/forms/StatusSelect";
+import {statusOptions, UserStatus} from "@/app/components/forms/StatusSelect";
 import CustomButton from "@/app/components/forms/CustomButton";
-import {useState} from "react";
-import {getUserId} from "@/app/lib/actions";
+import {useEffect, useState} from "react";
 import apiService from "@/app/services/apiService";
+import {useUser} from "@/app/lib/context/UserContext";
+
 
 
 const StatusForm = () => {
+  const { user, setUser } = useUser();
   const [status, setStatus] = useState<string>("");
 
+  useEffect(() => {
+    console.log(user)
+    if (user?.status) {
+      setStatus(user.status);
+    }
+  }, [user]);
+
   const changeStatus = async (newStatus: string) => {
-    const id = await getUserId();
+
     setStatus(newStatus);
     const payload = {
       status: newStatus
     }
-    await apiService.post(`api/v1/clocking-events/by-user-id/${id}`, JSON.stringify(payload)).then(
-        (res)=>{}
+    await apiService.post(`api/v1/clocking-events/by-user-id/${user?.id}`, JSON.stringify(payload)).then(
+        (data)=> {
+          setUser({ ...user, status: data.status });
+        }
     )
     .catch((err)=>{
-      console.log(err)
+      console.log(err);
     })
+
   }
 
   const getButtonStyle = (status: UserStatus) => {
@@ -37,7 +49,7 @@ const StatusForm = () => {
 
   return (
       <div className="flex flex-row space-x-5">
-        {statusOptions.map((s) => (
+        {statusOptions.filter(s=>s.value!==user?.status).map((s) => (
             <CustomButton
                 key={s.value}
                 label={s.label}
@@ -45,7 +57,6 @@ const StatusForm = () => {
                 onClick={() => changeStatus(s.value)}
             />
         ))}
-
       </div>
   )
 }

@@ -6,6 +6,8 @@ import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.data.repos.UserRepository;
+import com.statrack.statrack.exceptions.ApiError;
+import com.statrack.statrack.exceptions.ApiException;
 import com.statrack.statrack.exceptions.NotFoundException;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
@@ -48,7 +50,6 @@ public class UserService {
             .role(request.getRole())
             .build();
 
-        System.out.println("YES IM HERE YEAH");
 
         User savedUser = null;
         try {
@@ -76,10 +77,13 @@ public class UserService {
             .build();
     }
 
-    public UserDto getUserById(UUID id) {
+    public UserDto getUserDtoById(UUID id) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("User not found: " + id));
+        .orElseThrow(() ->  new ApiException(ApiError.USER_NOT_FOUND));
         return UserMapper.toDto(user);
+    }
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new ApiException(ApiError.USER_NOT_FOUND));
     }
 
     public User saveUser(User user) {
