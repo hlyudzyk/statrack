@@ -1,17 +1,10 @@
 'use client'
 
-import StatusSelect, {SelectStatusValue} from "@/app/components/forms/StatusSelect";
+import StatusSelect, {statusOptions, UserStatus} from "@/app/components/forms/StatusSelect";
 import CustomButton from "@/app/components/forms/CustomButton";
 import {useState} from "react";
 import {getUserId} from "@/app/lib/actions";
 import apiService from "@/app/services/apiService";
-
-
-export const statusOptions: SelectStatusValue[] = [
-  { label: 'Online', value: 'ONLINE' },
-  { label: 'Offline', value: 'OFFLINE' },
-  { label: 'On Break', value: 'ON_BREAK' },
-];
 
 
 const StatusForm = () => {
@@ -31,19 +24,28 @@ const StatusForm = () => {
     })
   }
 
+  const getButtonStyle = (status: UserStatus) => {
+    switch (status){
+      case UserStatus.OFFLINE:
+        return "danger";
+      case UserStatus.ON_BREAK:
+        return "warning";
+      case UserStatus.ONLINE:
+        return "success";
+    }
+  }
+
   return (
       <div className="flex flex-row space-x-5">
-        {statusOptions.map((s)=> (
+        {statusOptions.map((s) => (
+            <CustomButton
+                key={s.value}
+                label={s.label}
+                variant={getButtonStyle(s.value)}
+                onClick={() => changeStatus(s.value)}
+            />
+        ))}
 
-            <CustomButton label={`${s.label}`} onClick={() => changeStatus(s.value)}/>
-
-        ))
-        }
-
-        {/*<StatusSelect onChange={(st) => setStatus(st.value)}/>*/}
-        {/*<CustomButton label="Change status" onClick={() => {*/}
-        {/*  changeStatus()*/}
-        {/*}}/>*/}
       </div>
   )
 }

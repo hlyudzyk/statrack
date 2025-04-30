@@ -23,13 +23,18 @@ const Navbar = async () =>{
           </div>
 
         </Link>
+        {user &&
+              (<>
+              <div className="flex space-x-6">
+                <SearchFilters/>
+              </div>
+              <div className="flex items-center space-x-6">
+                <LogoutButton/>
+          </div>
+                  </>
 
-        <div className="flex space-x-6">
-          <SearchFilters/>
-        </div>
-        <div className="flex items-center space-x-6">
-          {user&&(<LogoutButton/>)}
-        </div>
+              )
+        }
       </div>
     </div>
   </nav>)
