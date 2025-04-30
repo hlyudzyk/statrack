@@ -14,7 +14,7 @@ public class UserMapper {
             user.getFirstname(),
             user.getLastname(),
             user.getRole().name(), // or user.getRole().toString()
-            "status fix me",
+            user.getStatus().toString(),
             user.getEmail(),
             "department fixme",
             "avatar url fixme",

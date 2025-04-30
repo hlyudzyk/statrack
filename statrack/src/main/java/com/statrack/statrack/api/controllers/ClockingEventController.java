@@ -26,42 +26,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/clocking-events/by-user-id")
 @RequiredArgsConstructor
 public class ClockingEventController {
-//    private final ClockingEventService clockingEventService;
-//    private final UserService userService;
-//
-//    @PostMapping("/{userId}")
-//    public ResponseEntity<ClockingEvent> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
-//        UserDto user = userService.getUserById(userId);
-//        ClockingEvent clockingEvent = clockingEventService.createClockingEvent(user.(), clockingEventDTO.getStatus());
-//        return new ResponseEntity<>(clockingEvent, HttpStatus.CREATED);
-//    }
-//
-//    @GetMapping("/{userId}")
-//    public ResponseEntity<List<ClockingEvent>> getClockingEventByUser(@PathVariable UUID userId) {
-//        Optional<User> user = userService.getUserById(userId);
-//        if (user.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUser(user.get());
-//        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/{userId}/range")
-//    public ResponseEntity<List<ClockingEvent>> getClockingEventsByUserAndTimeRange(
-//        @PathVariable UUID userId,
-//        @RequestParam LocalDateTime start,
-//        @RequestParam LocalDateTime end) {
-//        Optional<User> user = userService.getUserById(userId);
-//        if (user.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUserAndTimeRange(user.get(), start, end);
-//        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteClockingEvent(@PathVariable UUID id) {
-//        clockingEventService.deleteClockingEvent(id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    private final ClockingEventService clockingEventService;
+    private final UserService userService;
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<ClockingEvent> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
+        ClockingEvent clockingEvent = clockingEventService.createClockingEvent(userId, clockingEventDTO.getStatus());
+        return new ResponseEntity<>(clockingEvent, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ClockingEvent>> getClockingEventByUser(@PathVariable UUID userId) {
+        User user = userService.getUserById(userId);
+        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUser(user);
+        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/range")
+    public ResponseEntity<List<ClockingEvent>> getClockingEventsByUserAndTimeRange(
+        @PathVariable UUID userId,
+        @RequestParam LocalDateTime start,
+        @RequestParam LocalDateTime end) {
+        User user = userService.getUserById(userId);
+        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUserAndTimeRange(user, start, end);
+        return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClockingEvent(@PathVariable UUID id) {
+        clockingEventService.deleteClockingEvent(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

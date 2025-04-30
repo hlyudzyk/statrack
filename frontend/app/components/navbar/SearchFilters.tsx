@@ -31,12 +31,6 @@ const SearchFilters = () => {
                 }}>
               <p className="text-xm font-bold">Inbox</p>
             </div>
-            <div
-                className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-gray-100"
-                onClick={()=>{}}>
-              <p className="text-xs font-semibold">Who</p>
-              <p className="text-sm">Add guests</p>
-            </div>
         </div>
         </div>
         <div className="p-2">

@@ -21,3 +21,8 @@ export type ApiError = {
   message: string;
   timestamp: Date;
 }
+export type TimelineItem = {
+  id: string;
+  timestamp: string;
+  status: string;
+}

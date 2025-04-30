@@ -12,7 +12,7 @@ interface CustomButtonProps {
 const variantClasses: Record<NonNullable<CustomButtonProps['variant']>, string> = {
   default: 'bg-lightbase hover:bg-lightbase-hover text-white',
   success: 'bg-green-600 hover:bg-green-700 text-white',
-  warning: 'bg-yellow-500 hover:bg-yellow-600 text-black',
+  warning: 'bg-yellow-300 hover:bg-yellow-400 text-black',
   danger: 'bg-red-600 hover:bg-red-700 text-white',
 };
 

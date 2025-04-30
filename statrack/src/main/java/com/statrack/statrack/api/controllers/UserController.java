@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
-        UserDto userDto = userService.getUserById(id);
+        UserDto userDto = userService.getUserDtoById(id);
         return ResponseEntity.ok(userDto);
     }
 
@@ -48,7 +48,7 @@ public class UserController {
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<User> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
-//        return userService.getUserById(id)
+//        return userService.getUserDtoById(id)
 //            .map(user -> {
 //                user.setFirstname(updateUserDto.getFirstname());
 //                user.setLastname(updateUserDto.getLastname());
