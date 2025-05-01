@@ -2,6 +2,7 @@ package com.statrack.statrack.services;
 
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.user.ActivationToken;
+import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
@@ -89,6 +90,21 @@ public class UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
 
+    }
+
+    public UserDto updateUser(UUID userId, UserDto newData) {
+        User user = this.getUserById(userId);
+
+        user.setFirstname(newData.getFirstname());
+        user.setLastname(newData.getLastname());
+        //user.setRole(Role.valueOf(newData.getRole()));
+        user.setEmail(newData.getEmail());
+        //user.setDepartment(newData.getDepartment());
+        //user.setAvatarUrl(newData.getAvatarUrl());
+
+
+        user.setBirthday(newData.getBirthday());
+        return UserMapper.toDto(userRepository.save(user));
     }
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);

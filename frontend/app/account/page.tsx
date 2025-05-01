@@ -9,6 +9,7 @@ import InputField from "@/app/components/forms/InputField";
 import AuthorityList from "@/app/components/forms/AuthorityList";
 import {useUser} from "@/app/lib/context/UserContext";
 import {Datepicker} from "flowbite-react";
+import {updateUserData} from "@/app/lib/userActions";
 
 
 const AccountPage = () => {
@@ -37,12 +38,12 @@ const AccountPage = () => {
   const handleSave = async () => {
     setStatus('loading');
     const formData = new FormData();
+
     formData.append('firstname', user?.firstname);
     formData.append('lastname', user?.lastname);
     formData.append('role', user?.role);
-    //if (avatar) formData.append('avatar', avatar);
-    if (user==null){return;}
-    //updateUserData(user?.id, formData)
+
+    await updateUserData(user?.id, formData)
   };
 
   return user ? (
