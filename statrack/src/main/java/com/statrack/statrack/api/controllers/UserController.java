@@ -1,8 +1,6 @@
 package com.statrack.statrack.api.controllers;
 
 
-import com.statrack.statrack.data.models.user.Role;
-import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
 import com.statrack.statrack.services.UserService;
@@ -46,16 +44,8 @@ public class UserController {
         return ResponseEntity.ok(userService.registerNewUser(request));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<User> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
-//        return userService.getUserDtoById(id)
-//            .map(user -> {
-//                user.setFirstname(updateUserDto.getFirstname());
-//                user.setLastname(updateUserDto.getLastname());
-//                user.setRole(Role.valueOf(updateUserDto.getRole()));
-//                userService.saveUser(user);
-//                return ResponseEntity.ok(user);
-//            })
-//            .orElse(ResponseEntity.notFound().build());
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
+        return ResponseEntity.ok(userService.updateUser(id, updateUserDto));
+    }
 }

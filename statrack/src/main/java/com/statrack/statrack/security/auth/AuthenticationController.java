@@ -46,12 +46,7 @@ public class AuthenticationController {
 
   @GetMapping("/validate-activation-token")
   public ResponseEntity<AuthTokenValidationResponse> validateActivationLink(@RequestParam String token) {
-    Optional<ActivationToken> activationToken = authService.getActivationTokenIfValid(token);
-
-    if (activationToken.isEmpty()) {
-      return ResponseEntity.status(404).body(new AuthTokenValidationResponse(404,"Activation token is invalid or expired."));
-    }
-
+    authService.getActivationTokenIfValid(token);
     return ResponseEntity.ok(new AuthTokenValidationResponse(200,"Activation token is valid."));
 
   }
@@ -59,12 +54,8 @@ public class AuthenticationController {
 
   @PostMapping("/activate-account")
   public ResponseEntity<AuthenticationResponse> activateAccount(@RequestBody ActivateAccountRequest activateAccountRequest){
-    Optional<ActivationToken> activationToken = authService.getActivationTokenIfValid(activateAccountRequest.getToken());
-    if (activationToken.isEmpty()){
-      return ResponseEntity.badRequest().build();
-    }
-
-    return ResponseEntity.ok(authService.activateAccount(activationToken.get(),activateAccountRequest.getPassword()));
+    ActivationToken activationToken = authService.getActivationTokenIfValid(activateAccountRequest.getToken());
+    return ResponseEntity.ok(authService.activateAccount(activationToken,activateAccountRequest.getPassword()));
 
   }
 

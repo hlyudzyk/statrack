@@ -13,7 +13,7 @@ public class UserMapper {
             String.valueOf(user.getId()),
             user.getFirstname(),
             user.getLastname(),
-            user.getRole().name(), // or user.getRole().toString()
+            user.getRole().name(),
             user.getStatus().toString(),
             user.getEmail(),
             "department fixme",
@@ -22,4 +22,5 @@ public class UserMapper {
             user.getBirthday()
         );
     }
+
 }

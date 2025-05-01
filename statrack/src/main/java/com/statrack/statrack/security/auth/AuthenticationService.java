@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
+import com.statrack.statrack.exceptions.ApiError;
+import com.statrack.statrack.exceptions.ApiException;
 import com.statrack.statrack.security.config.JwtService;
 import com.statrack.statrack.security.token.Token;
 import com.statrack.statrack.security.token.TokenRepository;
@@ -120,13 +122,15 @@ public class AuthenticationService {
   }
 
 
-  public Optional<ActivationToken> getActivationTokenIfValid(String token){
-    return activationTokenRepository.findByTokenAndExpiryDateGreaterThan(token, LocalDateTime.now());
+  public ActivationToken getActivationTokenIfValid(String token){
+    return activationTokenRepository.findByTokenAndExpiryDateGreaterThan(token, LocalDateTime.now()).orElseThrow(() -> new ApiException(
+        ApiError.INVALID_ACTIVATION_TOKEN));
   }
 
   public AuthenticationResponse activateAccount(ActivationToken token, String password) {
     User user = token.getUser();
     user.setAccountStatus(UserAccountStatus.ACTIVE);
+    user.setStatus(Status.ONLINE);
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
     activationTokenRepository.delete(token);

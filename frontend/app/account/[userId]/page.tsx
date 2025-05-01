@@ -9,21 +9,33 @@ import InputField from "@/app/components/forms/InputField";
 import AuthorityList from "@/app/components/forms/AuthorityList";
 import {useUser} from "@/app/lib/context/UserContext";
 import {Datepicker} from "flowbite-react";
+import {getUserData, updateUserData} from "@/app/lib/userActions";
+import {User} from "@/app/lib/types";
+import RoleSelect from "@/app/components/forms/RoleSelect";
+import {roleOptions} from "@/app/lib/constants";
 
 
 const AccountPage = () => {
-  const params = useParams()
+  const params = useParams<{ userId: string }>()
   const userId = params.userId;
-  const { user, setUser } = useUser();
-  const [firstname, setFirstname] = useState(user?.firstname || '');
-  const [lastname, setLastname] = useState(user?.lastname || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [role, setRole] = useState(user?.role || '');
-  const [birthday, setBirthday] = useState(user?.birthday || '');
-  const [avatarUrl, setAvatarUrl] = useState<string>('/no_pfp.png'); //fixme
+  const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const loginModal = useLoginModal();
   const router = useRouter();
+
+  const fetchUser = async () => {
+      setUser(await getUserData(userId));
+  }
+
+  const getMaxDate: () => Date = () => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 18);
+    return date;
+  }
+
+  useEffect(()=>{
+    fetchUser()
+    console.log("AAAAA")
+  },[userId])
 
 
   const setImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -37,12 +49,14 @@ const AccountPage = () => {
   const handleSave = async () => {
     setStatus('loading');
     const formData = new FormData();
-    formData.append('firstname', user?.firstname);
-    formData.append('lastname', user?.lastname);
-    formData.append('role', user?.role);
-    //if (avatar) formData.append('avatar', avatar);
     if (user==null){return;}
-    //updateUserData(user?.id, formData)
+
+    formData.append('firstname', user.firstname);
+    formData.append('lastname', user.lastname);
+    formData.append('birthday', user.birthday);
+    formData.append('role', user.role);
+
+    await updateUserData(user.id, formData)
   };
 
   return user ? (
@@ -56,7 +70,7 @@ const AccountPage = () => {
                       width={200}
                       height={200}
                       alt="Profile image"
-                      src={avatarUrl}
+                      src="/no_pfp.png"
                       className="rounded-full object-cover w-full h-full"
                   />
                 </div>
@@ -80,29 +94,37 @@ const AccountPage = () => {
 
               <InputField
                   label="Firstname"
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
+                  value={user.firstname}
+                  onChange={(e) => setUser({ ...user, firstname: e.target.value })}
               />
               <InputField
                   label="Lastname"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
+                  value={user.lastname}
+                  onChange={(e) => setUser({ ...user, lastname: e.target.value })}
               />
               <InputField
+                  readonly={true}
                   label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={user.email}
+                  onChange={(e) => {}}
               />
-              <InputField
-                  label="Role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+              <RoleSelect
+                  value={roleOptions.find(o=>o.value===user.role)}
+                  onChange={(role) =>{setUser({...user, role: role.value})}}
                   //readonly={user.rol=="ROLE_ADMIN"} fixme: add user.hasRole....
               />
               <label>Birthday</label>
-              <Datepicker defaultValue={new Date(user.birthday)} />
+
+              <Datepicker
+                  defaultValue={new Date(user.birthday)}
+                  maxDate={getMaxDate()}
+                  onChange={(date) => {
+                    const formatted = date.toISOString().split('T')[0]; // "1970-01-23"
+                    setUser({ ...user, birthday: formatted });
+                  }}
+              />
               <h1>Authority Management</h1>
-              <AuthorityList authorities={user.authorities}/>
+              {/*<AuthorityList authorities={user.authorities}/>*/}
 
             </div>
             <button

@@ -8,13 +8,13 @@ import {roleOptions} from "@/app/lib/constants";
 
 
 interface RoleStatusProps{
-  value?:RoleStatusValue;
+  value:RoleStatusValue;
   onChange:(value:RoleStatusValue)=>void;
 }
 
-const RoleSelect:({value, onChange}: {onChange: any }) => JSX.Element = ({value,onChange})=>{
+const RoleSelect:({value, onChange}: {value: RoleStatusValue, onChange: any }) => JSX.Element = ({value,onChange})=>{
   return(
-        <Select options={roleOptions} value={value} defaultValue={roleOptions[0]}
+        <Select options={roleOptions} defaultValue={value}
                 onChange={(value)=>onChange(value as RoleStatusValue)}/>
   )
 }
