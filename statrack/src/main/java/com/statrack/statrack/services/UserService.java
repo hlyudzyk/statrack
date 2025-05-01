@@ -98,7 +98,7 @@ public class UserService {
         user.setFirstname(newData.getFirstname());
         user.setLastname(newData.getLastname());
         //user.setRole(Role.valueOf(newData.getRole()));
-        user.setEmail(newData.getEmail());
+        //user.setEmail(newData.getEmail());
         //user.setDepartment(newData.getDepartment());
         //user.setAvatarUrl(newData.getAvatarUrl());
 

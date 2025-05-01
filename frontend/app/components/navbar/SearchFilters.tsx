@@ -1,10 +1,11 @@
 'use client'
 
 import {useRouter} from "next/navigation";
+import {useUser} from "@/app/lib/context/UserContext";
 
 const SearchFilters = () => {
   const router = useRouter();
-
+  const {user, setUser} = useUser();
   return(
       <div className="h-[48px] lg:h-[64px] flex flex-row items-center justify-between
       border rounded-full shadow-xl" onClick={()=>{}}>
@@ -20,7 +21,7 @@ const SearchFilters = () => {
             <div
                 className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-gray-100"
                 onClick={()=> {
-                  router.push('/account');
+                  router.push(`/account/${user?.id}`);
                 }}>
               <p className="text-xm font-bold">Account</p>
             </div>

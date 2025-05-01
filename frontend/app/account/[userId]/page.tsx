@@ -9,22 +9,25 @@ import InputField from "@/app/components/forms/InputField";
 import AuthorityList from "@/app/components/forms/AuthorityList";
 import {useUser} from "@/app/lib/context/UserContext";
 import {Datepicker} from "flowbite-react";
-import {updateUserData} from "@/app/lib/userActions";
+import {getUserData, updateUserData} from "@/app/lib/userActions";
+import {User} from "@/app/lib/types";
 
 
 const AccountPage = () => {
-  const params = useParams()
+  const params = useParams<{ userId: string }>()
   const userId = params.userId;
-  const { user, setUser } = useUser();
-  const [firstname, setFirstname] = useState(user?.firstname || '');
-  const [lastname, setLastname] = useState(user?.lastname || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [role, setRole] = useState(user?.role || '');
-  const [birthday, setBirthday] = useState(user?.birthday || '');
-  const [avatarUrl, setAvatarUrl] = useState<string>('/no_pfp.png'); //fixme
+  const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const loginModal = useLoginModal();
   const router = useRouter();
+
+  const fetchUser = async () => {
+      setUser(await getUserData(userId));
+  }
+
+  useEffect(()=>{
+    fetchUser()
+    console.log("AAAAA")
+  },[userId])
 
 
   const setImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,12 +41,11 @@ const AccountPage = () => {
   const handleSave = async () => {
     setStatus('loading');
     const formData = new FormData();
+    if (user==null){return;}
+    formData.append('firstname', user.firstname);
+    formData.append('lastname', user.lastname);
 
-    formData.append('firstname', user?.firstname);
-    formData.append('lastname', user?.lastname);
-    formData.append('role', user?.role);
-
-    await updateUserData(user?.id, formData)
+    updateUserData(user.id, formData)
   };
 
   return user ? (
@@ -57,7 +59,7 @@ const AccountPage = () => {
                       width={200}
                       height={200}
                       alt="Profile image"
-                      src={avatarUrl}
+                      src="/no_pfp.png"
                       className="rounded-full object-cover w-full h-full"
                   />
                 </div>
@@ -81,27 +83,28 @@ const AccountPage = () => {
 
               <InputField
                   label="Firstname"
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
+                  value={user.firstname}
+                  onChange={(e) => setUser({ ...user, firstname: e.target.value })}
               />
               <InputField
                   label="Lastname"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
+                  value={user.lastname}
+                  onChange={(e) => setUser({ ...user, lastname: e.target.value })}
               />
               <InputField
+                  readonly={true}
                   label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={user.email}
+                  onChange={(e) => {}}
               />
               <InputField
                   label="Role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+                  value={user.role}
+                  onChange={(e) =>{}}
                   //readonly={user.rol=="ROLE_ADMIN"} fixme: add user.hasRole....
               />
               <label>Birthday</label>
-              <Datepicker defaultValue={new Date(user.birthday)} />
+              {/*<Datepicker defaultValue={new Date()} />*/}
               <h1>Authority Management</h1>
               <AuthorityList authorities={user.authorities}/>
 
