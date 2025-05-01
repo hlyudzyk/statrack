@@ -24,6 +24,12 @@ const AccountPage = () => {
       setUser(await getUserData(userId));
   }
 
+  const getMaxDate: () => Date = () => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 18);
+    return date;
+  }
+
   useEffect(()=>{
     fetchUser()
     console.log("AAAAA")
@@ -42,10 +48,12 @@ const AccountPage = () => {
     setStatus('loading');
     const formData = new FormData();
     if (user==null){return;}
+
     formData.append('firstname', user.firstname);
     formData.append('lastname', user.lastname);
+    formData.append('birthday', user.birthday);
 
-    updateUserData(user.id, formData)
+    await updateUserData(user.id, formData)
   };
 
   return user ? (
@@ -104,9 +112,17 @@ const AccountPage = () => {
                   //readonly={user.rol=="ROLE_ADMIN"} fixme: add user.hasRole....
               />
               <label>Birthday</label>
-              {/*<Datepicker defaultValue={new Date()} />*/}
+
+              <Datepicker
+                  defaultValue={new Date(user.birthday)}
+                  maxDate={getMaxDate()}
+                  onChange={(date) => {
+                    const formatted = date.toISOString().split('T')[0]; // "1970-01-23"
+                    setUser({ ...user, birthday: formatted });
+                  }}
+              />
               <h1>Authority Management</h1>
-              <AuthorityList authorities={user.authorities}/>
+              {/*<AuthorityList authorities={user.authorities}/>*/}
 
             </div>
             <button

@@ -5,6 +5,7 @@ import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.services.UserRoleService;
 import java.util.List;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@RequiredArgsConstructor
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/v1/user-roles")
 public class UserRoleController {
     private final UserRoleService userRoleService;
 
-    @Autowired
-    public UserRoleController(UserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
-    }
 
     @GetMapping("/{userId}/authorities")
     public ResponseEntity<List<SimpleGrantedAuthority>> getUserAuthorities(@PathVariable UUID userId) {

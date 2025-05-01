@@ -13,12 +13,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public enum Role {
 
   TEACHER(
-      Collections.emptySet()
+      Set.of(
+          Permission.CAN_VIEW_USERS,
+          Permission.CAN_VIEW_EVENTS
+      )
   ),
   ADMIN(
-          Set.of(
-            Permission.ADMIN_PERMISSION
-          )
+        Set.of(
+          Permission.ADMIN_PERMISSION,
+          Permission.CAN_EDIT_USERS,
+          Permission.CAN_VIEW_USERS,
+          Permission.CAN_VIEW_EVENTS,
+          Permission.CAN_EDIT_EVENTS
+        )
   );
 
   @Getter
