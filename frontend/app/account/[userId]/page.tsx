@@ -11,6 +11,8 @@ import {useUser} from "@/app/lib/context/UserContext";
 import {Datepicker} from "flowbite-react";
 import {getUserData, updateUserData} from "@/app/lib/userActions";
 import {User} from "@/app/lib/types";
+import RoleSelect from "@/app/components/forms/RoleSelect";
+import {roleOptions} from "@/app/lib/constants";
 
 
 const AccountPage = () => {
@@ -52,6 +54,7 @@ const AccountPage = () => {
     formData.append('firstname', user.firstname);
     formData.append('lastname', user.lastname);
     formData.append('birthday', user.birthday);
+    formData.append('role', user.role);
 
     await updateUserData(user.id, formData)
   };
@@ -105,10 +108,9 @@ const AccountPage = () => {
                   value={user.email}
                   onChange={(e) => {}}
               />
-              <InputField
-                  label="Role"
-                  value={user.role}
-                  onChange={(e) =>{}}
+              <RoleSelect
+                  value={roleOptions.find(o=>o.value===user.role)}
+                  onChange={(role) =>{setUser({...user, role: role.value})}}
                   //readonly={user.rol=="ROLE_ADMIN"} fixme: add user.hasRole....
               />
               <label>Birthday</label>

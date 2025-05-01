@@ -6,7 +6,8 @@ public enum ApiError {
     USER_NOT_FOUND    (HttpStatus.NOT_FOUND,   "ERR-001", "User not found"),
     DUPLICATE_EMAIL   (HttpStatus.CONFLICT,    "ERR-002", "Email address is already in use"),
     INVALID_PAYLOAD   (HttpStatus.BAD_REQUEST,  "ERR-003", "Request payload is invalid"),
-    UNAUTHORIZED_ACCESS   (HttpStatus.UNAUTHORIZED,  "ERR-004", "Unauthorized access");
+    UNAUTHORIZED_ACCESS   (HttpStatus.UNAUTHORIZED,  "ERR-004", "Unauthorized access"),
+    INVALID_ACTIVATION_TOKEN   (HttpStatus.BAD_REQUEST,  "ERR-005", "Invalid activation token");
 
 
     private final HttpStatus status;

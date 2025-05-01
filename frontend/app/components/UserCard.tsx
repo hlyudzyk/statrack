@@ -15,8 +15,19 @@ interface UserListCardProps{
   department: string;
 }
 
+const roleIcons = {
+  ADMIN: "/high_rank.png",
+  TEACHER: "/low_rank.png",
+};
+
 const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, status,role, department}) => {
   const router = useRouter();
+  const statusColor = {
+    ONLINE: 'bg-green-500',
+    OFFLINE: 'bg-gray-400',
+    ON_BREAK: 'bg-yellow-500',
+  }[status] || 'bg-gray-300';
+
   return (
       <Card className="max-w-md">
         <div className="flex justify-end px-4 pt-4">
@@ -55,12 +66,21 @@ const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, s
               width="96"
               className="mb-3 rounded-full shadow-lg"
           />
-          <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{firstname} {lastname}</h5>
+          <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white flex items-center gap-2">
+            {firstname} {lastname}
+            <span className={`h-3 w-3 rounded-full ${statusColor}`} title={status}></span>
+          </h5>
           <span className="text-sm text-gray-500 dark:text-gray-400">{email}</span>
-          <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold">{role}</span>
+          <div className="flex items-center space-x-2 pt-5">
+            <Image src={roleIcons[role]} width={24} height={24} alt="Rank" />
+
+            <span>{role}</span>
+          </div>
           <div className="mt-4 flex space-x-3 lg:mt-6">
             <button
-                onClick={()=>{router.push(`account/${id}`)}}
+                onClick={() => {
+                  router.push(`account/${id}`)
+                }}
                 className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
             >
               View
