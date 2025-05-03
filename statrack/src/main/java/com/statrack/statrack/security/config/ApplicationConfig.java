@@ -3,6 +3,7 @@ package com.statrack.statrack.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.security.auditing.ApplicationAuditAware;
 import com.statrack.statrack.data.repos.UserRepository;
 import java.util.Properties;
@@ -67,7 +68,7 @@ public class ApplicationConfig {
   }
 
   @Bean
-  public AuditorAware<UUID> auditorAware() {
+  public AuditorAware<User> auditorAware() {
     return new ApplicationAuditAware();
   }
 

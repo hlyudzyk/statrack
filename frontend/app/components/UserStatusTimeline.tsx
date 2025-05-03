@@ -24,7 +24,6 @@ const UserStatusTimeline = () => {
         (err)=>
         { console.log(err)}
     )
-    console.log(timeline)
   }
   useEffect(()=>{
     fetchTimeLine();

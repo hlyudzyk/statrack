@@ -26,3 +26,12 @@ export type TimelineItem = {
   timestamp: string;
   status: string;
 }
+
+export type Event = {
+  id: string;
+  header: string;
+  content: string;
+  imageUrl: string;
+  eventDate: string;
+  createdBy: User;
+}

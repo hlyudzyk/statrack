@@ -1,13 +1,10 @@
 'use client'
 
-import {useState, useEffect, ChangeEvent, Suspense} from 'react';
+import {useState, useEffect, ChangeEvent} from 'react';
 import Image from 'next/image';
-import {AccountPageSkeleton, PropertyListSkeleton} from "@/app/components/skeletons";
-import useLoginModal from "@/app/hooks/useLoginModal";
-import {useParams, useRouter, useSearchParams} from "next/navigation";
+import {AccountPageSkeleton} from "@/app/components/skeletons";
+import {useParams, useRouter} from "next/navigation";
 import InputField from "@/app/components/forms/InputField";
-import AuthorityList from "@/app/components/forms/AuthorityList";
-import {useUser} from "@/app/lib/context/UserContext";
 import {Datepicker} from "flowbite-react";
 import {getUserData, updateUserData} from "@/app/lib/userActions";
 import {User} from "@/app/lib/types";
@@ -119,7 +116,7 @@ const AccountPage = () => {
                   defaultValue={new Date(user.birthday)}
                   maxDate={getMaxDate()}
                   onChange={(date) => {
-                    const formatted = date.toISOString().split('T')[0]; // "1970-01-23"
+                    const formatted = date.toISOString().split('T')[0];
                     setUser({ ...user, birthday: formatted });
                   }}
               />

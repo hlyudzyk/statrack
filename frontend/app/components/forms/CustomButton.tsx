@@ -7,6 +7,7 @@ interface CustomButtonProps {
   className?: string;
   onClick: () => void;
   variant?: 'default' | 'success' | 'warning' | 'danger';
+  disabled?: boolean;
 }
 
 const variantClasses: Record<NonNullable<CustomButtonProps['variant']>, string> = {
@@ -21,13 +22,16 @@ const CustomButton = ({
                         onClick,
                         className = '',
                         variant = 'default',
+                        disabled = false,
                       }: CustomButtonProps): JSX.Element => {
   return (
       <button
           type="button"
           onClick={onClick}
-          className={`w-full py-4 text-center rounded-xl transition cursor-pointer 
-                  ${variantClasses[variant]} ${className}`}
+          disabled={disabled}
+          className={`w-full py-4 text-center rounded-xl transition 
+        ${disabled ? 'bg-gray-300 cursor-not-allowed text-gray-500' : `${variantClasses[variant]} cursor-pointer`} 
+        ${className}`}
       >
         {label}
       </button>
