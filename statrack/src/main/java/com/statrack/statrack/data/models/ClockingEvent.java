@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -37,6 +38,8 @@ public class ClockingEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @CreationTimestamp
     private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -47,9 +50,4 @@ public class ClockingEvent {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    @PrePersist
-    public void prePersist() {
-        setTimestamp(LocalDateTime.now());
-    }
 }

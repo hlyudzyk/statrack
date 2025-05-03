@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+    @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto implements Serializable {
     private String id;

@@ -28,9 +28,9 @@ const SearchFilters = () => {
             <div
                 className="cursor-pointer h-[48px] lg:h-[64] px-8 flex flex-col justify-center rounded-full hover:bg-gray-100"
                 onClick={()=> {
-                  router.push('/inbox');
+                  router.push('/events');
                 }}>
-              <p className="text-xm font-bold">Inbox</p>
+              <p className="text-xm font-bold">Events</p>
             </div>
         </div>
         </div>

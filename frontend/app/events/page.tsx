@@ -1,0 +1,136 @@
+'use client'
+
+import InputField from "@/app/components/forms/InputField";
+import TextareaField from "@/app/components/forms/TextareaField";
+import {Card, Datepicker, HR} from "flowbite-react";
+import CustomButton from "@/app/components/forms/CustomButton";
+import {useEffect, useState} from "react";
+import {createEvent} from "@/app/lib/eventActions";
+import {Event} from "@/app/lib/types"
+import apiService from "@/app/services/apiService";
+import TimePickerWithDuration from "@/app/components/forms/TimePickerWithDuration";
+import {ImageUploader} from "@/app/components/forms/ImageUploader";
+
+const EventsPage = () => {
+  const [header, setHeader] = useState('');
+  const [description, setDescription] = useState('');
+
+  const [date, setDate] = useState<Date>(new Date());
+  const [time, setTime] = useState("09:00");
+  const [duration, setDuration] = useState<string | undefined>();
+
+  const [showForm, setShowForm] = useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
+
+  const fetchEvents = async () => {
+    await apiService.get(`api/v1/events`)
+    .then((data)=>{setEvents(data)})
+    .catch(
+        (err)=>
+        { console.log(err)}
+    )
+  }
+
+  const formatDate = (date: Date) => {
+    const formatted = date.toLocaleString("en-US", {
+      weekday: "long",     // "Wednesday"
+      year: "numeric",     // "2025"
+      month: "long",       // "May"
+      day: "numeric",      // "28"
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false        // 24-hour format (optional)
+    });
+    return `${formatted.split(", ")[0]}, ${formatted.split(", ")[1]} at ${formatted.split(", ")[2]}`;
+  }
+
+  useEffect(()=>{
+    fetchEvents();
+  },[])
+
+  const handleCreateEvent = async () => {
+    const formData = new FormData();
+    formData.append('header', header);
+    formData.append('content', description);
+    const eventDate = `${date.toISOString().split("T")[0]}T${time}`;
+    formData.append('eventDate', eventDate);
+    await createEvent(formData).then((e)=>setEvents([...events, e]));
+  };
+
+  return (
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl">Events</h3>
+          <button
+              onClick={() => setShowForm((prev) => !prev)}
+              className="w-10 h-10 text-xl bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
+          >
+            {showForm ? "–" : "+"}
+          </button>
+        </div>
+
+        {showForm && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <InputField
+                    label="Header"
+                    value={header}
+                    onChange={(e) => setHeader(e.target.value)}
+                />
+                <TextareaField
+                    label="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+                <ImageUploader onImageSelected={(file) => console.log("Selected image:", file)} />
+              </div>
+              <div className="flex flex-row">
+                <Datepicker value={date} onChange={setDate} />
+                <TimePickerWithDuration
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    duration={duration}
+                    onDurationChange={setDuration}
+                />
+              </div>
+
+              <div className="mt-6 max-w-md">
+                <CustomButton
+                    label="Create Event"
+                    onClick={handleCreateEvent}
+                    disabled={header.trim() === ""}
+                />
+              </div>
+            </div>
+        )}
+        <HR />
+        <div>
+          {events && (
+              <div className="space-y-5">
+                {events.map(e=>(
+                    <Card key={e.id} imgSrc="/mountain.png" horizontal>
+                      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        {e.header}
+                      </h5>
+
+                      <div className="relative">
+                        <p className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                          {formatDate(new Date(e.eventDate))}
+                        </p>
+                      </div>
+
+                      <p className="font-normal text-gray-700 dark:text-gray-400">
+                        {e.content}
+                      </p>
+                    </Card>
+                ))}
+              </div>
+          )
+          }
+        </div>
+      </div>
+  );
+};
+
+export default EventsPage;
+
