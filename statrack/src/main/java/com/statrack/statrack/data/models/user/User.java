@@ -46,6 +46,9 @@ public class User implements UserDetails {
   private Role role;
 
   private LocalDate birthday;
+
+  @Column(name = "image_url")
+  private String imageUrl;
   private LocalDateTime lastSession;
 
   @Enumerated(EnumType.STRING)

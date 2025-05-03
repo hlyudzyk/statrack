@@ -30,7 +30,8 @@ public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {
         "/api/v1/auth/authenticate",
         "/api/v1/auth/validate-activation-token",
-        "/api/v1/auth/activate-account"
+        "/api/v1/auth/activate-account",
+        "/uploads/**",
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;

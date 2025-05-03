@@ -10,20 +10,24 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
-
-/**
- * DTO for {@link com.statrack.statrack.data.models.Event}
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDto implements Serializable {
+public class CreateEventDto implements Serializable {
     private String id;
+    @NotNull
+    @Size(max = 255)
+    @NotEmpty
+    @NotBlank
     private String header;
+
     private String content;
-    private String imageUrl;
+
+    private MultipartFile image;
+
+    @NotNull
+    @FutureOrPresent
     private LocalDateTime eventDate;
-    private UserDto createdBy;
-    private LocalDateTime createdAt;
 }

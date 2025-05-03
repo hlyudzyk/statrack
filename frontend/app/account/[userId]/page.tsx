@@ -5,11 +5,12 @@ import Image from 'next/image';
 import {AccountPageSkeleton} from "@/app/components/skeletons";
 import {useParams, useRouter} from "next/navigation";
 import InputField from "@/app/components/forms/InputField";
-import {Datepicker} from "flowbite-react";
+import {Datepicker, FileInput} from "flowbite-react";
 import {getUserData, updateUserData} from "@/app/lib/userActions";
 import {User} from "@/app/lib/types";
 import RoleSelect from "@/app/components/forms/RoleSelect";
 import {roleOptions} from "@/app/lib/constants";
+import {ImageUploader} from "@/app/components/forms/ImageUploader";
 
 
 const AccountPage = () => {
@@ -17,7 +18,7 @@ const AccountPage = () => {
   const userId = params.userId;
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const router = useRouter();
+  const [image,setImage] = useState<File|null>(null);
 
   const fetchUser = async () => {
       setUser(await getUserData(userId));
@@ -31,17 +32,7 @@ const AccountPage = () => {
 
   useEffect(()=>{
     fetchUser()
-    console.log("AAAAA")
   },[userId])
-
-
-  const setImage = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const image = event.target.files[0];
-      //setAvatar(image);
-      //setAvatarUrl(URL.createObjectURL(image));
-    }
-  };
 
   const handleSave = async () => {
     setStatus('loading');
@@ -52,6 +43,7 @@ const AccountPage = () => {
     formData.append('lastname', user.lastname);
     formData.append('birthday', user.birthday);
     formData.append('role', user.role);
+    formData.append('image', image);
 
     await updateUserData(user.id, formData)
   };
@@ -67,23 +59,12 @@ const AccountPage = () => {
                       width={200}
                       height={200}
                       alt="Profile image"
-                      src="/no_pfp.png"
+                      src={user.avatarUrl?`${process.env.NEXT_PUBLIC_API_URL}${user.avatarUrl}`:`/no_pfp.png`}
                       className="rounded-full object-cover w-full h-full"
                   />
                 </div>
               </div>
-
-              <div className="py-4 px-6 bg-lightbase hover:bg-lightbase-hover text-white rounded-xl flex justify-center md:justify-start">
-                <label className="cursor-pointer">
-                  <span className="text-sm md:text-base">Change Profile Image</span>
-                  <input
-                      type="file"
-                      accept="image/*"
-                      onChange={setImage}
-                      className="hidden"
-                  />
-                </label>
-              </div>
+              <ImageUploader onImageSelected={(file) => setImage(file)} withDropBox={false}/>
             </div>
 
             <div className="w-full pt-20">
