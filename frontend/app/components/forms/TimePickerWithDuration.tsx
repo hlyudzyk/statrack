@@ -26,9 +26,6 @@ const TimePickerWithDuration = ({
 
   return (
       <div className="max-w-[13rem] mx-auto">
-        <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Select time:
-        </label>
         <div className="flex relative">
           <input
               type="time"
