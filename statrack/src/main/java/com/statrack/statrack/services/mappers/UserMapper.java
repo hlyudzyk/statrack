@@ -17,7 +17,7 @@ public class UserMapper {
             user.getStatus().toString(),
             user.getEmail(),
             "department fixme",
-            "avatar url fixme",
+            user.getImageUrl(),
             user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new),
             user.getBirthday()
         );

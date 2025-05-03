@@ -1,5 +1,6 @@
 package com.statrack.statrack.api.controllers;
 
+import com.statrack.statrack.api.dto.CreateEventDto;
 import com.statrack.statrack.api.dto.EventDto;
 
 import com.statrack.statrack.data.models.user.User;
@@ -11,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,9 +36,8 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
-    public ResponseEntity<EventDto> createEvent(@ModelAttribute EventDto eventDto) {
-        User user = auditorAware.getCurrentAuditor().orElseThrow(() -> new ApiException(ApiError.UNAUTHORIZED_ACCESS));
-        eventDto.setCreatedBy(UserMapper.toDto(user));
-        return ResponseEntity.ok(eventService.createEvent(eventDto));
+    @PostMapping
+    public ResponseEntity<EventDto> createEvent(@ModelAttribute CreateEventDto createEventDto, @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(eventService.createEvent(createEventDto, currentUser));
     }
 }

@@ -3,9 +3,10 @@ import { FileInput, Label } from "flowbite-react";
 
 type ImageUploaderProps = {
   onImageSelected: (file: File) => void;
+  withDropBox: boolean;
 };
 
-export function ImageUploader({ onImageSelected }: ImageUploaderProps) {
+export function ImageUploader({ onImageSelected, withDropBox }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -17,7 +18,7 @@ export function ImageUploader({ onImageSelected }: ImageUploaderProps) {
     }
   };
 
-  return (
+  return withDropBox?(
       <div className="flex w-full items-center justify-center">
         <Label
             htmlFor="dropzone-file"
@@ -65,5 +66,12 @@ export function ImageUploader({ onImageSelected }: ImageUploaderProps) {
           />
         </Label>
       </div>
+  ):(
+      <FileInput
+          id="file-select"
+          ref={inputRef}
+          accept="image/*"
+          onChange={handleFileChange}
+      />
   );
 }

@@ -1,6 +1,7 @@
 package com.statrack.statrack.api.controllers;
 
 
+import com.statrack.statrack.api.dto.UpdateUserDto;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
 import com.statrack.statrack.services.UserService;
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @ModelAttribute UserDto updateUserDto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @ModelAttribute UpdateUserDto updateUserDto) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserDto));
     }
 }

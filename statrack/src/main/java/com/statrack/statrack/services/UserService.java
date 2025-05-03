@@ -1,5 +1,6 @@
 package com.statrack.statrack.services;
 
+import com.statrack.statrack.api.dto.UpdateUserDto;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.Role;
@@ -32,7 +33,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ActivationTokenRepository activationTokenRepository;
     private final EmailService emailService;
-
+    private final FileStorageService fileStorageService;
     @Value("${frontend.url}")
     private String frontendUrl;
 
@@ -92,18 +93,26 @@ public class UserService {
 
     }
 
-    public UserDto updateUser(UUID userId, UserDto newData) {
+    public UserDto updateUser(UUID userId, UpdateUserDto newData) {
         User user = this.getUserById(userId);
+        String imageUrl = null;
+
+        if (newData.getImage() != null && !newData.getImage().isEmpty()) {
+            imageUrl = fileStorageService.storeFile(newData.getImage());
+        }
+
 
         user.setFirstname(newData.getFirstname());
         user.setLastname(newData.getLastname());
-        user.setRole(Role.valueOf(newData.getRole()));
+        user.setRole(newData.getRole());
+        user.setImageUrl(imageUrl);
+        user.setBirthday(newData.getBirthday());
         //user.setEmail(newData.getEmail());
         //user.setDepartment(newData.getDepartment());
         //user.setAvatarUrl(newData.getAvatarUrl());
 
 
-        user.setBirthday(newData.getBirthday());
+
         return UserMapper.toDto(userRepository.save(user));
     }
     public void deleteUser(UUID id) {

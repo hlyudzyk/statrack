@@ -10,17 +10,19 @@ import {Event} from "@/app/lib/types"
 import apiService from "@/app/services/apiService";
 import TimePickerWithDuration from "@/app/components/forms/TimePickerWithDuration";
 import {ImageUploader} from "@/app/components/forms/ImageUploader";
+import Image from 'next/image'
 
 const EventsPage = () => {
   const [header, setHeader] = useState('');
   const [description, setDescription] = useState('');
-
   const [date, setDate] = useState<Date>(new Date());
   const [time, setTime] = useState("09:00");
   const [duration, setDuration] = useState<string | undefined>();
+  const [image, setImage] = useState<File | null>(null);
 
   const [showForm, setShowForm] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
+
 
   const fetchEvents = async () => {
     await apiService.get(`api/v1/events`)
@@ -54,6 +56,8 @@ const EventsPage = () => {
     formData.append('content', description);
     const eventDate = `${date.toISOString().split("T")[0]}T${time}`;
     formData.append('eventDate', eventDate);
+    formData.append("image", image);
+
     await createEvent(formData).then((e)=>setEvents([...events, e]));
   };
 
@@ -82,7 +86,7 @@ const EventsPage = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <ImageUploader onImageSelected={(file) => console.log("Selected image:", file)} />
+                <ImageUploader onImageSelected={(file) => setImage(file)} withDropBox={true} />
               </div>
               <div className="flex flex-row">
                 <Datepicker value={date} onChange={setDate} />
@@ -108,7 +112,14 @@ const EventsPage = () => {
           {events && (
               <div className="space-y-5">
                 {events.map(e=>(
-                    <Card key={e.id} imgSrc="/mountain.png" horizontal>
+                    <Card key={e.id} horizontal
+                          renderImage={() =>
+                              <Image
+                                  src={e.imageUrl?`${process.env.NEXT_PUBLIC_API_URL}${e.imageUrl}`:'/mountain.png'}
+                                  width={200}
+                                  height={100}
+                                     alt="image 1" />}
+                    >
                       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {e.header}
                       </h5>
