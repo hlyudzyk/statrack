@@ -1,11 +1,11 @@
 'use client'
 
-import {useState, useEffect, ChangeEvent} from 'react';
+import {useState, useEffect} from 'react';
 import Image from 'next/image';
 import {AccountPageSkeleton} from "@/app/components/skeletons";
-import {useParams, useRouter} from "next/navigation";
+import {useParams} from "next/navigation";
 import InputField from "@/app/components/forms/InputField";
-import {Datepicker, FileInput} from "flowbite-react";
+import {Datepicker} from "flowbite-react";
 import {getUserData, updateUserData} from "@/app/lib/userActions";
 import {User} from "@/app/lib/types";
 import RoleSelect from "@/app/components/forms/RoleSelect";
@@ -45,7 +45,7 @@ const AccountPage = () => {
     formData.append('role', user.role);
     formData.append('image', image);
 
-    await updateUserData(user.id, formData)
+    setUser(await updateUserData(user.id, formData));
   };
 
   return user ? (
