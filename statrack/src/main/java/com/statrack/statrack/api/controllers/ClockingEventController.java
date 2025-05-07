@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,9 +37,13 @@ public class ClockingEventController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<ClockingEvent>> getClockingEventByUser(@PathVariable UUID userId) {
+    public ResponseEntity<Page<ClockingEvent>> getClockingEventByUser(
+        @PathVariable UUID userId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
         User user = userService.getUserById(userId);
-        List<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUser(user);
+        Page<ClockingEvent> clockingEvents = clockingEventService.getClockingEventsByUser(user, page, size);
         return new ResponseEntity<>(clockingEvents, HttpStatus.OK);
     }
 

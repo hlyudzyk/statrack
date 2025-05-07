@@ -17,14 +17,28 @@ const UserStatusTimeline = () => {
   const {user, setUser } = useUser()
   const [timeline, setTimeline] = useState<TimelineItem[]>([])
 
-  const fetchTimeLine = async () => {
-    await apiService.get(`api/v1/clocking-events/by-user-id/${user?.id}`)
-    .then((data)=>{setTimeline(data)})
-    .catch(
-        (err)=>
-        { console.log(err)}
-    )
+  const fetchTimeLine = async (page = 0, size = 10) => {
+    try {
+      const data = await apiService.get(`api/v1/clocking-events/by-user-id/${user?.id}?page=${page}&size=${size}`);
+      setTimeline(data.content);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const formatDate = (date: Date) => {
+    const formatted = date.toLocaleString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+    return `${formatted.split(", ")[0]}, ${formatted.split(", ")[1]} at ${formatted.split(", ")[2]}`;
   }
+
   useEffect(()=>{
     fetchTimeLine();
   },[])
@@ -34,11 +48,8 @@ const UserStatusTimeline = () => {
           (<TimelineItem key={t.id} color="red">
                 <TimelinePoint icon={HiCalendar} />
                 <TimelineContent>
-            <TimelineTime>{t.timestamp}</TimelineTime>
+            <TimelineTime>{formatDate(new Date(t.timestamp))}</TimelineTime>
             <TimelineTitle>{t.status}</TimelineTitle>
-            <TimelineBody>
-              {t.id}
-            </TimelineBody>
           </TimelineContent>
         </TimelineItem>
           )
