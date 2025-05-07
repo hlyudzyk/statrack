@@ -36,6 +36,7 @@ const apiService = {
         headers:{
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
+          "Content-Type": "application/json"
         }
       })
       .then(response=>response.json())

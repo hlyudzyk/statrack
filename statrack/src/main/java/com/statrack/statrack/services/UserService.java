@@ -5,6 +5,7 @@ import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
+import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.data.repos.UserRepository;
@@ -49,6 +50,7 @@ public class UserService {
             .email(request.getEmail())
             .birthday(request.getBirthday())
             .accountStatus(UserAccountStatus.PENDING_ACTIVATION)
+            .status(Status.ONLINE)
             .role(request.getRole())
             .build();
 
