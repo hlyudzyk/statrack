@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +36,9 @@ public class ClockingEventService {
         return clockingEventRepository.save(clockingEvent);
     }
 
-    public List<ClockingEvent> getClockingEventsByUser(User user) {
-        return clockingEventRepository.findByUser(user);
+    public Page<ClockingEvent> getClockingEventsByUser(User user, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
+        return clockingEventRepository.findByUser(user, pageable);
     }
 
     public List<ClockingEvent> getClockingEventsByUserAndTimeRange(User user, LocalDateTime start, LocalDateTime end) {

@@ -24,24 +24,24 @@ const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
 
 
-  const fetchEvents = async () => {
-    await apiService.get(`api/v1/events`)
-    .then((data)=>{setEvents(data)})
-    .catch(
-        (err)=>
-        { console.log(err)}
-    )
-  }
+  const fetchEvents = async (page = 0, size = 20) => {
+    try {
+      const data = await apiService.get(`api/v1/events?page=${page}&size=${size}`);
+      setEvents(data.content);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const formatDate = (date: Date) => {
     const formatted = date.toLocaleString("en-US", {
-      weekday: "long",     // "Wednesday"
-      year: "numeric",     // "2025"
-      month: "long",       // "May"
-      day: "numeric",      // "28"
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false        // 24-hour format (optional)
+      hour12: false
     });
     return `${formatted.split(", ")[0]}, ${formatted.split(", ")[1]} at ${formatted.split(", ")[2]}`;
   }
@@ -57,7 +57,9 @@ const EventsPage = () => {
     const eventDate = `${date.toISOString().split("T")[0]}T${time}`;
     formData.append('eventDate', eventDate);
     formData.append("image", image);
-
+    setImage(null);
+    setHeader("");
+    setDescription("");
     await createEvent(formData).then((e)=>setEvents([...events, e]));
   };
 
@@ -134,7 +136,9 @@ const EventsPage = () => {
                         {e.content}
                       </p>
                     </Card>
-                ))}
+                )
+                )
+                }
               </div>
           )
           }
@@ -144,4 +148,3 @@ const EventsPage = () => {
 };
 
 export default EventsPage;
-

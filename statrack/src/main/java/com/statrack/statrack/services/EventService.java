@@ -9,6 +9,10 @@ import com.statrack.statrack.services.mappers.EventMapper;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,7 +40,12 @@ public class EventService {
         return EventMapper.toEventDto(eventRepository.save(event));
     }
 
-    public List<EventDto> findAllEvents() {
-        return eventRepository.findAll().stream().map(EventMapper::toEventDto).toList();
+    public Page<EventDto> findFutureEvents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "eventDate"));
+        return eventRepository.findAll(pageable).map(EventMapper::toEventDto);
+    }
+
+    public Page<EventDto> findAllEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable).map(EventMapper::toEventDto);
     }
 }
