@@ -11,7 +11,7 @@ export async function updateUserData(userId: string, data: any): Promise<any>{
 }
 
 export async function changeUserStatus(userId: string, data: any): Promise<any>{
-  return await apiService.post(`api/v1/clocking-events/by-user-id/${userId}`, data)
+  return await apiService.post(`api/v1/clocking-events/by-user-id/${userId}`, data, "application/json")
 }
 export async function getAllUsers(){
   return await apiService.get("api/v1/users");

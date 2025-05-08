@@ -16,10 +16,10 @@ const FooterComponent = () => {
                 name="Statrack"
             />
             <Footer.LinkGroup>
-              <Footer.Link onClick={()=>router.push("about")} href="#">About</Footer.Link>
-              <Footer.Link href="#">Privacy Policy</Footer.Link>
-              <Footer.Link href="#">Licensing</Footer.Link>
-              <Footer.Link href="#">Contact</Footer.Link>
+              <Footer.Link href="about">About</Footer.Link>
+              <Footer.Link href="privacy-policy">Privacy Policy</Footer.Link>
+              <Footer.Link href="licensing">Licensing</Footer.Link>
+              <Footer.Link href="contacts">Contact</Footer.Link>
             </Footer.LinkGroup>
           </div>
           <Footer.Divider />

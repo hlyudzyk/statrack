@@ -28,7 +28,7 @@ const CreateNewUserModal = () => {
       birthday: birthday,
       role: role
     }
-    const response = await apiService.post('api/v1/users/register',JSON.stringify(formData));
+    const response = await apiService.post('api/v1/users/register',JSON.stringify(formData), "application/json");
 
     if(response){
       signupModal.close();
