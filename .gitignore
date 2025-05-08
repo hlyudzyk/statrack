@@ -6,6 +6,8 @@
 /statrack/.mvn
 application.yml
 
+/uploads
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

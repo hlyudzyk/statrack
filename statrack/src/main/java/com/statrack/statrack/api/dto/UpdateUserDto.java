@@ -1,6 +1,7 @@
 package com.statrack.statrack.api.dto;
 
 import com.statrack.statrack.data.models.user.Role;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,9 +9,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +33,7 @@ public class UpdateUserDto implements Serializable {
     private Role role;
     @Past
     private LocalDate birthday;
+    @Nullable
     private MultipartFile image;
 
 //    @NotNull

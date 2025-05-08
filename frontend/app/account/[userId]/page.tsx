@@ -11,27 +11,25 @@ import {User} from "@/app/lib/types";
 import RoleSelect from "@/app/components/forms/RoleSelect";
 import {roleOptions} from "@/app/lib/constants";
 import {ImageUploader} from "@/app/components/forms/ImageUploader";
-import {useUser} from "@/app/lib/context/UserContext";
 import UserStatusTimeline from "@/app/components/UserStatusTimeline";
+import {useUser} from "@/app/lib/context/UserContext";
 
 
 const AccountPage = () => {
   const params = useParams<{ userId: string }>()
   const userId = params.userId;
-  const {currentUser, setCurrentUser} = useUser();
-  const [user, setUser] = useState<User | null>(null);
+  const [fetchedUser, setFetchedUser] = useState<User | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [image,setImage] = useState<File|null>(null);
+  const {user, setUser} = useUser();
 
   const editMode = () => {
-    console.log(user?.id);
-    console.log(currentUser?.id)
-
-    return user?.id===currentUser?.id;
+    console.log(user?.id)
+    return fetchedUser?.id===user?.id || user?.role==="ADMIN";
   }
 
   const fetchUser = async () => {
-      setUser(await getUserData(userId));
+      setFetchedUser(await getUserData(userId));
   }
 
   const getMaxDate: () => Date = () => {
@@ -47,18 +45,18 @@ const AccountPage = () => {
   const handleSave = async () => {
     setStatus('loading');
     const formData = new FormData();
-    if (user==null){return;}
+    if (fetchedUser==null){return;}
 
-    formData.append('firstname', user.firstname);
-    formData.append('lastname', user.lastname);
-    formData.append('birthday', user.birthday);
-    formData.append('role', user.role);
+    formData.append('firstname', fetchedUser.firstname);
+    formData.append('lastname', fetchedUser.lastname);
+    formData.append('birthday', fetchedUser.birthday);
+    formData.append('role', fetchedUser.role);
     formData.append('image', image);
 
-    setUser(await updateUserData(user.id, formData));
+    setFetchedUser(await updateUserData(fetchedUser.id, formData));
   };
 
-  return user ? (
+  return fetchedUser ? (
       <main className="max-w-[1500px] mx-auto px-6 pb-6">
         <div className="flex flex-col items-center p-6 rounded-xl border-gray-300 shadow-xl">
           <div className="lg:w-[50%] sm:w-full">
@@ -66,10 +64,11 @@ const AccountPage = () => {
               <div className="flex justify-center md:justify-start">
                 <div className="w-[150px] h-[150px] md:w-[200px] md:h-[200px]">
                   <Image
+                      priority={false}
                       width={200}
                       height={200}
                       alt="Profile image"
-                      src={user.avatarUrl?`${process.env.NEXT_PUBLIC_API_URL}${user.avatarUrl}`:`/no_pfp.png`}
+                      src={fetchedUser.avatarUrl?`${process.env.NEXT_PUBLIC_API_URL}${fetchedUser.avatarUrl}`:`/no_pfp.png`}
                       className="rounded-full object-cover w-full h-full"
                   />
                 </div>
@@ -84,30 +83,36 @@ const AccountPage = () => {
 
               <InputField
                   label="Firstname"
-                  value={user.firstname}
-                  onChange={(e) => setUser({ ...user, firstname: e.target.value })}
+                  value={fetchedUser.firstname}
+                  onChange={(e) => setFetchedUser({ ...fetchedUser, firstname: e.target.value })}
                   readonly={!editMode()}
               />
 
               <InputField
                   label="Lastname"
-                  value={user.lastname}
-                  onChange={(e) => setUser({ ...user, lastname: e.target.value })}
+                  value={fetchedUser.lastname}
+                  onChange={(e) => setFetchedUser({ ...fetchedUser, lastname: e.target.value })}
                   readonly={!editMode()}
               />
 
+              <InputField
+                  label="Email"
+                  value={fetchedUser.email}
+                  onChange={()=>{}}
+                  readonly={true}
+              />
+
               <RoleSelect
-                  value={roleOptions.find(o => o.value === user.role)}
-                  onChange={(role) => setUser({ ...user, role: role.value })}
+                  value={roleOptions.find(o => o.value === fetchedUser.role)}
+                  onChange={(role) => setFetchedUser({ ...fetchedUser, role: role.value })}
                   disabled={!editMode()}
               />
               <HR/>
               <Datepicker
-                  defaultValue={new Date(user.birthday)}
                   maxDate={getMaxDate()}
                   onChange={(date) => {
                     const formatted = date.toISOString().split('T')[0];
-                    setUser({ ...user, birthday: formatted });
+                    setFetchedUser({ ...fetchedUser, birthday: formatted });
                   }}
                   disabled={!editMode()}
               />

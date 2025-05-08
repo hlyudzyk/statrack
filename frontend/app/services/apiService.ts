@@ -16,7 +16,8 @@ const apiService = {
       })
       .then(response=>response.json())
       .then((json)=>{
-        console.log('Response',json);
+        //console.log('Response',json);
+        //console.log('Response',json);
         resolve(json)
       })
       .catch((error)=>{
@@ -36,12 +37,11 @@ const apiService = {
         headers:{
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
-          "Content-Type": "application/json"
         }
       })
       .then(response=>response.json())
       .then((json)=>{
-        console.log('Response',json);
+        //console.log('Response',json);
         resolve(json)
       })
       .catch((error)=>{
@@ -64,7 +64,7 @@ const apiService = {
       })
       .then(response=>response.json())
       .then((json)=>{
-        console.log('Response',json);
+        //console.log('Response',json);
         resolve(json)
       })
       .catch((error)=>{

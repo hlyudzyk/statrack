@@ -5,9 +5,8 @@ import TextareaField from "@/app/components/forms/TextareaField";
 import {Card, Datepicker, HR} from "flowbite-react";
 import CustomButton from "@/app/components/forms/CustomButton";
 import {useEffect, useState} from "react";
-import {createEvent} from "@/app/lib/eventActions";
+import {createEvent, getAllEvents} from "@/app/lib/eventActions";
 import {Event} from "@/app/lib/types"
-import apiService from "@/app/services/apiService";
 import TimePickerWithDuration from "@/app/components/forms/TimePickerWithDuration";
 import {ImageUploader} from "@/app/components/forms/ImageUploader";
 import Image from 'next/image'
@@ -26,7 +25,7 @@ const EventsPage = () => {
 
   const fetchEvents = async (page = 0, size = 20) => {
     try {
-      const data = await apiService.get(`api/v1/events?page=${page}&size=${size}`);
+      const data = await getAllEvents(page,size);
       setEvents(data.content);
     } catch (err) {
       console.error(err);
@@ -57,10 +56,12 @@ const EventsPage = () => {
     const eventDate = `${date.toISOString().split("T")[0]}T${time}`;
     formData.append('eventDate', eventDate);
     formData.append("image", image);
+
+    await createEvent(formData).then((e)=>setEvents([...events, e]));
+
     setImage(null);
     setHeader("");
     setDescription("");
-    await createEvent(formData).then((e)=>setEvents([...events, e]));
   };
 
   return (
@@ -112,7 +113,7 @@ const EventsPage = () => {
         <HR />
         <div>
           {events && (
-              <div className="space-y-5">
+              <div className="space-y-5" >
                 {events.map(e=>(
                     <Card key={e.id} horizontal
                           renderImage={() =>
