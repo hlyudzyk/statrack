@@ -4,15 +4,15 @@
 import { Carousel  } from "flowbite-react";
 import {useEffect, useState} from "react";
 import {Event} from "@/app/lib/types"
-import apiService from "@/app/services/apiService";
 import EventSlide from "@/app/components/events/EventSlide"
+import {getAllEvents} from "@/app/lib/eventActions";
 
 const EventSlider = () => {
   const [events, setEvents] = useState<Event[]>([]);
 
   const fetchEvents = async (page = 0, size = 10) => {
     try {
-      const data = await apiService.get(`api/v1/events?page=${page}&size=${size}`);
+      const data = await getAllEvents(page,size);
       setEvents(data.content);
     } catch (err) {
       console.error(err);

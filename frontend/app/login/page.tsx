@@ -1,11 +1,10 @@
 'use client'
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import apiService from "@/app/services/apiService";
 import {handleLogin} from "@/app/lib/actions";
 import CustomButton from "@/app/components/forms/CustomButton";
-import {Toaster} from "@/app/components/Toaster";
 import {ApiError} from "@/app/lib/types";
+import {authenticate} from "@/app/lib/authService";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -20,7 +19,7 @@ const LoginPage = () => {
       password:password
     }
 
-    const response = await apiService.postWithoutToken('api/v1/auth/authenticate',JSON.stringify(formData))
+    const response = await authenticate(JSON.stringify(formData))
     if(response.access_token){
       await handleLogin(response.id, response.access_token, response.refresh_token);
       router.push('/')

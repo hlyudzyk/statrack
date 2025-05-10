@@ -16,7 +16,8 @@ const apiService = {
       })
       .then(response=>response.json())
       .then((json)=>{
-        console.log('Response',json);
+        //console.log('Response',json);
+        //console.log('Response',json);
         resolve(json)
       })
       .catch((error)=>{
@@ -24,7 +25,7 @@ const apiService = {
       })
     })
   },
-  post: async function(url:string, data:any):Promise<any> {
+  post: async function(url:string, data:any, contentType: string):Promise<any> {
     console.log('post', url, data);
 
     const token = await getAccessToken();
@@ -36,11 +37,12 @@ const apiService = {
         headers:{
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
+          'Content-Type': contentType,
         }
       })
       .then(response=>response.json())
       .then((json)=>{
-        console.log('Response',json);
+        //console.log('Response',json);
         resolve(json)
       })
       .catch((error)=>{
@@ -63,7 +65,7 @@ const apiService = {
       })
       .then(response=>response.json())
       .then((json)=>{
-        console.log('Response',json);
+        //console.log('Response',json);
         resolve(json)
       })
       .catch((error)=>{

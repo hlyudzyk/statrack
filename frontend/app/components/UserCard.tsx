@@ -18,6 +18,7 @@ interface UserListCardProps{
 const roleIcons = {
   ADMIN: "/high_rank.png",
   TEACHER: "/low_rank.png",
+  TV_VIEWER: "/low_rank.png",
 };
 
 const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, status,role, department}) => {

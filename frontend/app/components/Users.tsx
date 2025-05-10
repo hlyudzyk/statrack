@@ -6,6 +6,7 @@ import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import UserCard from "@/app/components/UserCard";
 import {User} from "@/app/lib/types";
+import {getAllUsers} from "@/app/lib/userActions";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -13,7 +14,7 @@ const Users = () => {
   const signupModal = useSignupModal();
   const fetchTeachers = async () => {
     try {
-      const users: User[] = await apiService.get("api/v1/users");
+      const users: User[] = await getAllUsers();
       setUsers(users);
     } catch (error) {
       console.error("Failed to fetch teachers:", error);

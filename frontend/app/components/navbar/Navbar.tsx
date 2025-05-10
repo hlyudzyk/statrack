@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import SearchFilters from "@/app/components/navbar/SearchFilters";
+import CentralBar from "@/app/components/navbar/CentralBar";
 import LogoutButton from "@/app/components/LogoutButton";
 import {getCurrentUser} from "@/app/lib/userActions";
 
@@ -26,9 +26,9 @@ const Navbar = async () =>{
         {user &&
               (<>
               <div className="flex space-x-6">
-                <SearchFilters/>
+                <CentralBar/>
               </div>
-              <div className="flex items-center space-x-6">
+              <div>
                 <LogoutButton/>
           </div>
                   </>
