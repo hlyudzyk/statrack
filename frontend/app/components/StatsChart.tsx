@@ -23,7 +23,7 @@ export default function StatsChart({ stats }: { stats: UserStats[] }) {
   }));
 
   return (
-      <div className="w-full h-[400px]">
+      <div className="w-full h-[400px] px-10 pt-5 pb-16">
         <h2 className="text-xl font-semibold mb-2">Total Online Time (in minutes)</h2>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>

@@ -19,7 +19,7 @@ const Navbar = async () =>{
                 width={30}
                 height={30}
             />
-            <h2 className="text-xl ml-3 text-blue-400 font-semibold">Statify</h2>
+            <h2 className="text-xl ml-3 text-blue-400 font-semibold">Statrack</h2>
           </div>
 
         </Link>

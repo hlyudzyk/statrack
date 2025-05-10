@@ -21,6 +21,10 @@ export async function getUsersStats(){
   return await apiService.get("api/v1/users/stats");
 }
 
+export async function sendUsersStatsReport(){
+  return await apiService.post("api/v1/users/stats", {},"application/json");
+}
+
 export async function getUserStatusRecords(userId: string){
 
 }
