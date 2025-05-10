@@ -5,11 +5,13 @@ import apiService from "@/app/services/apiService";
 import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import UserCard from "@/app/components/UserCard";
-import {User} from "@/app/lib/types";
-import {getAllUsers} from "@/app/lib/userActions";
+import {User, UserStats} from "@/app/lib/types";
+import {getAllUsers, getUsersStats} from "@/app/lib/userActions";
+import StatsChart from "@/app/components/StatsChart";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [stats, setStats] = useState<UserStats[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const signupModal = useSignupModal();
   const fetchTeachers = async () => {
@@ -23,8 +25,14 @@ const Users = () => {
     }
   };
 
+  const fetchStats =  async () => {
+    getUsersStats().then((data)=>setStats(data));
+  }
+
   useEffect(() => {
     fetchTeachers();
+    fetchStats();
+
   }, []);
 
   if (loading) {
@@ -59,6 +67,7 @@ const Users = () => {
               </div>
           ))}
         </div>
+        <StatsChart stats={stats}/>
 
       </div>
   );

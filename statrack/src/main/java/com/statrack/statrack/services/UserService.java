@@ -2,25 +2,30 @@ package com.statrack.statrack.services;
 
 import com.statrack.statrack.api.dto.UpdateUserDto;
 import com.statrack.statrack.api.dto.UserDto;
+import com.statrack.statrack.api.dto.UserStatsDTO;
+import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.models.user.ActivationToken;
-import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
+import com.statrack.statrack.data.repos.ClockingEventRepository;
 import com.statrack.statrack.data.repos.UserRepository;
 import com.statrack.statrack.exceptions.ApiError;
 import com.statrack.statrack.exceptions.ApiException;
-import com.statrack.statrack.exceptions.NotFoundException;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
 import com.statrack.statrack.services.emails.EmailService;
 import com.statrack.statrack.services.mappers.UserMapper;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -33,14 +38,19 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final ActivationTokenRepository activationTokenRepository;
+    private final ClockingEventRepository clockingEventRepository;
     private final EmailService emailService;
     private final FileStorageService fileStorageService;
     @Value("${frontend.url}")
     private String frontendUrl;
 
 
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> getAllUsersDto() {
         return userRepository.findAll().stream().map(UserMapper::toDto).toList();
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public RegistrationResponse registerNewUser(@Valid RegisterRequest request) {
@@ -120,4 +130,44 @@ public class UserService {
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
+
+
+    public List<UserStatsDTO> computeAllUserStats() {
+        List<ClockingEvent> allEvents = clockingEventRepository.findAllByOrderByUserIdAscTimestampAsc();
+        Map<UUID, List<ClockingEvent>> eventsByUser = allEvents.stream()
+            .collect(Collectors.groupingBy(event -> event.getUser().getId()));
+
+        List<UserStatsDTO> statsList = new ArrayList<>();
+
+        for (var entry : eventsByUser.entrySet()) {
+            UUID userId = entry.getKey();
+            List<ClockingEvent> events = entry.getValue();
+            String username = events.getFirst().getUser().getUsername();
+
+            Duration onlineDuration = Duration.ZERO;
+            Duration breakDuration = Duration.ZERO;
+            int sessions = 0;
+
+            for (int i = 0; i < events.size() - 1; i++) {
+                ClockingEvent current = events.get(i);
+                ClockingEvent next = events.get(i + 1);
+                Duration duration = Duration.between(current.getTimestamp(), next.getTimestamp());
+
+                switch (current.getStatus()) {
+                    case ONLINE -> {
+                        onlineDuration = onlineDuration.plus(duration);
+                        sessions++;
+                    }
+                    case ON_BREAK -> breakDuration = breakDuration.plus(duration);
+                }
+            }
+
+            Duration averageSession = sessions > 0 ? onlineDuration.dividedBy(sessions) : Duration.ZERO;
+
+            statsList.add(new UserStatsDTO(userId.toString(), username, onlineDuration, breakDuration, sessions, averageSession));
+        }
+
+        return statsList;
+    }
+
 }
