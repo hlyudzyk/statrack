@@ -2,6 +2,7 @@ package com.statrack.statrack.api.controllers;
 
 
 import com.statrack.statrack.api.dto.UpdateUserDto;
+import com.statrack.statrack.api.dto.UserStatsDTO;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
 import com.statrack.statrack.services.UserService;
@@ -29,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.getAllUsersDto();
     }
 
     @GetMapping("/{id}")
@@ -37,6 +38,12 @@ public class UserController {
         UserDto userDto = userService.getUserDtoById(id);
         return ResponseEntity.ok(userDto);
     }
+
+    @GetMapping("/stats")
+    public List<UserStatsDTO> getAllUserStats() {
+        return userService.computeAllUserStats();
+    }
+
 
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> register(
@@ -49,4 +56,6 @@ public class UserController {
     public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @ModelAttribute UpdateUserDto updateUserDto) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserDto));
     }
+
+
 }

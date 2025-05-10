@@ -35,3 +35,12 @@ export type Event = {
   eventDate: string;
   createdBy: User;
 }
+
+export type UserStats = {
+  userId: string;
+  username: string;
+  totalOnlineTime: number;
+  totalBreakTime: number;
+  totalSessions: number;
+  averageSessionTime: number;
+};

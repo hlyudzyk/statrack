@@ -30,7 +30,7 @@ const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, s
   }[status] || 'bg-gray-300';
 
   return (
-      <Card className="max-w-md">
+      <Card className="w-full max-w-sm overflow-hidden">
         <div className="flex justify-end px-4 pt-4">
           <Dropdown inline label="">
             <Dropdown.Item>
@@ -71,9 +71,15 @@ const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, s
             {firstname} {lastname}
             <span className={`h-3 w-3 rounded-full ${statusColor}`} title={status}></span>
           </h5>
-          <span className="text-sm text-gray-500 dark:text-gray-400">{email}</span>
+          <span
+              className="text-sm text-gray-500 dark:text-gray-400 truncate text-center w-full px-4"
+              title={email}
+          >
+            {email}
+          </span>
+
           <div className="flex items-center space-x-2 pt-5">
-            <Image src={roleIcons[role]} width={24} height={24} alt="Rank" />
+            <Image src={roleIcons[role]} width={24} height={24} alt="Rank"/>
 
             <span>{role}</span>
           </div>

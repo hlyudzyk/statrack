@@ -142,7 +142,8 @@ const AccountPage = () => {
 
         <div className="p-6 rounded-xl border-gray-300 shadow-xl mt-20">
           <h1 className="my-6 text-2xl">Activity</h1>
-          <div className="mt-4 grid md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="mt-4">
+            kalamaha
             <UserStatusTimeline/>
           </div>
         </div>

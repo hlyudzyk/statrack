@@ -3,6 +3,7 @@
 import {useRouter} from "next/navigation";
 import {useUser} from "@/app/lib/context/UserContext";
 import { useState } from 'react';
+import Image from "next/image";
 
 
 const CentralBar = () => {
@@ -18,50 +19,35 @@ const CentralBar = () => {
 
   return (
       <div className="relative">
-        <div className="h-[48px] lg:h-[64px] flex items-center justify-between border rounded-full shadow-xl px-4">
-          {/* Large screens: horizontal nav */}
-          <div className="hidden lg:flex items-center space-x-6">
+        {/* Wrapper only visible on large screens */}
+        <div
+            className="hidden lg:flex h-[64px] items-center justify-between border rounded-full shadow-xl px-4">
+          <div className="flex items-center space-x-6">
             {navItems.map((item) => (
                 <div
                     key={item.label}
-                    className="cursor-pointer h-[48px] lg:h-[64px] px-4 flex items-center rounded-full hover:bg-gray-100"
+                    className="cursor-pointer h-[64px] px-4 flex items-center rounded-full hover:bg-gray-100"
                     onClick={item.onClick}
                 >
                   <p className="text-sm font-bold">{item.label}</p>
                 </div>
             ))}
           </div>
+        </div>
 
-          {/* Small screen: menu toggle icon */}
-          <div className="lg:hidden p-2">
-            <div
-                className="cursor-pointer p-3 bg-lightbase rounded-full hover:bg-lightbase-hover transition text-white"
-                onClick={() => setDropdownOpen((prev) => !prev)}
-            >
-              <svg
-                  viewBox="0 0 32 32"
-                  style={{
-                    display: 'block',
-                    fill: 'none',
-                    height: '16px',
-                    width: '16px',
-                    stroke: 'currentColor',
-                    strokeWidth: 4,
-                    overflow: 'visible',
-                  }}
-                  aria-hidden="true"
-                  role="presentation"
-                  focusable="false"
-              >
-                <path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path>
-              </svg>
-            </div>
+        {/* Small screen: just a round menu icon */}
+        <div className="lg:hidden flex justify-end">
+          <div
+              className="cursor-pointer p-3 bg-lightbase rounded-full hover:bg-lightbase-hover transition text-white"
+              onClick={() => setDropdownOpen((prev) => !prev)}
+          >
+            <Image src="/menu-button.png" alt="Menu" width={24} height={24}/>
           </div>
         </div>
 
         {/* Dropdown menu for small screens */}
         {dropdownOpen && (
-            <div className="lg:hidden absolute top-full mt-2 w-full bg-white rounded-xl shadow-lg z-10">
+            <div className="lg:hidden fixed top-[72px] left-0 w-full bg-white rounded-b-xl shadow-lg z-50">
               {navItems.map((item) => (
                   <div
                       key={item.label}
@@ -76,6 +62,7 @@ const CentralBar = () => {
               ))}
             </div>
         )}
+
       </div>
   );
 };
