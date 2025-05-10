@@ -4,7 +4,6 @@
 import { Carousel  } from "flowbite-react";
 import {useEffect, useState} from "react";
 import {Event} from "@/app/lib/types"
-import apiService from "@/app/services/apiService";
 import EventSlide from "@/app/components/events/EventSlide"
 import {getAllEvents} from "@/app/lib/eventActions";
 
