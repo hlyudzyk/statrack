@@ -15,6 +15,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue statsReportQueue() {
+        return new Queue("statsReportQueue", true);
+    }
+
+    @Bean
     public SimpleMessageConverter converter() {
         SimpleMessageConverter converter = new SimpleMessageConverter();
         converter.setAllowedListPatterns(List.of("com.statrack.statrack.**"));

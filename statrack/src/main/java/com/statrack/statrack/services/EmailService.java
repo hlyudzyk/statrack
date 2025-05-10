@@ -1,4 +1,4 @@
-package com.statrack.statrack.services.emails;
+package com.statrack.statrack.services;
 
 import com.statrack.statrack.services.messages.EmailMessage;
 import lombok.RequiredArgsConstructor;

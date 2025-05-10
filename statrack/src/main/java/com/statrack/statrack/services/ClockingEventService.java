@@ -4,12 +4,8 @@ import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.Status;
-import com.statrack.statrack.services.emails.EmailService;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +36,7 @@ public class ClockingEventService {
             .timestamp(LocalDateTime.now())
             .build();
 
-        //notifyUsers(clockingEvent);
+        notifyUsers(clockingEvent);
 
         return clockingEventRepository.save(clockingEvent);
     }

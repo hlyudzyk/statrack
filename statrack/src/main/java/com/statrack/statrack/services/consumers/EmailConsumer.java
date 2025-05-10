@@ -1,4 +1,4 @@
-package com.statrack.statrack.services.emails;
+package com.statrack.statrack.services.consumers;
 
 import com.statrack.statrack.services.messages.EmailMessage;
 import jakarta.mail.internet.MimeMessage;

@@ -15,10 +15,11 @@ import com.statrack.statrack.exceptions.ApiError;
 import com.statrack.statrack.exceptions.ApiException;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
-import com.statrack.statrack.services.emails.EmailService;
 import com.statrack.statrack.services.mappers.UserMapper;
+import com.statrack.statrack.services.messages.StatsReportRequest;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ public class UserService {
     private final ClockingEventRepository clockingEventRepository;
     private final EmailService emailService;
     private final FileStorageService fileStorageService;
+    private final RabbitTemplate rabbitTemplate;
     @Value("${frontend.url}")
     private String frontendUrl;
 
@@ -170,4 +173,10 @@ public class UserService {
         return statsList;
     }
 
+
+    public void queueStatsReportEmail(String toEmail) {
+        StatsReportRequest request = new StatsReportRequest();
+        request.setEmail(toEmail);
+        rabbitTemplate.convertAndSend("statsReportQueue", request);
+    }
 }

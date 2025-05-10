@@ -1,4 +1,4 @@
-package com.statrack.statrack.services.emails;
+package com.statrack.statrack.services.messages;
 
 import java.io.Serializable;
 import lombok.Data;
