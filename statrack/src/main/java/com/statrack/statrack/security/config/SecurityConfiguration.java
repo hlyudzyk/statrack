@@ -32,6 +32,10 @@ public class SecurityConfiguration {
         "/api/v1/auth/validate-activation-token",
         "/api/v1/auth/activate-account",
         "/uploads/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/*",
+        "/v3/api-docs/**",
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -68,7 +72,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:8080"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedHeaders(List.of("*"));
