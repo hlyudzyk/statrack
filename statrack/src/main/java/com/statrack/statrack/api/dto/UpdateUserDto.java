@@ -1,7 +1,6 @@
 package com.statrack.statrack.api.dto;
 
 import com.statrack.statrack.data.models.user.Role;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -33,9 +32,6 @@ public class UpdateUserDto implements Serializable {
     private Role role;
     @Past
     private LocalDate birthday;
-    @Nullable
     private MultipartFile image;
 
-//    @NotNull
-//    private final User.UserAccountStatus accountStatus;
 }

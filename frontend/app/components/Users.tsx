@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import UserCard from "@/app/components/UserCard";
-import {User, UserStats} from "@/app/lib/types";
-import {getAllUsers, getUsersStats, sendUsersStatsReport} from "@/app/lib/userActions";
+import {User} from "@/app/lib/types";
+import {getAllUsers} from "@/app/lib/userActions";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -54,6 +54,7 @@ const Users = () => {
                     lastname={user.lastname}
                     email={user.email}
                     status={user.status}
+                    imageUrl={user.avatarUrl}
                     role={user.role}
                     department={user.department}
                 />

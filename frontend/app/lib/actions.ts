@@ -2,6 +2,9 @@
 
 import {cookies} from "next/headers";
 
+export async function getBackendUrl(){
+  return process.env.NEXT_PUBLIC_API_URL;
+}
 
 export async function handleRefresh(){
   const refreshToken = await getRefreshToken();

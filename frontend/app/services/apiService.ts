@@ -25,20 +25,23 @@ const apiService = {
       })
     })
   },
-  post: async function(url:string, data:any, contentType: string):Promise<any> {
+  post: async function(url:string, data:any, contentType: string | null = null):Promise<any> {
     console.log('post', url, data);
 
     const token = await getAccessToken();
+    const headers   = {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+    }
+    if (contentType!==null){
+      headers["Content-Type"] = contentType
+    }
 
     return new Promise((resolve,reject)=>{
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`,{
         method: 'POST',
         body:data,
-        headers:{
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json',
-          'Content-Type': contentType,
-        }
+        headers:headers,
       })
       .then(response=>response.json())
       .then((json)=>{
