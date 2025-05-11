@@ -1,12 +1,11 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import apiService from "@/app/services/apiService";
 import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import UserCard from "@/app/components/UserCard";
-import {User} from "@/app/lib/types";
-import {getAllUsers} from "@/app/lib/userActions";
+import {User, UserStats} from "@/app/lib/types";
+import {getAllUsers, getUsersStats, sendUsersStatsReport} from "@/app/lib/userActions";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -22,6 +21,8 @@ const Users = () => {
       setLoading(false);
     }
   };
+
+
 
   useEffect(() => {
     fetchTeachers();
@@ -46,7 +47,7 @@ const Users = () => {
         </div>
         <div className="flex flex-wrap gap-5 p-5">
           {users.map((user: User) => (
-              <div key={user.id} className="flex-[1_1_250px] max-w-sm">
+              <div key={user.id} className="basis-[250px] max-w-[100%] grow">
                 <UserCard
                     id={user.id}
                     firstname={user.firstname}
@@ -59,7 +60,6 @@ const Users = () => {
               </div>
           ))}
         </div>
-
       </div>
   );
 }

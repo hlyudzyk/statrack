@@ -1,7 +1,10 @@
 package com.statrack.statrack.api.controllers;
 
 
+import com.statrack.statrack.api.dto.CommonResponseDTO;
 import com.statrack.statrack.api.dto.UpdateUserDto;
+import com.statrack.statrack.api.dto.UserStatsDTO;
+import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
 import com.statrack.statrack.services.UserService;
@@ -11,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,13 +33,24 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.getAllUsersDto();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
         UserDto userDto = userService.getUserDtoById(id);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping("/stats")
+    public List<UserStatsDTO> getAllUserStats() {
+        return userService.computeAllUserStats();
+    }
+
+    @PostMapping("/stats")
+    public ResponseEntity<CommonResponseDTO> sendReport(@AuthenticationPrincipal User user) {
+        userService.queueStatsReportEmail(user.getEmail());
+        return ResponseEntity.ok(new CommonResponseDTO("Report sent"));
     }
 
     @PostMapping("/register")
@@ -49,4 +64,6 @@ public class UserController {
     public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @ModelAttribute UpdateUserDto updateUserDto) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserDto));
     }
+
+
 }

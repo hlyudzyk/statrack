@@ -1,19 +1,17 @@
 'use client'
 
 import {
-  Button,
   Timeline,
-  TimelineBody,
   TimelineContent,
   TimelineItem,
   TimelinePoint,
   TimelineTime,
   TimelineTitle,
 } from "flowbite-react";
-import apiService from "@/app/services/apiService";
 import {useUser} from "@/app/lib/context/UserContext";
 import {useEffect, useState} from "react";
 import {HiCalendar} from "react-icons/hi";
+import {getClockingEventsByUser} from "@/app/lib/clockingEvents";
 
 const UserStatusTimeline = () => {
   const {user, setUser } = useUser()
@@ -21,7 +19,8 @@ const UserStatusTimeline = () => {
 
   const fetchTimeLine = async (page = 0, size = 10) => {
     try {
-      const data = await apiService.get(`api/v1/clocking-events/by-user-id/${user?.id}?page=${page}&size=${size}`);
+      if(user===null){return;}
+      const data = await getClockingEventsByUser(user?.id, page,size);
       setTimeline(data.content);
     } catch (err) {
       console.log(err);
