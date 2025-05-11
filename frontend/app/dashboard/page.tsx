@@ -47,26 +47,31 @@ const Dashboard = () => {
   }
 
 
-  return(
-      <div>
-        <h3 className="text-2xl"> Dashboard </h3>
-        <h4 className="text-xl">Welcome back, {user?.firstname + user?.lastname}!</h4>
-        <div className="flex flex-row space-x-5">
+  return (
+      <div className="space-y-6">
+        <h3 className="text-3xl font-semibold">Dashboard</h3>
+        <h4 className="text-xl text-gray-700">Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.</h4>
+        <h4 className="text-md text-gray-700">What's your status?</h4>
+
+        <div className="flex flex-wrap gap-4 justify-start">
           {statusOptions.filter(s => s.value !== user?.status).map((s) => (
               <CustomButton
                   key={s.value}
                   label={s.label}
                   variant={getButtonStyle(s.value)}
                   onClick={() => changeStatus(s.value)}
+                  className="w-auto min-w-[120px] max-w-2xl"
               />
           ))}
         </div>
-        <div className="pt-10">
-          <h3 className="text-2xl pb-5"> Your activity today </h3>
+
+        <div className="pt-12 md:pl-10">
+          <h3 className="text-2xl font-semibold pb-4">Your activity today</h3>
           <UserStatusTimeline/>
         </div>
       </div>
-  )
+  );
+
 }
 
 export default Dashboard;

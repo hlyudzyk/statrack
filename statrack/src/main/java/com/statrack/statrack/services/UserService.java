@@ -110,26 +110,31 @@ public class UserService {
 
     public UserDto updateUser(UUID userId, UpdateUserDto newData) {
         User user = this.getUserById(userId);
-        String imageUrl = null;
 
-        if (newData.getImage() != null && !newData.getImage().isEmpty()) {
-            imageUrl = fileStorageService.storeFile(newData.getImage());
+        if (newData.getFirstname() != null) {
+            user.setFirstname(newData.getFirstname());
         }
 
+        if (newData.getLastname() != null) {
+            user.setLastname(newData.getLastname());
+        }
 
-        user.setFirstname(newData.getFirstname());
-        user.setLastname(newData.getLastname());
-        user.setRole(newData.getRole());
-        user.setImageUrl(imageUrl);
-        user.setBirthday(newData.getBirthday());
-        //user.setEmail(newData.getEmail());
-        //user.setDepartment(newData.getDepartment());
-        //user.setAvatarUrl(newData.getAvatarUrl());
+        if (newData.getRole() != null) {
+            user.setRole(newData.getRole());
+        }
 
+        if (newData.getBirthday() != null) {
+            user.setBirthday(newData.getBirthday());
+        }
 
+        if (newData.getImage() != null && !newData.getImage().isEmpty()) {
+            String imageUrl = fileStorageService.storeFile(newData.getImage());
+            user.setImageUrl(imageUrl);
+        }
 
         return UserMapper.toDto(userRepository.save(user));
     }
+
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }

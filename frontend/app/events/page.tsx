@@ -55,7 +55,9 @@ const EventsPage = () => {
     formData.append('content', description);
     const eventDate = `${date.toISOString().split("T")[0]}T${time}`;
     formData.append('eventDate', eventDate);
-    formData.append("image", image);
+    if(image!==null){
+      formData.append("image", image);
+    }
 
     await createEvent(formData).then((e)=>setEvents([...events, e]));
 
@@ -113,7 +115,7 @@ const EventsPage = () => {
         <HR />
         <div>
           {events && (
-              <div className="space-y-5" >
+              <div className="space-y-5" key={events.length}>
                 {events.map(e=>(
                     <Card key={e.id} horizontal
                           renderImage={() =>

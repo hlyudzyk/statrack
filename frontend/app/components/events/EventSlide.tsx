@@ -42,12 +42,12 @@ export const EventSlide = ({ eventItem }) => {
           <Image
               alt="Bonnie image"
               height="96"
-              src="/no_pfp.png"
+              src={eventItem.createdBy.avatarUrl?`${process.env.NEXT_PUBLIC_API_URL}${eventItem.createdBy.avatarUrl}`:"/mountain.png"}
               width="96"
               className="mb-3 rounded-full shadow-lg"
           />
-          <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">Bonnie Green</h5>
-          <span className="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
+          <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{eventItem.createdBy.firstname} {eventItem.createdBy.lastname}</h5>
+          <span className="text-sm text-gray-500 dark:text-gray-400">{eventItem.createdBy.role}</span>
         </div>
       </div>
   );

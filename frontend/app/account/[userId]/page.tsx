@@ -51,7 +51,9 @@ const AccountPage = () => {
     formData.append('lastname', fetchedUser.lastname);
     formData.append('birthday', fetchedUser.birthday);
     formData.append('role', fetchedUser.role);
-    formData.append('image', image);
+    if(image!==null){
+      formData.append('image', image);
+    }
 
     setFetchedUser(await updateUserData(fetchedUser.id, formData));
   };
@@ -143,7 +145,6 @@ const AccountPage = () => {
         <div className="p-6 rounded-xl border-gray-300 shadow-xl mt-20">
           <h1 className="my-6 text-2xl">Activity</h1>
           <div className="mt-4">
-            kalamaha
             <UserStatusTimeline/>
           </div>
         </div>

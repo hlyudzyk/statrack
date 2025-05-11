@@ -11,6 +11,7 @@ interface UserListCardProps{
   lastname: string;
   email: string;
   status: string;
+  imageUrl: string;
   role: string;
   department: string;
 }
@@ -21,7 +22,7 @@ const roleIcons = {
   TV_VIEWER: "/low_rank.png",
 };
 
-const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, status,role, department}) => {
+const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, status, imageUrl,role, department}) => {
   const router = useRouter();
   const statusColor = {
     ONLINE: 'bg-green-500',
@@ -62,10 +63,10 @@ const UserCard: React.FC<UserListCardProps> = ({id, firstname,lastname, email, s
         <div className="flex flex-col items-center pb-10">
           <Image
               alt="Bonnie image"
-              height="96"
-              src="/no_pfp.png"
-              width="96"
-              className="mb-3 rounded-full shadow-lg"
+              height={96}
+              width={96}
+              src={imageUrl ? `${process.env.NEXT_PUBLIC_API_URL}${imageUrl}` : `/no_pfp.png`}
+              className="mb-3 rounded-full shadow-lg object-cover w-[96px] h-[96px]"
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white flex items-center gap-2">
             {firstname} {lastname}
