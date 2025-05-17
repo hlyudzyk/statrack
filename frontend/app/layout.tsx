@@ -34,19 +34,25 @@ export default async function RootLayout({
       <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <UserProvider initialUser={user}>
+        <div className="flex flex-col min-h-screen">
+          <Navbar/>
 
-      <div className="flex flex-col min-h-screen">
-        <Navbar/>
-        <div className="pt-32 mx-10">
-          {children}
+          {/* Main content area that grows */}
+          <div className="flex-1 pt-32 2xl:pt-48 3xl:pt-64 px-4 sm:px-10 flex justify-center">
+            <div className="w-full h-full max-w-[3600px] shadow-2xl">
+              {children}
+            </div>
+          </div>
+
+          {/* Modals should go here if positioned fixed */}
+          <CreateNewUserModal/>
+
+          {/* Footer must be inside the flex layout */}
+          <FooterComponent/>
         </div>
-
-        <CreateNewUserModal/>
-      </div>
-      <FooterComponent/>
       </UserProvider>
-
       </body>
       </html>
+
   );
 }

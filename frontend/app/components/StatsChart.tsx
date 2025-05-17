@@ -23,13 +23,13 @@ export default function StatsChart({ stats }: { stats: UserStats[] }) {
   }));
 
   return (
-      <div className="w-full h-[400px] px-10 pt-5 pb-16">
-        <h2 className="text-xl font-semibold mb-2">Total Online Time (in minutes)</h2>
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-[400px] p-5">
+        <h2 className="text-xl 3xl:text-5xl 3xl:mb-16 font-semibold mb-2">Total Online Time (in minutes)</h2>
+        <ResponsiveContainer width="100%" height="100%" >
           <BarChart data={data}>
-            <XAxis dataKey="username" />
-            <YAxis />
-            <Tooltip />
+            <XAxis dataKey="username" className="3xl:text-4xl"/>
+            <YAxis  className="3xl:text-4xl"/>
+            <Tooltip labelClassName="3xl:text-4xl"/>
             <Bar dataKey="minutesOnline" fill="#4f46e5" />
           </BarChart>
         </ResponsiveContainer>
