@@ -22,14 +22,12 @@ export default function Home() {
 
 
   return (
-      <div className="space-y-5">
+      <div className="space-y-5 3xl:space-y-20">
         <Users/>
         <EventSlider/>
-        <div className="flex flex-col w-full bg-gray-200 rounded-xl">
-          <div>
-            <StatsChart stats={stats}/>
-          </div>
-          <CustomButton  label="Export data" className="pt-5" onClick={()=>sendUsersStatsReport()}/>
+        <div className="flex flex-col bg-gray-200 rounded-xl w-full space-y-10 3xl:space-y-32">
+          <StatsChart stats={stats}/>
+          <CustomButton label="Export data" className="max-w-2xl 3xl:text-4xl 3xl:rounded-full 3xl:p-10" onClick={()=>sendUsersStatsReport()}/>
         </div>
 
       </div>

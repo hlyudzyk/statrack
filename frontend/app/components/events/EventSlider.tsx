@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {Event} from "@/app/lib/types"
 import EventSlide from "@/app/components/events/EventSlide"
 import {getAllEvents} from "@/app/lib/eventActions";
+import CustomCarousel from "@/app/components/CustomCarousel";
 
 const EventSlider = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -24,12 +25,8 @@ const EventSlider = () => {
   }, []);
 
   return (
-      <div className="h-156 sm:h-64 xl:h-80 2xl:h-96">
-        <Carousel slideInterval={1000}>
-          {events.map((item) => (
-              <EventSlide key={item.id} eventItem={item} />
-          ))}
-        </Carousel>
+      <div className="h-156 sm:h-64 xl:h-80 3xl:h-[800px] mx-5">
+        <CustomCarousel items={events}/>
       </div>
   );
 }

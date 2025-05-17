@@ -14,7 +14,10 @@ export default {
         'lightbase': '#398ded',
         'lightbase-hover': '#89BEF4',
         'footer':'#F7F7F7',
-      }
+      },
+      screens: {
+        '3xl': '1920px',
+      },
     },
   },
   plugins: [
