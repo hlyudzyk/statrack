@@ -53,6 +53,30 @@ const apiService = {
       })
     })
   },
+
+  delete: async function (url: string): Promise<any> {
+    const access_token = await getAccessToken();
+
+    return new Promise((resolve, reject) => {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${access_token}`
+        }
+      })
+      .then(async (response) => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const json = await response.json();
+          resolve(json);
+        } else {
+          resolve({ success: response.ok });
+        }
+      })
+      .catch((error) => reject(error));
+    });
+  },
   put: async function(url:string, data:any):Promise<any> {
     console.log('put', url, data);
 

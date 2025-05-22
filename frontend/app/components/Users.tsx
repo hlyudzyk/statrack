@@ -5,7 +5,7 @@ import CustomButton from "@/app/components/forms/CustomButton";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import UserCard from "@/app/components/UserCard";
 import {User} from "@/app/lib/types";
-import {getAllUsers} from "@/app/lib/userActions";
+import {deleteUserAction, getAllUsers} from "@/app/lib/userActions";
 import {useUser} from "@/app/lib/context/UserContext";
 
 const Users = () => {
@@ -24,6 +24,12 @@ const Users = () => {
     }
   };
 
+  const deleteUser = async (userId: string) => {
+    const isSuccess = await deleteUserAction(userId);
+    if (isSuccess) {
+      setUsers((prevUsers) => prevUsers.filter(user => user.id !== userId));
+    }
+  };
 
 
   useEffect(() => {
@@ -61,6 +67,7 @@ const Users = () => {
                     imageUrl={user.avatarUrl}
                     role={user.role}
                     department={user.department}
+                    onDeleteUser={()=>deleteUser(user.id)}
                 />
               </div>
           ))}

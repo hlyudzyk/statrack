@@ -7,7 +7,7 @@ import Image from "next/image";
 const FooterComponent = () => {
   const router = useRouter();
   return (
-      <Footer className="bg-white border-t w-full mt-10">
+      <Footer className="bg-white border-t w-full mt-10 3xl:pt-64">
         <div className="max-w-[2400px] mx-auto w-full px-6 sm:px-10 md:px-16 lg:px-20 py-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
 

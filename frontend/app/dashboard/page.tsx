@@ -48,7 +48,7 @@ const Dashboard = () => {
 
 
   return (
-      <div className="space-y-6 bg-gray-200 w-full ">
+      <div className="space-y-6 bg-gray-200 w-full p-12 rounded-2xl">
         <h3 className="text-3xl font-semibold">Dashboard</h3>
         <h4 className="text-xl text-gray-700">Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.</h4>
         <h4 className="text-md text-gray-700">What's your status?</h4>
@@ -66,7 +66,7 @@ const Dashboard = () => {
         </div>
 
         <div className="pt-12 md:pl-10">
-          <h3 className="text-2xl font-semibold pb-4">Your activity today</h3>
+          <h3 className="text-2xl font-semibold pb-6">Your activity</h3>
           <UserStatusTimeline/>
         </div>
       </div>

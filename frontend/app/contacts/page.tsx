@@ -1,3 +1,4 @@
+"use server"
 import React from 'react';
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -17,32 +18,32 @@ const ContactPage = () => {
           <li className="flex items-center space-x-3">
             <IoMail className="w-5 h-5 3xl:w-8 3xl:h-8 text-gray-700"/>
             <a
-                href="mailto:your.email@example.com"
+                href={process.env.NEXT_PUBLIC_ML_LINK}
                 className="text-blue-600 hover:underline"
             >
-              your.email@example.com
+              {process.env.NEXT_PUBLIC_ML_LINK}
             </a>
           </li>
           <li className="flex items-center space-x-3">
             <FaGithub className="w-5 h-5 3xl:w-8 3xl:h-8 text-gray-700"/>
             <a
-                href="https://github.com/your-username"
+                href={process.env.NEXT_PUBLIC_GH_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
             >
-              github.com/your-username
+              {process.env.NEXT_PUBLIC_GH_LINK}
             </a>
           </li>
           <li className="flex items-center space-x-3">
             <FaLinkedin className="w-5 h-5 3xl:w-8 3xl:h-8 text-gray-700"/>
             <a
-                href="https://linkedin.com/in/your-profile"
+                href={process.env.NEXT_PUBLIC_LN_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
             >
-              linkedin.com/in/your-profile
+              {process.env.NEXT_PUBLIC_LN_LINK}
             </a>
           </li>
         </ul>

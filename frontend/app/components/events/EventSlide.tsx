@@ -1,11 +1,9 @@
 import Image from "next/image";
-
-export const EventSlide = ({ eventItem }) => {
+const EventSlide = ({ eventItem }) => {
   return (
-      <div
-          className="flex w-full h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden 3xl:gap-12 3xl:p-10">
+      <div className="flex flex-col lg:flex-row w-full h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden 3xl:gap-12 3xl:p-10">
         {/* Image Section */}
-        <div className="w-4/12 relative min-h-[300px] 3xl:min-h-[600px]">
+        <div className="relative w-full lg:w-4/12 min-h-[300px] 3xl:min-h-[600px]">
           <Image
               src={
                 eventItem.imageUrl
@@ -19,12 +17,12 @@ export const EventSlide = ({ eventItem }) => {
         </div>
 
         {/* Content Section */}
-        <div className="w-6/12 flex flex-col justify-between px-6 py-4 3xl:px-16 3xl:py-10">
+        <div className="w-full lg:w-6/12 flex flex-col justify-between px-6 py-4 3xl:px-16 3xl:py-10">
           <div>
             <h5 className="text-2xl 3xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
               {eventItem.header}
             </h5>
-            <p className="mt-4 text-base 3xl:text-4xl text-gray-600 dark:text-gray-300">
+            <p className="mt-4 text-base 3xl:text-4xl text-gray-600">
               {eventItem.content}
             </p>
           </div>
@@ -42,7 +40,7 @@ export const EventSlide = ({ eventItem }) => {
         </div>
 
         {/* Creator Section */}
-        <div className="w-2/12 lg:flex lg:flex-col items-center justify-center p-6 3xl:p-10 hidden lg:visible">
+        <div className="hidden lg:flex lg:flex-col lg:w-2/12 items-center justify-center p-6 3xl:p-10">
           <Image
               alt="Creator avatar"
               height={96}
@@ -58,11 +56,11 @@ export const EventSlide = ({ eventItem }) => {
             {eventItem.createdBy.firstname} {eventItem.createdBy.lastname}
           </h5>
           <span className="text-sm 3xl:text-2xl text-gray-500 dark:text-gray-400">
-      {eventItem.createdBy.role}
-    </span>
+          {eventItem.createdBy.role}
+        </span>
         </div>
       </div>
-
   );
 };
+
 export default EventSlide;

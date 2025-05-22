@@ -8,11 +8,15 @@ import com.statrack.statrack.exceptions.ApiError;
 import com.statrack.statrack.exceptions.ApiException;
 import com.statrack.statrack.services.EventService;
 import com.statrack.statrack.services.mappers.UserMapper;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +36,12 @@ public class EventController {
     @GetMapping
     public ResponseEntity<Page<EventDto>> getEvents(
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(required = false) LocalDate date,
+        @RequestParam(required = false) String keyword
     ) {
-        Page<EventDto> events = eventService.findAllEvents(PageRequest.of(page, size));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<EventDto> events = eventService.findFilteredEvents(date, keyword, pageable);
         if (events.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
