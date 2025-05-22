@@ -49,9 +49,14 @@ build/
 !/frontend/.yarn/plugins
 !/frontend/.yarn/releases
 !/frontend/.yarn/versions
+frontend/package-lock.json
+frontend/package.json
 
 # Frontend testing
-/frontend/coverage
+frontend/playwright/
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
 
 # Next.js
 /frontend/.next/
