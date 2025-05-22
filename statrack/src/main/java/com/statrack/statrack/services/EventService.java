@@ -6,6 +6,9 @@ import com.statrack.statrack.data.models.Event;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.repos.EventRepository;
 import com.statrack.statrack.services.mappers.EventMapper;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -48,4 +51,26 @@ public class EventService {
     public Page<EventDto> findAllEvents(Pageable pageable) {
         return eventRepository.findAll(pageable).map(EventMapper::toEventDto);
     }
+
+    public Page<EventDto> findAllEventsSortedByCreated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return eventRepository.findAll(pageable).map(EventMapper::toEventDto);
+    }
+
+    public Page<EventDto> findFilteredEvents(LocalDate date, String keyword, Pageable pageable) {
+        if (date != null && keyword != null) {
+            LocalDateTime start = date.atStartOfDay();
+            LocalDateTime end = date.atTime(LocalTime.MAX);
+            return eventRepository.findByEventDateBetweenAndKeyword(start, end, keyword, pageable).map(EventMapper::toEventDto);
+        } else if (date != null) {
+            LocalDateTime start = date.atStartOfDay();
+            LocalDateTime end = date.atTime(LocalTime.MAX);
+            return eventRepository.findByEventDateBetween(start, end, pageable).map(EventMapper::toEventDto);
+        } else if (keyword != null) {
+            return eventRepository.findByKeyword(keyword, pageable).map(EventMapper::toEventDto);
+        } else {
+            return eventRepository.findAll(pageable).map(EventMapper::toEventDto);
+        }
+    }
+
 }

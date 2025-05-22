@@ -16,7 +16,9 @@ export async function changeUserStatus(userId: string, data: any): Promise<any>{
 export async function getAllUsers(){
   return await apiService.get("api/v1/users");
 }
-
+export async function deleteUserAction(userId: string){
+  return await apiService.delete(`api/v1/users/${userId}`);
+}
 export async function getUsersStats(){
   return await apiService.get("api/v1/users/stats");
 }

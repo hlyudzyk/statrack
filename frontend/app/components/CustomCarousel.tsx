@@ -31,7 +31,7 @@ export default function CustomCarousel({ items, interval = 3000 }) {
           {items.map((item, index) => (
               <div
                   key={index}
-                  className="min-w-full flex-shrink-0 flex justify-center items-center"
+                  className="min-w-full flex justify-center items-center"
               >
                 <EventSlide eventItem={item} />
               </div>

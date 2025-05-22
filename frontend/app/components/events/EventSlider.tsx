@@ -1,10 +1,8 @@
 
 "use client";
 
-import { Carousel  } from "flowbite-react";
 import {useEffect, useState} from "react";
 import {Event} from "@/app/lib/types"
-import EventSlide from "@/app/components/events/EventSlide"
 import {getAllEvents} from "@/app/lib/eventActions";
 import CustomCarousel from "@/app/components/CustomCarousel";
 
@@ -25,7 +23,7 @@ const EventSlider = () => {
   }, []);
 
   return (
-      <div className="h-156 sm:h-64 xl:h-80 3xl:h-[800px] mx-5">
+      <div className="h-156 sm:h-64 xl:h-80 3xl:h-[800px] mx-5 lg:my-32">
         <CustomCarousel items={events}/>
       </div>
   );
