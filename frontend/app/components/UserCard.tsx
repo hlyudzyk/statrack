@@ -15,7 +15,7 @@ interface UserListCardProps {
   imageUrl: string | null;
   role: string;
   department?: string;
-  onDeleteUser?: (id: number) => void; // Deletion handler
+  onDeleteUser?: (id: string) => void; // Deletion handler
 }
 const roleIcons = {
   ADMIN: "/high_rank.png",

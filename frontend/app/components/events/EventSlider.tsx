@@ -12,7 +12,7 @@ const EventSlider = () => {
   const fetchEvents = async (page = 0, size = 10) => {
     try {
       const data = await getAllEvents(page,size);
-      setEvents(data.content);
+      setEvents(data as Event[]);
     } catch (err) {
       console.error(err);
     }

@@ -21,7 +21,7 @@ export type ApiError = {
   message: string;
   timestamp: Date;
 }
-export type TimelineItem = {
+export type ClockingEvent = {
   id: string;
   timestamp: string;
   status: string;

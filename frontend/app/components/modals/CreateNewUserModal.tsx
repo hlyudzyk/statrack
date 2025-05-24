@@ -57,7 +57,7 @@ const CreateNewUserModal = () => {
                type="text" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
         <input onChange={(e) => setEmail(e.target.value)} placeholder="Users e-mail address"
                type="email" className="w-full h-[54px] px-4  border border-gray-300 rounded-xl"/>
-        <RoleSelect value={roleOptions[0]} onChange={(role) => setRole(role.value)}/>
+        <RoleSelect value={roleOptions[0]} onChange={(role) => setRole(role.value)} disabled={false}/>
 
         <Datepicker onChange={(date)=>handleDateChange(date)} placeholder="Users birthday"/>
 
