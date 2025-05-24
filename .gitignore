@@ -4,6 +4,7 @@
 /statrack/mvnw
 /statrack/mvnw.cmd
 /statrack/.mvn
+/statrack/out
 application.yml
 
 /uploads
