@@ -1,0 +1,38 @@
+[
+  {
+    "firstname": "Admin",
+    "lastname": "Admin",
+    "email": "admin@example.com",
+    "password": "password",
+    "role": "ADMIN",
+    "birthday": "1990-01-01",
+    "imageUrl": null,
+    "lastSession": null,
+    "status": "OFFLINE",
+    "accountStatus": "ACTIVE"
+  },
+  {
+    "firstname": "Alice",
+    "lastname": "Smith",
+    "email": "alice@example.com",
+    "password": "password",
+    "role": "TEACHER",
+    "birthday": "1985-05-15",
+    "imageUrl": null,
+    "lastSession": null,
+    "status": "OFFLINE",
+    "accountStatus": "ACTIVE"
+  },
+  {
+    "firstname": "Bob",
+    "lastname": "Johnson",
+    "email": "bob@example.com",
+    "password": "password",
+    "role": "TV_VIEWER",
+    "birthday": "1978-12-03",
+    "imageUrl": null,
+    "lastSession": null,
+    "status": "OFFLINE",
+    "accountStatus": "ACTIVE"
+  }
+]

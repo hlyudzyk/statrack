@@ -49,8 +49,8 @@ const Dashboard = () => {
 
   return (
       <div className="space-y-6 bg-gray-200 w-full p-12 rounded-2xl">
-        <h3 className="text-3xl font-semibold">Dashboard</h3>
-        <h4 className="text-xl text-gray-700">Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.</h4>
+        <h3 className="text-3xl font-semibold" data-testid="dashboard-header">Dashboard</h3>
+        <h4 className="text-xl text-gray-700"  data-testid="welcome-text">Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.</h4>
         <h4 className="text-md text-gray-700">What's your status?</h4>
 
         <div className="flex flex-wrap gap-4 justify-start">

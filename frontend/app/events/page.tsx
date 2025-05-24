@@ -85,8 +85,9 @@ const EventsPage = () => {
   return (
       <div>
         <div className="flex items-center justify-between mb-6 m-5">
-          <h3 className="text-2xl">Events</h3>
+          <h3 data-testid="events-header" className="text-2xl">Events</h3>
           <button
+              data-testid="expand-button"
               onClick={() => setShowForm((prev) => !prev)}
               className="w-10 h-10 text-xl bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition"
           >
@@ -98,6 +99,7 @@ const EventsPage = () => {
             <div className="gap-6 p-5">
               <div>
                 <InputField
+                    dataTestId="header-input"
                     label="Header"
                     value={header}
                     onChange={(e) => setHeader(e.target.value)}
@@ -125,6 +127,7 @@ const EventsPage = () => {
                 />
                 <div className="mt-6 max-w-md">
                   <CustomButton
+                      data-testid="create-event-button"
                       label="Create Event"
                       onClick={handleCreateEvent}
                       disabled={header.trim() === ""}

@@ -23,12 +23,14 @@ const CustomButton = ({
                         className = '',
                         variant = 'default',
                         disabled = false,
+                        ...props
                       }: CustomButtonProps): JSX.Element => {
   return (
       <button
           type="button"
           onClick={onClick}
           disabled={disabled}
+          data-testid={props['data-testid']}
           className={`w-full py-4 text-center rounded-xl transition 
         ${disabled ? 'bg-gray-300 cursor-not-allowed text-gray-500' : `${variantClasses[variant]} cursor-pointer`} 
         ${className}`}

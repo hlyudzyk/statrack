@@ -81,7 +81,7 @@ const AccountPage = () => {
             </div>
 
             <div className="w-full pt-20">
-              <h2 className="mb-6 text-2xl">{editMode()?"Describe yourself":"User's personal data"}</h2>
+              <h2 data-testid="allowed-action-label" className="mb-6 text-2xl">{editMode()?"Describe yourself":"User's personal data"}</h2>
 
               <InputField
                   label="Firstname"
