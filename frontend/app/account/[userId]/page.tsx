@@ -7,7 +7,7 @@ import {useParams} from "next/navigation";
 import InputField from "@/app/components/forms/InputField";
 import {Datepicker, HR} from "flowbite-react";
 import {getUserData, updateUserData} from "@/app/lib/userActions";
-import {User} from "@/app/lib/types";
+import {RoleStatusValue, User} from "@/app/lib/types";
 import RoleSelect from "@/app/components/forms/RoleSelect";
 import {roleOptions} from "@/app/lib/constants";
 import {ImageUploader} from "@/app/components/forms/ImageUploader";
@@ -86,14 +86,20 @@ const AccountPage = () => {
               <InputField
                   label="Firstname"
                   value={fetchedUser.firstname}
-                  onChange={(e) => setFetchedUser({ ...fetchedUser, firstname: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if (!fetchedUser) return;
+                    setFetchedUser({ ...fetchedUser, firstname: e.target.value });
+                  }}
                   readonly={!editMode()}
               />
 
               <InputField
                   label="Lastname"
                   value={fetchedUser.lastname}
-                  onChange={(e) => setFetchedUser({ ...fetchedUser, lastname: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if (!fetchedUser) return;
+                    setFetchedUser({ ...fetchedUser, lastname: e.target.value });
+                  }}
                   readonly={!editMode()}
               />
 
@@ -105,14 +111,17 @@ const AccountPage = () => {
               />
 
               <RoleSelect
-                  value={roleOptions.find(o => o.value === fetchedUser.role)}
-                  onChange={(role) => setFetchedUser({ ...fetchedUser, role: role.value })}
-                  disabled={!editMode()}
+                  value={roleOptions.find(o => o.value === fetchedUser?.role) ?? roleOptions[0]}
+                  onChange={(role) => {
+                    if (!fetchedUser) return;
+                    setFetchedUser({ ...fetchedUser, role: role.value });
+                  }}                  disabled={!editMode()}
               />
               <HR/>
               <Datepicker
                   maxDate={getMaxDate()}
                   onChange={(date) => {
+                    if (!fetchedUser) return;
                     const formatted = date.toISOString().split('T')[0];
                     setFetchedUser({ ...fetchedUser, birthday: formatted });
                   }}

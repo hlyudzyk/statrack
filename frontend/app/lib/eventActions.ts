@@ -1,5 +1,6 @@
 'use server'
 import apiService from "@/app/services/apiService";
+import {Event} from "@/app/lib/types"
 
 export async function getAllEvents(page: number, size: number, date?: string, keyword?: string): Promise<Event[]> {
   const params = new URLSearchParams({ page: page.toString(), size: size.toString() });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextareaField = ({ label, value, onChange, readonly }) => (
+const TextareaField = ({ label, value, onChange, readonly=false }) => (
   <div className="pt-3 pb-6 space-y-4">
     <div className="flex flex-col space-y-2">
       <label>{label}</label>
