@@ -39,7 +39,7 @@ const EventsPage = () => {
   ) => {
     try {
       const data = await getAllEvents(page, size, filterDate, filterKeyword);
-      setEvents(data.content);
+      setEvents(data);
     } catch (err) {
       console.error(err);
     }

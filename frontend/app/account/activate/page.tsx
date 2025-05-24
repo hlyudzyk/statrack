@@ -29,12 +29,11 @@ const ActivateAccount = () => {
 
   };
 
-  const handleActivateAccount = async (e) => {
+  const handleActivateAccount = async () => {
     if (password != repeatPassword) {
       setError("Passwords don't match")
       return;
     }
-    e.preventDefault();
     if (password === repeatPassword) {
       const response = await apiService.postWithoutToken("api/v1/auth/activate-account",JSON.stringify({"token":token,"password":password}))
       if(response.access_token){

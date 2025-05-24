@@ -4,24 +4,25 @@ import {
   Timeline,
   TimelineContent,
   TimelineItem,
+    TimelineTime,
   TimelinePoint,
-  TimelineTime,
   TimelineTitle,
 } from "flowbite-react";
 import {useUser} from "@/app/lib/context/UserContext";
 import {useEffect, useState} from "react";
 import {HiCalendar} from "react-icons/hi";
 import {getClockingEventsByUser} from "@/app/lib/clockingEvents";
+import {ClockingEvent} from "@/app/lib/types";
 
 const UserStatusTimeline = () => {
   const {user, setUser } = useUser()
-  const [timeline, setTimeline] = useState<TimelineItem[]>([])
+  const [timeline, setTimeline] = useState<ClockingEvent[]>([])
 
   const fetchTimeLine = async (page = 0, size = 10) => {
     try {
       if(user===null){return;}
       const data = await getClockingEventsByUser(user?.id, page,size);
-      setTimeline(data.content);
+      setTimeline(data);
     } catch (err) {
       console.log(err);
     }
