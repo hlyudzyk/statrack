@@ -1,10 +1,11 @@
 import React from 'react';
 
-const InputField = ({ label, value, onChange, readonly }) => (
+const InputField = ({ label, value, onChange, readonly, dataTestId=null }) => (
     <div className="pt-3 pb-6 space-y-4">
       <div className="flex flex-col space-y-2">
         <label>{label}</label>
         <input
+            data-testid={dataTestId}
             disabled={readonly}
             type="text"
             value={value}
