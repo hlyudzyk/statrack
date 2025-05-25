@@ -6,7 +6,8 @@ export async function getAllEvents(page: number, size: number, date?: string, ke
   const params = new URLSearchParams({ page: page.toString(), size: size.toString() });
   if (date) params.append("date", date);
   if (keyword) params.append("keyword", keyword);
-  return await apiService.get(`api/v1/events?${params.toString()}`);
+  const response = await apiService.get(`api/v1/events?${params.toString()}`);
+  return response.content;
 }
 
 export async function getEventById(eventId: string): Promise<Event>{
