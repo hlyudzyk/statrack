@@ -46,7 +46,7 @@ const UserStatusTimeline = () => {
   },[])
   return (
       <Timeline>
-        {timeline.slice(0,10).map((t)=>
+        {timeline.map((t)=>
           (<TimelineItem key={t.id} color="red">
                 <TimelinePoint icon={HiCalendar} />
                 <TimelineContent>
