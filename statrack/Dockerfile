@@ -1,4 +1,4 @@
-FROM maven:3.9.6-coretto-21 AS build
+FROM maven:3.9.9-amazoncorretto-21 AS build
 WORKDIR /build
 
 COPY pom.xml .
