@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {getAllEvents} from "@/app/lib/eventActions";
 import CustomCarousel from "@/app/components/CustomCarousel";
-
+import {Event} from "@/app/lib/types"
 const EventSlider = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,6 @@ const EventSlider = () => {
         const response = await getAllEvents(0, 10);
 
         if (!Array.isArray(response)) {
-          console.log(response)
           throw new Error("Invalid response format");
         }
 

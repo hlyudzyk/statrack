@@ -12,21 +12,23 @@ const LoginPage = () => {
   const [password,setPassword] = useState('');
   const [error,setError] = useState<ApiError | null >(null)
 
-  const submitLogin = async()=>{
+  const submitLogin = async () => {
     setError(null);
-    const formData = {
-      email:email,
-      password:password
-    }
+    const formData = { email, password };
 
-    const response = await authenticate(JSON.stringify(formData))
-    if(response.access_token){
+    const response = await authenticate(JSON.stringify(formData));
+
+    if (response.access_token) {
       await handleLogin(response.id, response.access_token, response.refresh_token);
-      router.push('/')
+
+      setTimeout(() => {
+        router.push('/');
+      }, 0);
     } else {
       setError(response);
     }
-  }
+  };
+
 
   return (
       <div className="flex items-center justify-center fixed inset-0 bg-white dark:bg-gray-900">
