@@ -6,11 +6,12 @@
     "local": "env-cmd -f .env.local node server.js",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3000",
     "lint": "next lint"
   },
   "dependencies": {
     "@next/env": "^15.1.6",
+    "date-fns": "^4.1.0",
     "flowbite-react": "^0.10.2",
     "next": "15.1.6",
     "react": "^19.0.0",

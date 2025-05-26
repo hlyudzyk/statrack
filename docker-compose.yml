@@ -1,26 +1,40 @@
 version: '3.8'
 
 services:
-#  app:
-#    build:
-#      context: statrack/
-#      dockerfile: Dockerfile
-#
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - postgres
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/statrack
-#      SPRING_DATASOURCE_USERNAME: statrack
-#      SPRING_DATASOURCE_PASSWORD: statrack
+  backend:
+    container_name: "backend"
+    build:
+      context: statrack/
+      dockerfile: Dockerfile
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/statrack
+      SPRING_DATASOURCE_USERNAME: #
+      SPRING_DATASOURCE_PASSWORD: #
+      EMAIL_HOST_NAME: ${EMAIL_HOST_NAME}
+      EMAIL_USER_NAME: ${EMAIL_USER_NAME}
+      EMAIL_APP_PASSWORD: ${EMAIL_APP_PASSWORD}
+
+  frontend:
+    container_name: "frontend"
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+
+    ports:
+      - "3000:3000"
 
   postgres:
+    container_name: 'app-db'
     image: postgres:16
     environment:
-      POSTGRES_DB: statrack
-      POSTGRES_USER: statrack
-      POSTGRES_PASSWORD: statrack
+      POSTGRES_DB: #
+      POSTGRES_USER: #
+      POSTGRES_PASSWORD: #
     ports:
       - "5432:5432"
     volumes:
@@ -30,8 +44,8 @@ services:
     container_name: 'app-message-broker'
     image: 'rabbitmq:latest'
     environment:
-      - 'RABBITMQ_DEFAULT_PASS=statrack'
-      - 'RABBITMQ_DEFAULT_USER=statrack'
+      - 'RABBITMQ_DEFAULT_PASS=#'
+      - 'RABBITMQ_DEFAULT_USER=#'
     ports:
       - '5672:5672'
 volumes:
