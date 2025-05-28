@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'backend',
+        hostname: process.env.NEXT_PUBLIC_HOST_NAME,
         port: '8080',
         pathname: '/uploads/**',
       },

@@ -3,6 +3,10 @@ import apiService from "@/app/services/apiService";
 import {User} from "@/app/lib/types"
 import {getUserId} from "@/app/lib/actions";
 
+export async function registerUser(payload: any){
+  return await apiService.post('api/v1/users/register',JSON.stringify(payload), "application/json");
+}
+
 export async function getUserData(userId: string): Promise<User> {
   return await apiService.get(`api/v1/users/${userId}`);
 }
