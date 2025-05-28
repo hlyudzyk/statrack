@@ -1,9 +1,15 @@
 spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
-    url: jdbc:postgresql://localhost:5432/statrack
+    url: jdbc:postgresql://app-db:5432/statrack
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USERNAME:statrack}
-    password: ${DB_PASSWORD:statrack}
+    username: ${DB_USER:""}
+    password: ${DB_PASSWORD:""}
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,18 +18,27 @@ spring:
   flyway:
     baseline-version: 1
     baseline-on-migrate: true
+    user: ${DB_USER:""}
+    password: ${DB_PASSWORD:""}
+    url: jdbc:postgresql://app-db:5432/statrack
+
+  rabbitmq:
+    password: ${MQ_PASSWORD:""}
+    username: ${MQ_USER:""}
+    host: app-message-broker
+
   mail:
-    host: smtp.gmail.com
+    host: ${EMAIL_HOSTNAME}
     port: 587
-    username: ${MAIL_USERNAME:}
-    password: ${MAIL_PASSWORD:}
+    username: ${EMAIL_USER_NAME}
+    password: ${EMAIL_APP_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-        debug: true
+      debug: true
 
 logging:
   level:
@@ -32,6 +47,16 @@ logging:
     org.springframework.boot.autoconfigure: DEBUG
     org.springframework: DEBUG
     root: INFO
+
+frontend:
+  url: http://frontend:3000
+
+# email domain pattern
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
 
 application:
   security:
@@ -43,3 +68,4 @@ application:
 
 file:
   upload-dir: ${FILE_UPLOAD_DIR:uploads/}
+
