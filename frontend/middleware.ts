@@ -5,7 +5,7 @@ export async function middleware(request: NextRequest) {
   const token = await getAccessToken()
 
   if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/auth-option', request.url));
   }
 
   return NextResponse.next();
@@ -13,6 +13,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|images|login|account/activate).*)',
+    '/((?!api|_next/static|_next/image|images|login|auth-option|account/activate).*)',
   ],
 };
