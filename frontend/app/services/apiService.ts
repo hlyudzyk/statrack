@@ -26,7 +26,6 @@ const apiService = {
     })
   },
   post: async function(url:string, data:any, contentType: string | null = null):Promise<any> {
-    console.log('post', url, data);
 
     const token = await getAccessToken();
     const headers   = {

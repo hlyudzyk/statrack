@@ -74,7 +74,7 @@ public class UserService {
         }
 
         catch (DataIntegrityViolationException e) {
-            throw new ConstraintViolationException("Email is already in use",null);
+            throw new ApiException(ApiError.DUPLICATE_EMAIL);
         }
 
         String token = UUID.randomUUID().toString();

@@ -9,7 +9,7 @@ setup('authenticate', async ({ page }) => {
   await page.getByPlaceholder('Your password').fill('password');
   await page.getByRole('button', { name: 'Log in' }).click();
   await page.waitForURL('http://localhost:3000/');
-  await expect(page.locator('h2')).toBeVisible()
+  await expect(page.getByTestId("users-header")).toBeVisible()
 
   await page.context().storageState({ path: authFile });
 });

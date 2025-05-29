@@ -46,7 +46,7 @@ const Modal:({label, content, isOpen, close}: {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
                   </div>
-                <h2 className="text-lg font-bold">
+                <h2 className="text-lg font-bold" data-testid="modal-header">
                   {label}
                 </h2>
               </header>
