@@ -49,10 +49,10 @@ const Users = () => {
   return (
       <div className="flex flex-col w-full bg-gray-200 rounded-xl 3xl:rounded-3xl">
         <div className="flex m-5 justify-between 3xl:p-16" >
-          <h2 className="text-2xl 3xl:text-6xl font-semibold">Statrack users</h2>
+          <h2 className="text-2xl 3xl:text-6xl font-semibold" data-testid="users-header">Statrack users</h2>
           { user?.role==="ADMIN" &&
             (<CustomButton label={"Add user"} onClick={() => signupModal.open()}
-                        className="max-w-32"/>)
+                        className="max-w-32" data-testid="add-user-button"/>)
           }
         </div>
         <div className="flex flex-wrap gap-5 p-5">

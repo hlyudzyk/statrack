@@ -14,12 +14,11 @@ const CreateNewUserModal = () => {
   const [email, setEmail] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
-  const [role, setRole] = useState(roleOptions[0]);
+  const [role, setRole] = useState(roleOptions[0].value);
   const [birthday, setBirthday] = useState<Date>(new Date());
   const [errors, setErrors] = useState<string[]>([]);
 
   const submitSignup = async () => {
-    // 🔹 Clear old errors before sending new request
     setErrors([]);
 
     const formData = {
@@ -27,7 +26,7 @@ const CreateNewUserModal = () => {
       lastname,
       email,
       birthday,
-      role: role.value,
+      role: role,
     };
 
     const response = await registerUser(formData);
@@ -38,7 +37,7 @@ const CreateNewUserModal = () => {
         const tmpErrors: string[] = Object.values(parsedErrors);
         setErrors(tmpErrors);
       } catch (err) {
-        setErrors(['Unexpected error occurred.']);
+        setErrors([response.message]);
       }
     } else {
       signupModal.close();
@@ -55,52 +54,68 @@ const CreateNewUserModal = () => {
   };
 
   const content = (
-      <form onSubmit={(e) => { e.preventDefault(); submitSignup(); }} className="space-y-4">
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        submitSignup();
+      }} className="space-y-4">
         <input
+            data-testid="input-firstname"
             onChange={handleChangeWithClear(setFirstname)}
             placeholder="User's firstname"
             type="text"
             className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
         />
         <input
+            data-testid="input-lastname"
             onChange={handleChangeWithClear(setLastname)}
             placeholder="User's lastname"
             type="text"
             className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
         />
         <input
+            data-testid="input-email"
             onChange={handleChangeWithClear(setEmail)}
             placeholder="User's e-mail address"
             type="email"
             className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
         />
-        <RoleSelect
-            value={roleOptions[0]}
-            onChange={(role) => {
-              setErrors([]);
-              setRole(role.value);
-            }}
-            disabled={false}
-        />
-        <Datepicker
-            onChange={(date) => {
-              setErrors([]);
-              handleDateChange(date);
-            }}
-            placeholder="User's birthday"
-        />
+        <div data-testid="select-role">
+          <RoleSelect
+              value={roleOptions[0]}
+              onChange={(role) => {
+                console.log(role.value)
+                setErrors([]);
+                setRole(role.value);
+              }}
+              disabled={false}
+          />
+        </div>
+        <div data-testid="datepicker-birthday">
+          <Datepicker
+              value={birthday}
+              onChange={(date) => {
+                setErrors([]);
+                handleDateChange(date);
+              }}
+              placeholder="User's birthday"
+          />
+        </div>
 
         {errors.map((error, index) => (
             <div
                 className="p-5 bg-red-500 text-white rounded-xl opacity-80"
                 key={`error_${index}`}
+                data-testid={`error-${index}`}
             >
               {error}
             </div>
         ))}
 
-        <CustomButton label="Register user" onClick={submitSignup} />
+        <div>
+          <CustomButton label="Register user" onClick={submitSignup} data-testid="submit-user-button"/>
+        </div>
       </form>
+
   );
 
   return (
