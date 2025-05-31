@@ -5,14 +5,22 @@ import Image from 'next/image';
 import {AccountPageSkeleton} from "@/app/components/skeletons";
 import {useParams} from "next/navigation";
 import InputField from "@/app/components/forms/InputField";
-import {Datepicker, HR} from "flowbite-react";
+import {
+  Datepicker,
+  HR,
+  Timeline,
+  TimelineContent,
+  TimelineItem,
+  TimelinePoint, TimelineTime, TimelineTitle
+} from "flowbite-react";
 import {getUserData, updateUserData} from "@/app/lib/userActions";
-import {RoleStatusValue, User} from "@/app/lib/types";
+import {QueueEntry, User} from "@/app/lib/types";
 import RoleSelect from "@/app/components/forms/RoleSelect";
 import {roleOptions} from "@/app/lib/constants";
 import {ImageUploader} from "@/app/components/forms/ImageUploader";
-import UserStatusTimeline from "@/app/components/UserStatusTimeline";
 import {useUser} from "@/app/lib/context/UserContext";
+import {HiCalendar} from "react-icons/hi";
+import {getQueueEntriesByUser} from "@/app/lib/queueActions";
 
 
 const AccountPage = () => {
@@ -22,14 +30,25 @@ const AccountPage = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [image,setImage] = useState<File|null>(null);
   const {user, setUser} = useUser();
+  const [queueEntries, setQueueEntries] = useState<QueueEntry[]>([]);
+
 
   const editMode = () => {
     console.log(user?.id)
     return fetchedUser?.id===user?.id || user?.role==="ADMIN";
   }
 
-  const fetchUser = async () => {
-      setFetchedUser(await getUserData(userId));
+  const formatDate = (date: Date) => {
+    const formatted = date.toLocaleString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+    return `${formatted.split(", ")[0]}, ${formatted.split(", ")[1]} at ${formatted.split(", ")[2]}`;
   }
 
   const getMaxDate: () => Date = () => {
@@ -39,7 +58,18 @@ const AccountPage = () => {
   }
 
   useEffect(()=>{
-    fetchUser()
+    const fetchData = async () => {
+      try {
+        setFetchedUser(await getUserData(userId));
+        setQueueEntries(await getQueueEntriesByUser(userId));
+      } catch (err) {
+
+      } finally {
+        //setLoading(false);
+      }
+    };
+    fetchData();
+
   },[userId])
 
   const handleSave = async () => {
@@ -152,9 +182,21 @@ const AccountPage = () => {
         </div>
 
         <div className="p-6 rounded-xl border-gray-300 shadow-xl mt-20">
-          <h1 className="my-6 text-2xl">Activity</h1>
+          <h1 className="my-6 text-2xl">Your queue</h1>
           <div className="mt-4">
-            <UserStatusTimeline/>
+            <Timeline>
+              {queueEntries.map((qe)=>
+                  (<TimelineItem key={qe.id} color="red">
+                        <TimelinePoint icon={HiCalendar} />
+                        <TimelineContent>
+                          <TimelineTime>{formatDate(new Date(qe.scheduledTime))}</TimelineTime>
+                          <TimelineTitle>{qe.status}</TimelineTitle>
+                        </TimelineContent>
+                      </TimelineItem>
+                  )
+              )
+              }
+            </Timeline>
           </div>
         </div>
       </main>

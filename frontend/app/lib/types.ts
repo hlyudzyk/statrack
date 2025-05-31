@@ -11,6 +11,23 @@ export type User = {
   authorities: string[];
 };
 
+export type QueueEntry = {
+  id: string;
+  studentEmail: string;
+  studentName: string;
+  queue: UsersQueue;
+  scheduledTime: string;
+  status: string;
+}
+
+export type UsersQueue = {
+  id: string;
+  maxStudents: string;
+  comment: string;
+  belongsTo: User;
+}
+
+
 export type RoleStatusValue = {
   label:string;
   value:string;

@@ -3,20 +3,22 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {handleLogin} from "@/app/lib/actions";
 import CustomButton from "@/app/components/forms/CustomButton";
-import {ApiError} from "@/app/lib/types";
 import {authenticate} from "@/app/lib/authService";
+import Loader from "@/app/components/Loader";
 
 const LoginPage = () => {
   const router = useRouter();
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
-  const [error,setError] = useState<ApiError | null >(null)
-
+  const [errors,setErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const submitLogin = async () => {
-    setError(null);
+    setLoading(true);
+    setErrors([]);
     const formData = { email, password };
 
     const response = await authenticate(JSON.stringify(formData));
+    console.log(response)
 
     if (response.access_token) {
       await handleLogin(response.id, response.access_token, response.refresh_token);
@@ -24,10 +26,21 @@ const LoginPage = () => {
       setTimeout(() => {
         router.push('/');
       }, 0);
-    } else {
-      setError(response);
+    } else if (response.message) {
+      try {
+        const parsedErrors = JSON.parse(response.message);
+        const tmpErrors: string[] = Object.values(parsedErrors);
+        setErrors(tmpErrors);
+      } catch (err) {
+        setErrors([response.message]);
+      }
     }
+    setLoading(false);
   };
+
+  if(loading){
+    return <Loader/>;
+  }
 
 
   return (
@@ -64,14 +77,16 @@ const LoginPage = () => {
                       className="w-full h-[64px] 2xl:h-[80px] 3xl:h-[100px] px-6 2xl:px-8 3xl:px-10 text-xl 2xl:text-2xl 3xl:text-5xl border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   />
 
-                  {/* Error message */}
-                  {error && (
+                  {errors.map((error, index) => (
                       <div
-                          className="p-6 2xl:p-8 3xl:p-10 bg-red-600 text-white text-base 2xl:text-2xl 3xl:text-4xl rounded-xl opacity-90"
-                          key={`error_${error.code}`}>
-                        {error.message}
+                          className="p-5 bg-red-500 text-white rounded-xl opacity-80"
+                          key={`error_${index}`}
+                          data-testid={`error-${index}`}
+                      >
+                        {error}
                       </div>
-                  )}
+                  ))}
+
 
                   {/* Submit button */}
                   <CustomButton

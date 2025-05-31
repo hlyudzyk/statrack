@@ -45,13 +45,13 @@ public class QueueService {
         return queueEntryRepository.findAllByUser(userId);
     }
 
-
     public boolean isTimeSlotAvailable(UUID queueId, LocalDateTime scheduledTime) {
         return !queueEntryRepository.existsByQueueIdAndScheduledTime(queueId, scheduledTime);
     }
 
 
     public QueueEntry addStudentToQueue(UUID userId, EntryRequest request) {
+        System.out.println(request.getStudentName());
         UsersQueue queue = usersQueueRepository.getUsersQueueByBelongsToId(userId).orElseThrow(
             () -> new ApiException(ApiError.USER_NOT_FOUND)
         );
@@ -64,13 +64,15 @@ public class QueueService {
             .status(Status.ACCEPTED)
             .build();
 
+        entry = queueEntryRepository.save(entry);
+
         emailService.sendMessage(
             queue.getBelongsTo().getEmail(),
             "New queue entry!",
             String.format("%s has requested a meeting!", request.getStudentName())
         );
 
-        return queueEntryRepository.save(entry);
+        return entry;
     }
 
     public Optional<QueueEntry> getEntry(UUID entryId) {

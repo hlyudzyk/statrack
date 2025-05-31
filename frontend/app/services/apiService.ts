@@ -102,17 +102,21 @@ const apiService = {
       })
     })
   },
-  postWithoutToken: async function(url:string, data:any):Promise<any> {
+  postWithoutToken: async function(url:string, data:any, contentType: string | null = null):Promise<any> {
     console.log('post', url, data);
+    const headers   = {
+      'Accept': 'application/json',
+      // 'Content-Type': 'application/json'
+    }
+    if (contentType!==null){
+      headers["Content-Type"] = contentType
+    }
 
     return new Promise((resolve,reject)=>{
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`,{
         method: 'POST',
         body:data,
-        headers:{
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
+        headers:headers
       })
       .then(response=>response.json())
       .then((json)=>{

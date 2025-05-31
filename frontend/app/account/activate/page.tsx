@@ -35,7 +35,7 @@ const ActivateAccount = () => {
       return;
     }
     if (password === repeatPassword) {
-      const response = await apiService.postWithoutToken("api/v1/auth/activate-account",JSON.stringify({"token":token,"password":password}))
+      const response = await apiService.postWithoutToken("api/v1/auth/activate-account",JSON.stringify({"token":token,"password":password}),'application/json')
       if(response.access_token){
         await handleLogin(response.id, response.access_token, response.refresh_token);
         router.push('/');

@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import CustomButton from "@/app/components/forms/CustomButton";
 import QueueForm from "@/app/components/QueueForm";
@@ -9,9 +9,11 @@ const UnauthenticatedOptions = () => {
   const [view, setView] = useState<"teacher" | "student" | null>(null);
   const router = useRouter();
 
-  if (view === "teacher") {
-    router.push("/login");
-  }
+  useEffect(() => {
+    if (view === "teacher") {
+      router.push("/login");
+    }
+  }, [view, router]);
 
   if (view === "student") {
     return (
