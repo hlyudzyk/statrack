@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNoResourceFoundApiException(ApiException ex) {
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundApiException(NoResourceFoundException ex) {
         ApiError err = ApiError.RESOURCE_NOT_FOUND;
 
         ErrorResponse body = new ErrorResponse(

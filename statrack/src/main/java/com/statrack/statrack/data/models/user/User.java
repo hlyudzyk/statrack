@@ -75,7 +75,7 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "createdBy", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<Event> createdEvents = new ArrayList<>();
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private ActivationToken activationToken;
 
   @OneToOne(mappedBy = "belongsTo", cascade = CascadeType.REMOVE, orphanRemoval = true)

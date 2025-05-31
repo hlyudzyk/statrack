@@ -192,7 +192,8 @@ const AccountPage = () => {
                         <TimelinePoint icon={HiCalendar} />
                         <TimelineContent>
                           <TimelineTime>{formatDate(new Date(qe.scheduledTime))}</TimelineTime>
-                          <TimelineTitle>{qe.status}</TimelineTitle>
+                          <TimelineTitle>{qe.studentName}</TimelineTitle>
+                          <TimelineContent>{qe.studentEmail}</TimelineContent>
                         </TimelineContent>
                       </TimelineItem>
                   )
