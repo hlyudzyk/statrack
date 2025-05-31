@@ -78,7 +78,7 @@ public class User implements UserDetails {
   @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private ActivationToken activationToken;
 
-  @OneToOne(mappedBy = "belongsTo", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(mappedBy = "belongsTo", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private UsersQueue queue;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)

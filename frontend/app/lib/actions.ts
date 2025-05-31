@@ -8,7 +8,6 @@ export async function getBackendUrl(){
 
 export async function handleRefresh(){
   const refreshToken = await getRefreshToken();
-  console.log(refreshToken)
 
   const token = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh-token`, {
         method:'POST',
@@ -26,7 +25,7 @@ export async function handleRefresh(){
           cookieStore.set('session_access_token',json.access_token,{
             httpOnly:true,
             secure:process.env.NODE_ENV==='production',
-            maxAge:60*60,//60 minutes
+            maxAge:60*60*72,//3 days
             path:'/'
           });
           return json.access_token;
@@ -53,7 +52,7 @@ export async function handleLogin(userId:string,accessToken:string,refreshToken:
   cookieStore.set('session_access_token',accessToken,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:60*60,//60 minutes
+    maxAge:60,//60 minutes
     path:'/'
   });
 

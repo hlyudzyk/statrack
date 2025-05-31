@@ -1,6 +1,7 @@
 package com.statrack.statrack.api.controllers;
 
 import com.statrack.statrack.api.dto.EntryRequest;
+import com.statrack.statrack.api.dto.QueueEntryDto;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.QueueEntry;
 import com.statrack.statrack.data.models.UsersQueue;
@@ -41,7 +42,7 @@ public class QueueController {
     }
 
     @GetMapping("/by-user-id/{userId}/entries")
-    public ResponseEntity<List<QueueEntry>> listEntries(@PathVariable UUID userId) {
+    public ResponseEntity<List<QueueEntryDto>> listEntries(@PathVariable UUID userId) {
         return ResponseEntity.ok(queueService.getEntriesByUser(userId));
     }
 

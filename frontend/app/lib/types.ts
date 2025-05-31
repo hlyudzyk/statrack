@@ -15,7 +15,6 @@ export type QueueEntry = {
   id: string;
   studentEmail: string;
   studentName: string;
-  queue: UsersQueue;
   scheduledTime: string;
   status: string;
 }

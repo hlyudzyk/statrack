@@ -1,5 +1,6 @@
 package com.statrack.statrack.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.statrack.statrack.data.models.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,7 @@ public class QueueEntry {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "queue_id", nullable = false)
+    @JsonIgnore
     private UsersQueue queue;
 
     private String studentEmail;

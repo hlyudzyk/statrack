@@ -1,5 +1,6 @@
 package com.statrack.statrack.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.statrack.statrack.data.models.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,6 +40,7 @@ public class UsersQueue {
     private User belongsTo;
 
     @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<QueueEntry> entries = new ArrayList<>();
 
     private int maxStudents;

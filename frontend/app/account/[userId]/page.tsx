@@ -61,7 +61,9 @@ const AccountPage = () => {
     const fetchData = async () => {
       try {
         setFetchedUser(await getUserData(userId));
-        setQueueEntries(await getQueueEntriesByUser(userId));
+        const qe = await getQueueEntriesByUser(userId);
+        console.log(qe)
+        setQueueEntries(qe);
       } catch (err) {
 
       } finally {

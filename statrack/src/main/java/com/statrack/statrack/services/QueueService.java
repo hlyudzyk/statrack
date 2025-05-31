@@ -1,6 +1,7 @@
 package com.statrack.statrack.services;
 
 import com.statrack.statrack.api.dto.EntryRequest;
+import com.statrack.statrack.api.dto.QueueEntryDto;
 import com.statrack.statrack.data.models.QueueEntry;
 import com.statrack.statrack.data.models.QueueEntry.Status;
 import com.statrack.statrack.data.models.UsersQueue;
@@ -41,8 +42,8 @@ public class QueueService {
         return queueEntryRepository.findByUserAndStatus(userId, status);
     }
 
-    public List<QueueEntry> getEntriesByUser(UUID userId) {
-        return queueEntryRepository.findAllByUser(userId);
+    public List<QueueEntryDto> getEntriesByUser(UUID userId) {
+        return queueEntryRepository.findAllByUser(userId).stream().map(QueueEntryDto::from).toList();
     }
 
     public boolean isTimeSlotAvailable(UUID queueId, LocalDateTime scheduledTime) {
