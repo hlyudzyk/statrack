@@ -4,6 +4,7 @@ import com.statrack.statrack.api.dto.UpdateUserDto;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.api.dto.UserStatsDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
+import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.Status;
@@ -183,5 +184,15 @@ public class UserService {
         StatsReportRequest request = new StatsReportRequest();
         request.setEmail(toEmail);
         rabbitTemplate.convertAndSend("statsReportQueue", request);
+    }
+
+    public List<UserDto> getUsersWithAvailableQueueSlots() {
+        return userRepository.findAll().stream()
+            .filter(user -> {
+                UsersQueue queue = user.getQueue();
+                return queue != null &&
+                    queue.getEntries().size() < queue.getMaxStudents();
+            }).map(UserMapper::toDto)
+            .toList();
     }
 }

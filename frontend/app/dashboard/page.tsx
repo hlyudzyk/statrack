@@ -13,7 +13,6 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    console.log(user)
     if (user?.status) {
       setStatus(user.status);
     }

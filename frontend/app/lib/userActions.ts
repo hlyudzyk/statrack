@@ -31,8 +31,8 @@ export async function sendUsersStatsReport(){
   return await apiService.post("api/v1/users/stats", {},"application/json");
 }
 
-export async function getUserStatusRecords(userId: string){
-
+export async function getAvailableUsers(): Promise<Event>{
+  return await apiService.get(`api/v1/users/available`, false);
 }
 
 export async function getCurrentUser(): Promise<User | null>{

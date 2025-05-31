@@ -43,6 +43,11 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<UserDto>> getAllAvailable(){
+        return ResponseEntity.ok(userService.getUsersWithAvailableQueueSlots());
+    }
+
     @GetMapping("/stats")
     public List<UserStatsDTO> getAllUserStats() {
         return userService.computeAllUserStats();
