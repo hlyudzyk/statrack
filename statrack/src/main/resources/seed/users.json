@@ -2,7 +2,7 @@
   {
     "firstname": "Admin",
     "lastname": "Admin",
-    "email": "admin@example.com",
+    "email": "valerijglud0@gmail.com",
     "password": "password",
     "role": "ADMIN",
     "birthday": "1990-01-01",
@@ -14,7 +14,7 @@
   {
     "firstname": "Alice",
     "lastname": "Smith",
-    "email": "alice@example.com",
+    "email": "alice@kkkexample.com",
     "password": "password",
     "role": "TEACHER",
     "birthday": "1985-05-15",
@@ -26,7 +26,7 @@
   {
     "firstname": "Bob",
     "lastname": "Johnson",
-    "email": "bob@example.com",
+    "email": "bob@kkkexample.com",
     "password": "password",
     "role": "TV_VIEWER",
     "birthday": "1978-12-03",

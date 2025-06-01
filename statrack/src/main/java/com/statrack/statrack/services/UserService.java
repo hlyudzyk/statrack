@@ -4,6 +4,7 @@ import com.statrack.statrack.api.dto.UpdateUserDto;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.api.dto.UserStatsDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
+import com.statrack.statrack.data.models.Event;
 import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.User;
@@ -11,6 +12,7 @@ import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
+import com.statrack.statrack.data.repos.EventRepository;
 import com.statrack.statrack.data.repos.UserRepository;
 import com.statrack.statrack.data.repos.UsersQueueRepository;
 import com.statrack.statrack.exceptions.ApiError;
@@ -33,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +50,8 @@ public class UserService {
     private final FileStorageService fileStorageService;
     private final RabbitTemplate rabbitTemplate;
     private final UsersQueueRepository usersQueueRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EventRepository eventRepository;
     @Value("${frontend.url}")
     private String frontendUrl;
 
@@ -203,5 +208,31 @@ public class UserService {
                     queue.getEntries().size() < queue.getMaxStudents();
             }).map(UserMapper::toDto)
             .toList();
+    }
+
+    @Transactional
+    public void seedDatabase(List<User> users){
+        users.forEach(
+            u -> {
+                u.setPassword(passwordEncoder.encode(u.getPassword()));
+            }
+            );
+
+        List<User> savedUsers = userRepository.saveAll(users);
+        savedUsers.forEach(u->{
+            emailService.sendMessage(u.getEmail(),"Welcome to statrack!", "Hello");
+            UsersQueue queue = UsersQueue.builder().belongsTo(u).maxStudents(5).build();
+            usersQueueRepository.save(queue);
+        }
+        );
+        Event event = Event.builder()
+            .header("Statrack launch day!")
+            .content("Today was launched Statrack platform!")
+            .createdBy(savedUsers.getFirst())
+            .eventDate(LocalDateTime.now())
+            .imageUrl("/uploads/launch_day_event_img.png")
+            .build();
+
+        eventRepository.save(event);
     }
 }
