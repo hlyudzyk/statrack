@@ -23,8 +23,7 @@ const EventSlider = () => {
 
         setEvents(response);
       } catch (err: any) {
-        console.error("Failed to fetch events:", err);
-        setError("Could not load events");
+        setError("No events to show");
         setEvents([]);
       } finally {
         setLoading(false);
