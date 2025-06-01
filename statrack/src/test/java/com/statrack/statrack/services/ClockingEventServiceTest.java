@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.statrack.statrack.api.dto.ClockingEventDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
@@ -76,7 +77,7 @@ class ClockingEventServiceTest {
         when(clockingEventRepository.save(any(ClockingEvent.class))).thenAnswer(inv -> inv.getArgument(0));
 
         // Act
-        ClockingEvent result = clockingEventService.createClockingEvent(mockUser.getId(), Status.ONLINE);
+        ClockingEvent result = clockingEventService.createClockingEvent(mockUser.getId(), new ClockingEventDTO(Status.ONLINE,""));
 
         // Assert
         assertNotNull(result);

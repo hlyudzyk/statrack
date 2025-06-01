@@ -4,9 +4,9 @@ import {
   Timeline,
   TimelineContent,
   TimelineItem,
-    TimelineTime,
+  TimelineTime,
   TimelinePoint,
-  TimelineTitle,
+  TimelineTitle, TimelineBody,
 } from "flowbite-react";
 import {useUser} from "@/app/lib/context/UserContext";
 import {useEffect, useState} from "react";
@@ -52,6 +52,7 @@ const UserStatusTimeline = () => {
                 <TimelineContent>
             <TimelineTime>{formatDate(new Date(t.timestamp))}</TimelineTime>
             <TimelineTitle>{t.status}</TimelineTitle>
+                  <TimelineBody>{t.comment}</TimelineBody>
           </TimelineContent>
         </TimelineItem>
           )

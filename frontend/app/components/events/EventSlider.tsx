@@ -19,6 +19,9 @@ const EventSlider = () => {
 
         if (!Array.isArray(response)) {
           console.log(response)
+          setEvents([]);
+          setError("No events to show");
+          return;
         }
 
         setEvents(response);
