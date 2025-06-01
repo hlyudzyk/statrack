@@ -3,21 +3,28 @@ import CustomButton from "@/app/components/forms/CustomButton";
 import {Datepicker} from "flowbite-react";
 import InputField from "@/app/components/forms/InputField";
 import React, {useState, useEffect} from "react";
-import {User} from "@/app/lib/types";
+import {QueueEntry, User} from "@/app/lib/types";
 import {getAvailableUsers} from "@/app/lib/userActions";
 import Loader from "@/app/components/Loader";
-import {joinQueue} from "@/app/lib/queueActions";
+import {
+  getQueueEntriesByUser,
+  getQueueEntriesByUserPublic,
+  joinQueue
+} from "@/app/lib/queueActions";
 import {FcCheckmark} from "react-icons/fc";
+import TimePickerPanel from "@/app/components/forms/TimePickerPanel";
 
 const QueueForm = () => {
   const { data: session, status } = useSession();
   const [date, setDate] = useState<Date>(new Date());
+  const [time, setTime] = useState<string>("09:00");
   const [comment, setComment] = useState("");
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
+  const [queueEntries,setQueueEntries] = useState<QueueEntry[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -62,6 +69,14 @@ const QueueForm = () => {
         </div>
     );
   }
+
+  const handleUserChange = async (e) => {
+      const user = availableUsers.find((u) => u.id === e.target.value);
+      setSelectedUser(user ?? null);
+      setQueueEntries(await getQueueEntriesByUserPublic(user.id));
+      console.log(queueEntries)
+  }
+
   const handleJoinQueue = async () => {
     if (!selectedUser) {
       setMessage("Please select a user first");
@@ -69,7 +84,7 @@ const QueueForm = () => {
       return;
     }
 
-    const requestedTime = `${date.toISOString().split("T")[0]}T09:00`;
+    const requestedTime = `${date.toISOString().split("T")[0]}T${time}`;
 
     const payload = new FormData();
     payload.append("studentEmail", session.user.email);
@@ -97,10 +112,7 @@ const QueueForm = () => {
         <select
             className="border rounded p-2 w-full"
             value={selectedUser?.id ?? ""}
-            onChange={(e) => {
-              const user = availableUsers.find((u) => u.id === e.target.value);
-              setSelectedUser(user ?? null);
-            }}
+            onChange={(e) => handleUserChange(e)}
         >
           <option value="">-- Select a user --</option>
           {availableUsers.map((user) => (
@@ -109,22 +121,13 @@ const QueueForm = () => {
               </option>
           ))}
         </select>
-
+        {selectedUser&&selectedUser.queueComment&&(<InputField label="Teacher's comment" value={selectedUser.queueComment} readonly={true}/>)}
         <div className="flex flex-row space-x-2">
           <Datepicker
               value={date}
               onChange={setDate}
           />
-          <input
-              type="time"
-              id="time"
-              min={0}
-              max={5}
-              value={1}
-              onChange={()=>{}}
-              required
-              className="rounded-none rounded-s-lg bg-gray-50 border text-gray-900 leading-none focus:ring-blue-500 focus:border-blue-500 block flex-1 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          />
+          <TimePickerPanel value={time} onChange={setTime} bookedTimes={queueEntries}/>
         </div>
 
 

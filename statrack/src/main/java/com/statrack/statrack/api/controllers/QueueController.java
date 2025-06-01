@@ -2,6 +2,7 @@ package com.statrack.statrack.api.controllers;
 
 import com.statrack.statrack.api.dto.EntryRequest;
 import com.statrack.statrack.api.dto.QueueEntryDto;
+import com.statrack.statrack.api.dto.QueueEntryPublicDto;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.data.models.QueueEntry;
 import com.statrack.statrack.data.models.UsersQueue;
@@ -27,10 +28,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class QueueController {
     private final QueueService queueService;
 
-    @PostMapping("/by-user-id/{userId}/entries")
+    @PostMapping("/public/by-user-id/{userId}/entries")
     public ResponseEntity<QueueEntryDto> joinQueue(@PathVariable UUID userId,
                                                 @ModelAttribute EntryRequest request) {
         return ResponseEntity.ok(queueService.addStudentToQueue(userId, request));
+    }
+
+    @GetMapping("/public/by-user-id/{userId}/entries")
+    public ResponseEntity<List<QueueEntryPublicDto>> listEntriesOnlyTimestamps(@PathVariable UUID userId) {
+        return ResponseEntity.ok(queueService.getTodayEntriesPublic(userId));
     }
 
     @PatchMapping("/by-user-id/{userId}/entries/{entryId}")
@@ -45,5 +51,6 @@ public class QueueController {
     public ResponseEntity<List<QueueEntryDto>> listEntries(@PathVariable UUID userId) {
         return ResponseEntity.ok(queueService.getTodayEntries(userId));
     }
+
 
 }

@@ -1,35 +1,42 @@
 import { useState } from "react";
+import {format} from "date-fns";
 
 
-interface TimePickerPanelProps{
-  value?:string;
-  onChange:(string)=>void;
+
+interface TimePickerPanelProps {
+  value?: string;
+  onChange: (value: string) => void;
+  bookedTimes?: { scheduledTime: string; status: string }[];
+
 }
 
-
-const TimePickerPanel = () => {
+const TimePickerPanel = ({ value, onChange, bookedTimes = [] }: TimePickerPanelProps) => {
   const [isTimetableOpen, setIsTimetableOpen] = useState(false);
-  const [selectedTime, setSelectedTime] = useState("12-am");
+  const today = new Date();
+  const datePart = format(today, "yyyy-MM-dd");
 
   const times = [
-    { id: "10-am", label: "10:00 AM" },
-    { id: "10-30-am", label: "10:30 AM" },
-    { id: "11-am", label: "11:00 AM" },
-    { id: "11-30-am", label: "11:30 AM" },
-    { id: "12-am", label: "12:00 AM" },
-    { id: "12-30-pm", label: "12:30 PM" },
-    { id: "1-pm", label: "01:00 PM" },
-    { id: "1-30-pm", label: "01:30 PM" },
-    { id: "2-pm", label: "02:00 PM" },
-    { id: "2-30-pm", label: "02:30 PM" },
-    { id: "3-pm", label: "03:00 PM" },
-    { id: "3-30-pm", label: "03:30 PM" },
+    { id: "9-am", label: "09:00" },
+    { id: "9-30-am", label: "09:30" },
+    { id: "10-am", label: "10:00" },
+    { id: "10-30-am", label: "10:30" },
+    { id: "11-am", label: "11:00" },
+    { id: "11-30-am", label: "11:30" },
+    { id: "12-am", label: "12:00" },
+    { id: "12-30-pm", label: "12:30" },
+    { id: "13-pm", label: "13:00" },
+    { id: "13-30-pm", label: "13:30" },
+    { id: "14-pm", label: "14:00" },
+    { id: "14-30-pm", label: "14:30" },
   ];
 
-  return (
-      <div className="pt-5 border-t border-gray-200 dark:border-gray-800 flex sm:flex-row flex-col sm:space-x-5 rtl:space-x-reverse">
+  const bookedSet = new Set(
+      bookedTimes.map(b => format(new Date(b.scheduledTime), "HH:mm"))
+  );
 
-        <div className="sm:ms-7 sm:ps-5 sm:border-s border-gray-200 dark:border-gray-800 w-full sm:max-w-[15rem] mt-5 sm:mt-0">
+  return (
+      <div className="border-gray-200 dark:border-gray-800 flex sm:flex-row flex-col sm:space-x-5 rtl:space-x-reverse">
+        <div className="relative w-full sm:max-w-[15rem]">
           <button
               type="button"
               onClick={() => setIsTimetableOpen((prev) => !prev)}
@@ -47,33 +54,44 @@ const TimePickerPanel = () => {
                   d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
               />
             </svg>
-            Pick a time
+            {value}
           </button>
 
           {isTimetableOpen && (
-              <ul id="timetable" className="grid w-full grid-cols-2 gap-2 mt-5">
-                {times.map(({ id, label }) => (
+              <ul
+                  id="timetable"
+                  className="absolute z-50 mt-2 bg-white dark:bg-gray-800 p-2 border border-gray-200 rounded-lg shadow-lg grid grid-cols-2 gap-2 w-full"
+              >                {times.map(({id, label}) => {
+                const isDisabled = bookedSet.has(label);
+                return (
                     <li key={id}>
                       <input
                           type="radio"
                           id={id}
                           name="timetable"
                           className="hidden peer"
-                          checked={selectedTime === id}
-                          onChange={() => setSelectedTime(id)}
+                          disabled={isDisabled}
+                          checked={value === id}
+                          onChange={() => {onChange(label);setIsTimetableOpen(false)}}
                       />
                       <label
                           htmlFor={id}
-                          className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-blue-600 border-blue-600 dark:hover:text-white dark:border-blue-500 dark:peer-checked:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 hover:text-white peer-checked:text-white dark:peer-checked:text-white hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-blue-500"
+                          className={`inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center border rounded-lg cursor-pointer
+                    ${isDisabled
+                              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                              : "bg-white text-blue-600 border-blue-600 hover:bg-blue-500 hover:text-white peer-checked:bg-blue-600 peer-checked:text-white"}
+                  `}
                       >
                         {label}
                       </label>
                     </li>
-                ))}
+                );
+              })}
               </ul>
           )}
         </div>
       </div>
   );
-}
+};
+
 export default TimePickerPanel;

@@ -48,7 +48,7 @@ const EventSlide = ({ eventItem }) => {
               src={
                 eventItem.createdBy.avatarUrl
                     ? `${process.env.NEXT_PUBLIC_API_URL}${eventItem.createdBy.avatarUrl}`
-                    : "/mountain.png"
+                    : "/no_pfp.png"
               }
               className="mb-4 rounded-full shadow-lg w-24 h-24 3xl:w-40 3xl:h-40 object-cover"
           />

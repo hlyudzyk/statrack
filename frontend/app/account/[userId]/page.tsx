@@ -182,7 +182,7 @@ const AccountPage = () => {
               </div>
             </div>
 
-            <InputField label="Queue comment" value={fetchedUser.queueComment} onChange={
+            <InputField label="Queue comment" value={fetchedUser.queueComment || ""} onChange={
               (e)=> setFetchedUser({ ...fetchedUser, queueComment: e.target.value })
             }/>
 

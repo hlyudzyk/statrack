@@ -2,6 +2,7 @@ package com.statrack.statrack.services;
 
 import com.statrack.statrack.api.dto.EntryRequest;
 import com.statrack.statrack.api.dto.QueueEntryDto;
+import com.statrack.statrack.api.dto.QueueEntryPublicDto;
 import com.statrack.statrack.data.models.QueueEntry;
 import com.statrack.statrack.data.models.QueueEntry.Status;
 import com.statrack.statrack.data.models.UsersQueue;
@@ -31,6 +32,13 @@ public class QueueService {
         LocalDateTime start = today.atStartOfDay();
         LocalDateTime end = today.plusDays(1).atStartOfDay();
         return queueEntryRepository.findAllForTodayByUser(userId, start, end).stream().map(QueueEntryDto::from).toList();
+    }
+    public List<QueueEntryPublicDto> getTodayEntriesPublic(UUID userId) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.plusDays(1).atStartOfDay();
+        return queueEntryRepository.findAllForTodayByUser(userId, start, end).stream().map(
+            QueueEntryPublicDto::from).toList();
     }
     public List<QueueEntry> getTodayPendingEntries(UUID userId) {
         LocalDate today = LocalDate.now();
