@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,17 +26,17 @@ public class QueueService {
     private final QueueEntryRepository queueEntryRepository;
     private final EmailService emailService;
 
-    public List<QueueEntry> getTodayEntries() {
+    public List<QueueEntryDto> getTodayEntries(UUID userId) {
         LocalDate today = LocalDate.now();
         LocalDateTime start = today.atStartOfDay();
         LocalDateTime end = today.plusDays(1).atStartOfDay();
-        return queueEntryRepository.findAllForToday(start, end);
+        return queueEntryRepository.findAllForTodayByUser(userId, start, end).stream().map(QueueEntryDto::from).toList();
     }
-    public List<QueueEntry> getTodayPendingEntries() {
+    public List<QueueEntry> getTodayPendingEntries(UUID userId) {
         LocalDate today = LocalDate.now();
         LocalDateTime start = today.atStartOfDay();
         LocalDateTime end = today.plusDays(1).atStartOfDay();
-        return queueEntryRepository.findAllForToday(start, end);
+        return queueEntryRepository.findAllForTodayByUser(userId,start, end);
     }
 
     public List<QueueEntry> getEntriesByUserAndStatus(UUID userId, QueueEntry.Status status) {
@@ -50,9 +51,15 @@ public class QueueService {
         return !queueEntryRepository.existsByQueueIdAndScheduledTime(queueId, scheduledTime);
     }
 
+    @Transactional
+    public QueueEntryDto addStudentToQueue(UUID userId, EntryRequest request) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.plusDays(1).atStartOfDay();
+        if(queueEntryRepository.existsTodayByStudentEmailAndUser(userId,request.getStudentEmail(),start,end)){
+            throw new ApiException(ApiError.ALREADY_IN_QUEUE);
+        }
 
-    public QueueEntry addStudentToQueue(UUID userId, EntryRequest request) {
-        System.out.println(request.getStudentName());
         UsersQueue queue = usersQueueRepository.getUsersQueueByBelongsToId(userId).orElseThrow(
             () -> new ApiException(ApiError.USER_NOT_FOUND)
         );
@@ -63,6 +70,7 @@ public class QueueService {
             .studentName(request.getStudentName())
             .scheduledTime(request.getRequestedTime())
             .status(Status.ACCEPTED)
+            .comment(request.getComment())
             .build();
 
         entry = queueEntryRepository.save(entry);
@@ -73,7 +81,7 @@ public class QueueService {
             String.format("%s has requested a meeting!", request.getStudentName())
         );
 
-        return entry;
+        return QueueEntryDto.from(entry);
     }
 
     public Optional<QueueEntry> getEntry(UUID entryId) {

@@ -7,7 +7,7 @@ import {useParams} from "next/navigation";
 import InputField from "@/app/components/forms/InputField";
 import {
   Datepicker,
-  HR,
+  HR, RangeSlider,
   Timeline,
   TimelineContent,
   TimelineItem,
@@ -32,9 +32,7 @@ const AccountPage = () => {
   const {user, setUser} = useUser();
   const [queueEntries, setQueueEntries] = useState<QueueEntry[]>([]);
 
-
   const editMode = () => {
-    console.log(user?.id)
     return fetchedUser?.id===user?.id || user?.role==="ADMIN";
   }
 
@@ -62,12 +60,12 @@ const AccountPage = () => {
       try {
         setFetchedUser(await getUserData(userId));
         const qe = await getQueueEntriesByUser(userId);
-        console.log(qe)
         setQueueEntries(qe);
       } catch (err) {
-
+        console.log(err)
+        setStatus("error")
       } finally {
-        //setLoading(false);
+        setStatus("idle");
       }
     };
     fetchData();
@@ -83,11 +81,19 @@ const AccountPage = () => {
     formData.append('lastname', fetchedUser.lastname);
     formData.append('birthday', fetchedUser.birthday);
     formData.append('role', fetchedUser.role);
+    formData.append('queueSize', fetchedUser.queueSize);
+    formData.append('queueComment', fetchedUser.queueComment);
+
     if(image!==null){
       formData.append('image', image);
     }
 
     setFetchedUser(await updateUserData(fetchedUser.id, formData));
+    setStatus("success");
+  };
+
+  const handleSliderChange = (e) => {
+    setFetchedUser({ ...fetchedUser, queueSize: e.target.value });
   };
 
   return fetchedUser ? (
@@ -152,6 +158,7 @@ const AccountPage = () => {
               <HR/>
               <Datepicker
                   maxDate={getMaxDate()}
+                  value={new Date(fetchedUser.birthday)}
                   onChange={(date) => {
                     if (!fetchedUser) return;
                     const formatted = date.toISOString().split('T')[0];
@@ -159,8 +166,25 @@ const AccountPage = () => {
                   }}
                   disabled={!editMode()}
               />
+              <HR/>
 
+              <div className="space-y-2">
+                <label htmlFor="queue-range" className="block text-sm font-medium text-gray-700">
+                  Max Queue Size: <span className="font-bold">{fetchedUser.queueSize}</span>
+                </label>
+                <RangeSlider
+                    id="queue-range"
+                    min={0}
+                    max={10}
+                    value={fetchedUser.queueSize}
+                    onChange={handleSliderChange}
+                />
+              </div>
             </div>
+
+            <InputField label="Queue comment" value={fetchedUser.queueComment} onChange={
+              (e)=> setFetchedUser({ ...fetchedUser, queueComment: e.target.value })
+            }/>
 
             {editMode() && (<button
                 onClick={handleSave}
@@ -193,7 +217,12 @@ const AccountPage = () => {
                         <TimelineContent>
                           <TimelineTime>{formatDate(new Date(qe.scheduledTime))}</TimelineTime>
                           <TimelineTitle>{qe.studentName}</TimelineTitle>
-                          <TimelineContent>{qe.studentEmail}</TimelineContent>
+                          <TimelineContent>
+                            <div className="flex flex-col">
+                              <p className="font-semibol">{qe.studentEmail}</p>
+                              <p>{qe.comment}</p>
+                            </div>
+                          </TimelineContent>
                         </TimelineContent>
                       </TimelineItem>
                   )

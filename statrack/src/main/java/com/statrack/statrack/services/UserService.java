@@ -12,6 +12,7 @@ import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
 import com.statrack.statrack.data.repos.UserRepository;
+import com.statrack.statrack.data.repos.UsersQueueRepository;
 import com.statrack.statrack.exceptions.ApiError;
 import com.statrack.statrack.exceptions.ApiException;
 import com.statrack.statrack.security.auth.RegisterRequest;
@@ -33,7 +34,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -45,6 +46,7 @@ public class UserService {
     private final EmailService emailService;
     private final FileStorageService fileStorageService;
     private final RabbitTemplate rabbitTemplate;
+    private final UsersQueueRepository usersQueueRepository;
     @Value("${frontend.url}")
     private String frontendUrl;
 
@@ -109,8 +111,10 @@ public class UserService {
 
     }
 
+    @Transactional
     public UserDto updateUser(UUID userId, UpdateUserDto newData) {
         User user = this.getUserById(userId);
+        UsersQueue queue = user.getQueue();
 
         if (newData.getFirstname() != null) {
             user.setFirstname(newData.getFirstname());
@@ -132,6 +136,11 @@ public class UserService {
             String imageUrl = fileStorageService.storeFile(newData.getImage());
             user.setImageUrl(imageUrl);
         }
+
+        queue.setMaxStudents(newData.getQueueSize());
+        queue.setComment(newData.getQueueComment());
+        usersQueueRepository.save(queue);
+
 
         return UserMapper.toDto(userRepository.save(user));
     }

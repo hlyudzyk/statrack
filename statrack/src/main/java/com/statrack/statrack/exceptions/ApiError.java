@@ -8,7 +8,8 @@ public enum ApiError {
     INVALID_PAYLOAD   (HttpStatus.BAD_REQUEST,  "ERR-003", "Request payload is invalid"),
     UNAUTHORIZED_ACCESS   (HttpStatus.UNAUTHORIZED,  "ERR-004", "Unauthorized access"),
     INVALID_ACTIVATION_TOKEN   (HttpStatus.BAD_REQUEST,  "ERR-005", "Invalid activation token"),
-    RESOURCE_NOT_FOUND   (HttpStatus.NOT_FOUND,  "ERR-006", "No resource found");
+    RESOURCE_NOT_FOUND   (HttpStatus.NOT_FOUND,  "ERR-006", "No resource found"),
+    ALREADY_IN_QUEUE   (HttpStatus.BAD_REQUEST,  "ERR-007", "You are already in a queue");
 
 
     private final HttpStatus status;

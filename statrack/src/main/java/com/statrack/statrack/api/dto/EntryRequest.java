@@ -19,4 +19,5 @@ public class EntryRequest implements Serializable {
     @NotNull
     @FutureOrPresent
     private LocalDateTime requestedTime;
+    private String comment;
 }

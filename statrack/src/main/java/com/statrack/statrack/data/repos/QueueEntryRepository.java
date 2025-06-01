@@ -12,8 +12,12 @@ public interface QueueEntryRepository extends JpaRepository<QueueEntry, UUID> {
     @Query("SELECT e FROM QueueEntry e WHERE e.queue.belongsTo.id = :userId")
     List<QueueEntry> findAllByUser(UUID userId);
 
-    @Query("SELECT e FROM QueueEntry e WHERE e.scheduledTime >= :startOfDay AND e.scheduledTime < :endOfDay")
-    List<QueueEntry> findAllForToday(
+    @Query("SELECT e FROM QueueEntry e " +
+        "WHERE e.queue.belongsTo.id = :userId " +
+        "AND e.scheduledTime >= :startOfDay " +
+        "AND e.scheduledTime < :endOfDay")
+    List<QueueEntry> findAllForTodayByUser(
+        @Param("userId") UUID userId,
         @Param("startOfDay") LocalDateTime startOfDay,
         @Param("endOfDay") LocalDateTime endOfDay
     );
@@ -23,6 +27,19 @@ public interface QueueEntryRepository extends JpaRepository<QueueEntry, UUID> {
         @Param("startOfDay") LocalDateTime startOfDay,
         @Param("endOfDay") LocalDateTime endOfDay
     );
+
+    @Query("SELECT COUNT(e) > 0 FROM QueueEntry e " +
+        "WHERE e.queue.belongsTo.id = :userId " +
+        "AND e.studentEmail = :studentEmail " +
+        "AND e.scheduledTime >= :startOfDay " +
+        "AND e.scheduledTime < :endOfDay")
+    boolean existsTodayByStudentEmailAndUser(
+        @Param("userId") UUID userId,
+        @Param("studentEmail") String studentEmail,
+        @Param("startOfDay") LocalDateTime startOfDay,
+        @Param("endOfDay") LocalDateTime endOfDay
+    );
+
 
     List<QueueEntry> findByQueueId(UUID queueId);
 

@@ -9,12 +9,15 @@ export type User = {
   status: string;
   department: string;
   authorities: string[];
+  queueSize: number;
+  queueComment: string;
 };
 
 export type QueueEntry = {
   id: string;
   studentEmail: string;
   studentName: string;
+  comment: string;
   scheduledTime: string;
   status: string;
 }

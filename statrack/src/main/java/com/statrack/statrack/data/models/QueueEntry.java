@@ -40,6 +40,7 @@ public class QueueEntry {
 
     private String studentEmail;
     private String studentName;
+    private String comment;
 
     @Column(nullable = false)
     private LocalDateTime scheduledTime;

@@ -9,6 +9,7 @@ public record QueueEntryDto(
     UUID id,
     String studentName,
     String studentEmail,
+    String comment,
     LocalDateTime scheduledTime,
     Status status
 ) {
@@ -17,6 +18,7 @@ public record QueueEntryDto(
             entry.getId(),
             entry.getStudentName(),
             entry.getStudentEmail(),
+            entry.getComment(),
             entry.getScheduledTime(),
             entry.getStatus()
         );

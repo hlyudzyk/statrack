@@ -17,7 +17,6 @@ const EventsPage = () => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date>(new Date());
   const [time, setTime] = useState("09:00");
-  const [duration, setDuration] = useState<string | undefined>();
   const [image, setImage] = useState<File | null>(null);
 
   const [showForm, setShowForm] = useState(false);
@@ -66,7 +65,6 @@ const EventsPage = () => {
     setDescription("");
     setDate(new Date());
     setTime("09:00");
-    setDuration(undefined);
   };
 
   const formatDate = (date: Date) =>
@@ -117,8 +115,6 @@ const EventsPage = () => {
                   <TimePickerWithDuration
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
-                      duration={duration}
-                      onDurationChange={setDuration}
                   />
                 </div>
                 <ImageUploader
@@ -140,7 +136,7 @@ const EventsPage = () => {
 
         <HR/>
 
-        <div className="flex gap-4 flex-col items-center mb-4">
+        <div className="flex gap-4 flex-col items-center mb-4 p-5">
           <div className="flex flex-row items-center gap-x-5">
             <InputField
                 label="Search"
@@ -148,7 +144,7 @@ const EventsPage = () => {
                 onChange={(e) => setFilterKeyword(e.target.value)}
             />
             <span className="space-y-5">
-            <p className="text-sm font-semibold"> By date</p>
+            <p className="text-sm"> By date</p>
             <Datepicker
                 value={filterDate ?? new Date()}
                 onChange={(date) => setFilterDate(date)}

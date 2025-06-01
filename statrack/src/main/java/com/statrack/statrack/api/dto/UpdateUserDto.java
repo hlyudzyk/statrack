@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -33,5 +34,8 @@ public class UpdateUserDto implements Serializable {
     @Past
     private LocalDate birthday;
     private MultipartFile image;
+    @Range(min = 0, max = 10)
+    private int queueSize;
+    private String queueComment;
 
 }

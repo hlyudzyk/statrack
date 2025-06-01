@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-    @NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserDto implements Serializable {
     private String id;
@@ -20,4 +20,6 @@ public class UserDto implements Serializable {
     private String avatarUrl;
     private String[] authorities;
     private LocalDate birthday;
+    private int queueSize;
+    private String queueComment;
 }

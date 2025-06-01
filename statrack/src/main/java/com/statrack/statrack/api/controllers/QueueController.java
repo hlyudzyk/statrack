@@ -28,7 +28,7 @@ public class QueueController {
     private final QueueService queueService;
 
     @PostMapping("/by-user-id/{userId}/entries")
-    public ResponseEntity<QueueEntry> joinQueue(@PathVariable UUID userId,
+    public ResponseEntity<QueueEntryDto> joinQueue(@PathVariable UUID userId,
                                                 @ModelAttribute EntryRequest request) {
         return ResponseEntity.ok(queueService.addStudentToQueue(userId, request));
     }
@@ -43,7 +43,7 @@ public class QueueController {
 
     @GetMapping("/by-user-id/{userId}/entries")
     public ResponseEntity<List<QueueEntryDto>> listEntries(@PathVariable UUID userId) {
-        return ResponseEntity.ok(queueService.getEntriesByUser(userId));
+        return ResponseEntity.ok(queueService.getTodayEntries(userId));
     }
 
 }
