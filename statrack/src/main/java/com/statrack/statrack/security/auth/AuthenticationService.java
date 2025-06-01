@@ -2,9 +2,11 @@ package com.statrack.statrack.security.auth;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
+import com.statrack.statrack.data.repos.UsersQueueRepository;
 import com.statrack.statrack.exceptions.ApiError;
 import com.statrack.statrack.exceptions.ApiException;
 import com.statrack.statrack.security.config.JwtService;
@@ -25,6 +27,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 
@@ -39,6 +42,7 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
   private final ActivationTokenRepository activationTokenRepository;
   private final UserRepository userRepository;
+  private final UsersQueueRepository usersQueueRepository;
 
   public AuthenticationResponse authenticate(@Valid AuthenticationRequest request) {
     authenticationManager.authenticate(
@@ -121,6 +125,7 @@ public class AuthenticationService {
         ApiError.INVALID_ACTIVATION_TOKEN));
   }
 
+  @Transactional
   public AuthenticationResponse activateAccount(ActivationToken token, String password) {
     User user = token.getUser();
     user.setAccountStatus(UserAccountStatus.ACTIVE);
@@ -128,6 +133,9 @@ public class AuthenticationService {
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
     activationTokenRepository.delete(token);
+
+    UsersQueue queue = UsersQueue.builder().belongsTo(user).maxStudents(5).build();
+    usersQueueRepository.save(queue);
 
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);

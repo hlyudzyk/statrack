@@ -4,6 +4,7 @@ package com.statrack.statrack.data.models.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.models.Event;
+import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.security.token.Token;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -74,8 +75,11 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "createdBy", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<Event> createdEvents = new ArrayList<>();
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private ActivationToken activationToken;
+
+  @OneToOne(mappedBy = "belongsTo", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private UsersQueue queue;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<ClockingEvent>  clockingEvents;

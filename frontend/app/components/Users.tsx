@@ -7,12 +7,14 @@ import UserCard from "@/app/components/UserCard";
 import {User} from "@/app/lib/types";
 import {deleteUserAction, getAllUsers} from "@/app/lib/userActions";
 import {useUser} from "@/app/lib/context/UserContext";
+import {UserSkeleton} from "@/app/components/skeletons";
 
 const Users = () => {
-  const {user, setUser} = useUser();
+  const { user, setUser } = useUser();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const signupModal = useSignupModal();
+
   const fetchTeachers = async () => {
     try {
       const users: User[] = await getAllUsers();
@@ -31,29 +33,38 @@ const Users = () => {
     }
   };
 
-
   useEffect(() => {
     fetchTeachers();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+        <div className="flex flex-wrap gap-5 p-5">
+          {Array.from({ length: 6 }).map((_, index) => (
+              <UserSkeleton key={index} />
+          ))}
+        </div>
+    );
   }
 
-  if(!users.length){
-    return (
-          <div>No teachers found.</div>
-    )
+  if (!users.length) {
+    return <div>No teachers found.</div>;
   }
 
   return (
       <div className="flex flex-col w-full bg-gray-200 rounded-xl 3xl:rounded-3xl">
-        <div className="flex m-5 justify-between 3xl:p-16" >
-          <h2 className="text-2xl 3xl:text-6xl font-semibold" data-testid="users-header">Statrack users</h2>
-          { user?.role==="ADMIN" &&
-            (<CustomButton label={"Add user"} onClick={() => signupModal.open()}
-                        className="max-w-32" data-testid="add-user-button"/>)
-          }
+        <div className="flex m-5 justify-between 3xl:p-16">
+          <h2 className="text-2xl 3xl:text-6xl font-semibold" data-testid="users-header">
+            Statrack users
+          </h2>
+          {user?.role === "ADMIN" && (
+              <CustomButton
+                  label={"Add user"}
+                  onClick={() => signupModal.open()}
+                  className="max-w-32"
+                  data-testid="add-user-button"
+              />
+          )}
         </div>
         <div className="flex flex-wrap gap-5 p-5">
           {users.map((user: User) => (
@@ -67,13 +78,14 @@ const Users = () => {
                     imageUrl={user.avatarUrl}
                     role={user.role}
                     department={user.department}
-                    onDeleteUser={()=>deleteUser(user.id)}
+                    onDeleteUser={() => deleteUser(user.id)}
                 />
               </div>
           ))}
         </div>
       </div>
   );
-}
+};
+
 
 export default Users;

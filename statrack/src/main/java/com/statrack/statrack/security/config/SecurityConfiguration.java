@@ -33,8 +33,11 @@ public class SecurityConfiguration {
     @Getter
     private static final String[] WHITE_LIST_URL = {
         "/api/v1/auth/authenticate",
-        "/api/v1/auth/validate-activation-token**",
+        "/api/v1/auth/refresh-token",
+        "/api/v1/auth/validate-activation-token",
         "/api/v1/auth/activate-account",
+        "/api/v1/users/available",
+        "/api/v1/queues/**",
         "/uploads/**",
         "/swagger-ui/**",
         "/swagger-ui.html",

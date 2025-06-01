@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.statrack.statrack.api.dto.ErrorResponse;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -49,6 +50,22 @@ public class GlobalExceptionHandler {
             .status(err.getStatus())
             .body(body);
     }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundApiException(NoResourceFoundException ex) {
+        ApiError err = ApiError.RESOURCE_NOT_FOUND;
+
+        ErrorResponse body = new ErrorResponse(
+            err.getCode(),
+            err.getMessage(),
+            LocalDateTime.now()
+        );
+
+        return ResponseEntity
+            .status(err.getStatus())
+            .body(body);
+    }
+
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFound(NotFoundException ex) {
