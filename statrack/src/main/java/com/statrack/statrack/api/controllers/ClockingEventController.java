@@ -31,8 +31,8 @@ public class ClockingEventController {
     private final UserService userService;
 
     @PostMapping("/{userId}")
-    public ResponseEntity<ClockingEvent> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
-        ClockingEvent clockingEvent = clockingEventService.createClockingEvent(userId, clockingEventDTO.getStatus());
+    public ResponseEntity<ClockingEventDTO> createClockingEvent(@PathVariable UUID userId, @RequestBody ClockingEventDTO clockingEventDTO) {
+        ClockingEventDTO clockingEvent = ClockingEventDTO.from(clockingEventService.createClockingEvent(userId, clockingEventDTO));
         return new ResponseEntity<>(clockingEvent, HttpStatus.CREATED);
     }
 

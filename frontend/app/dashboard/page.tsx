@@ -3,14 +3,17 @@
 import {useUser} from "@/app/lib/context/UserContext";
 import {statusOptions, UserStatus} from "@/app/components/forms/StatusSelect";
 import CustomButton from "@/app/components/forms/CustomButton";
-import {useEffect, useState} from "react";
 import {changeUserStatus} from "@/app/lib/userActions";
 import UserStatusTimeline from "@/app/components/UserStatusTimeline";
+import { useEffect, useState } from "react";
+import { Modal, TextInput, Button } from "flowbite-react";
 
 const Dashboard = () => {
-  const {user, setUser} = useUser();
+  const { user, setUser } = useUser();
   const [status, setStatus] = useState<string>("");
-
+  const [showModal, setShowModal] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [comment, setComment] = useState<string>("");
 
   useEffect(() => {
     if (user?.status) {
@@ -19,7 +22,7 @@ const Dashboard = () => {
   }, [user]);
 
   const getButtonStyle = (status: UserStatus) => {
-    switch (status){
+    switch (status) {
       case UserStatus.OFFLINE:
         return "danger";
       case UserStatus.ON_BREAK:
@@ -27,29 +30,39 @@ const Dashboard = () => {
       case UserStatus.ONLINE:
         return "success";
     }
-  }
+  };
 
-  const changeStatus = async (newStatus: string) => {
+  const confirmStatusChange = async () => {
+    if (!user) return;
 
-    setStatus(newStatus);
     const payload = {
-      status: newStatus
+      status: selectedStatus,
+      comment: comment || null,
+    };
+
+    try {
+      const data = await changeUserStatus(user.id, JSON.stringify(payload));
+      setUser({ ...user, status: data.status });
+      setStatus(data.status);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setShowModal(false);
+      setComment("");
     }
+  };
 
-    if(user==null) return;
-    await changeUserStatus(user.id, JSON.stringify(payload))
-    .then((data)=>setUser({...user, status: data.status}))
-    .catch((err)=>{
-      console.log(err);
-    })
-
-  }
-
+  const openModal = (newStatus: string) => {
+    setSelectedStatus(newStatus);
+    setShowModal(true);
+  };
 
   return (
       <div className="space-y-6 bg-gray-200 w-full p-12 rounded-2xl">
-        <h3 className="text-3xl font-semibold" data-testid="dashboard-header">Dashboard</h3>
-        <h4 className="text-xl text-gray-700"  data-testid="welcome-text">Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.</h4>
+        <h3 className="text-3xl font-semibold">Dashboard</h3>
+        <h4 className="text-xl text-gray-700">
+          Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.
+        </h4>
         <h4 className="text-md text-gray-700">What's your status?</h4>
 
         <div className="flex flex-wrap gap-4 justify-start">
@@ -58,7 +71,7 @@ const Dashboard = () => {
                   key={s.value}
                   label={s.label}
                   variant={getButtonStyle(s.value)}
-                  onClick={() => changeStatus(s.value)}
+                  onClick={() => openModal(s.value)}
                   className="w-auto min-w-[120px] max-w-2xl"
               />
           ))}
@@ -66,11 +79,34 @@ const Dashboard = () => {
 
         <div className="pt-12 md:pl-10">
           <h3 className="text-2xl font-semibold pb-6">Your activity</h3>
-          <UserStatusTimeline/>
+          <UserStatusTimeline />
         </div>
+
+        <Modal show={showModal} size="md" onClose={() => setShowModal(false)} popup>
+          <Modal.Header />
+          <Modal.Body>
+            <div className="space-y-6">
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                Change your status to <span className="font-bold">{selectedStatus}</span>?
+              </h3>
+              <TextInput
+                  placeholder="Optional comment..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+              />
+              <div className="flex justify-end gap-4">
+                <Button color="gray" onClick={() => setShowModal(false)}>
+                  Cancel
+                </Button>
+                <Button color="blue" onClick={confirmStatusChange}>
+                  Confirm
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
       </div>
   );
-
-}
+};
 
 export default Dashboard;

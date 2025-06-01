@@ -212,6 +212,9 @@ public class UserService {
 
     @Transactional
     public void seedDatabase(List<User> users){
+        if(userRepository.count()!=0){
+            return;
+        }
         users.forEach(
             u -> {
                 u.setPassword(passwordEncoder.encode(u.getPassword()));

@@ -42,6 +42,8 @@ public class ClockingEvent {
     @CreationTimestamp
     private LocalDateTime timestamp;
 
+    private String comment;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

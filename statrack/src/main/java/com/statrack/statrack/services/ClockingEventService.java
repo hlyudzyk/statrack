@@ -1,5 +1,6 @@
 package com.statrack.statrack.services;
 
+import com.statrack.statrack.api.dto.ClockingEventDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
 import com.statrack.statrack.data.models.user.User;
@@ -25,14 +26,15 @@ public class ClockingEventService {
     private final UserService userService;
     private final EmailService emailService;
 
-    public ClockingEvent createClockingEvent(UUID id, Status status) {
+    public ClockingEvent createClockingEvent(UUID id, ClockingEventDTO dto) {
         User user = userService.getUserById(id);
-        user.setStatus(status);
+        user.setStatus(dto.getStatus());
         userService.saveUser(user);
 
         ClockingEvent clockingEvent = ClockingEvent.builder()
             .user(user)
-            .status(status)
+            .status(dto.getStatus())
+            .comment(dto.getComment())
             .timestamp(LocalDateTime.now())
             .build();
 

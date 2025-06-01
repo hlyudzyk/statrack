@@ -44,6 +44,7 @@ export type ClockingEvent = {
   id: string;
   timestamp: string;
   status: string;
+  comment: string;
 }
 
 export type Event = {
