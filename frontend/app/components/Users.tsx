@@ -18,6 +18,7 @@ const Users = () => {
   const fetchTeachers = async () => {
     try {
       const users: User[] = await getAllUsers();
+      console.log(users)
       setUsers(users);
     } catch (error) {
       console.error("Failed to fetch teachers:", error);
@@ -35,6 +36,12 @@ const Users = () => {
 
   useEffect(() => {
     fetchTeachers();
+
+    const interval = setInterval(() => {
+      fetchTeachers();
+    }, 30_000);
+
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
@@ -52,7 +59,7 @@ const Users = () => {
   }
 
   return (
-      <div className="flex flex-col w-full bg-gray-200 rounded-xl 3xl:rounded-3xl">
+      <div className="flex flex-col w-full bg-gray-200 rounded-xl 3xl:rounded-3xl ">
         <div className="flex m-5 justify-between 3xl:p-16">
           <h2 className="text-2xl 3xl:text-6xl font-semibold" data-testid="users-header">
             Statrack users
@@ -61,24 +68,17 @@ const Users = () => {
               <CustomButton
                   label={"Add user"}
                   onClick={() => signupModal.open()}
-                  className="max-w-32"
+                  className="max-w-32 3xl:hidden"
                   data-testid="add-user-button"
               />
           )}
         </div>
-        <div className="flex flex-wrap gap-5 p-5">
+        <div className="flex flex-wrap gap-5 p-5 justify-center">
           {users.map((user: User) => (
               <div key={user.id} className="basis-[250px] max-w-[100%] grow">
                 <UserCard
-                    id={user.id}
-                    firstname={user.firstname}
-                    lastname={user.lastname}
-                    email={user.email}
-                    status={user.status}
-                    imageUrl={user.avatarUrl}
-                    role={user.role}
-                    department={user.department}
-                    onDeleteUser={() => deleteUser(user.id)}
+                    user={user}
+                    onDeleteUser={()  => deleteUser(user.id)}
                 />
               </div>
           ))}

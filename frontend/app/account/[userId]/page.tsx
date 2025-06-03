@@ -33,7 +33,11 @@ const AccountPage = () => {
   const [queueEntries, setQueueEntries] = useState<QueueEntry[]>([]);
 
   const editMode = () => {
-    return fetchedUser?.id===user?.id || user?.role==="ADMIN";
+    return fetchedUser?.id===user?.id;
+  }
+
+  const isAdmin = () => {
+    return user?.role==="ADMIN";
   }
 
   const formatDate = (date: Date) => {
@@ -153,7 +157,7 @@ const AccountPage = () => {
                   onChange={(role) => {
                     if (!fetchedUser) return;
                     setFetchedUser({ ...fetchedUser, role: role.value });
-                  }}                  disabled={!editMode()}
+                  }}                  disabled={!isAdmin()}
               />
               <HR/>
               <Datepicker
@@ -167,34 +171,39 @@ const AccountPage = () => {
                   disabled={!editMode()}
               />
               <HR/>
-
-              <div className="space-y-2">
-                <label htmlFor="queue-range" className="block text-sm font-medium text-gray-700">
-                  Max Queue Size: <span className="font-bold">{fetchedUser.queueSize}</span>
-                </label>
-                <RangeSlider
-                    id="queue-range"
-                    min={0}
-                    max={10}
-                    value={fetchedUser.queueSize}
-                    onChange={handleSliderChange}
-                />
-              </div>
             </div>
 
-            <InputField label="Queue comment" value={fetchedUser.queueComment || ""} onChange={
-              (e)=> setFetchedUser({ ...fetchedUser, queueComment: e.target.value })
-            }/>
+            {editMode() && (
+                <div>
+                <div className="space-y-2">
+                  <label htmlFor="queue-range" className="block text-sm font-medium text-gray-700">
+                    Max Queue Size: <span className="font-bold">{fetchedUser.queueSize}</span>
+                  </label>
+                  <RangeSlider
+                      id="queue-range"
+                      min={0}
+                      max={10}
+                      value={fetchedUser.queueSize}
+                      onChange={handleSliderChange}
+                  />
+                </div>
+              <InputField label="Queue comment" value={fetchedUser.queueComment || ""} onChange={
+            (e) => setFetchedUser({...fetchedUser, queueComment: e.target.value})
+          }/>
+                </div>
+          )}
 
-            {editMode() && (<button
-                onClick={handleSave}
-                className="cursor-pointer bg-lightbase hover:bg-lightbase-hover p-5 text-white rounded-xl mt-4"
-            >
-              Save Changes
-            </button>)}
+          {isAdmin() && (
+          <button
+              onClick={handleSave}
+              className="cursor-pointer bg-lightbase hover:bg-lightbase-hover p-5 text-white rounded-xl mt-4"
+          >
+            Save Changes
+          </button>
+          )}
 
-            {status === 'success' && (
-                <div className="mt-4 bg-green-500 rounded-xl text-white p-5">
+          {status === 'success' && (
+          <div className="mt-4 bg-green-500 rounded-xl text-white p-5">
                   Changes saved successfully!
                 </div>
             )}

@@ -18,6 +18,7 @@ public interface ClockingEventRepository extends
     Optional<ClockingEvent> findByUserId(UUID id);
     Page<ClockingEvent> findByUser(User user, Pageable pageable);
     List<ClockingEvent> findByUserAndTimestampBetween(User user, LocalDateTime from, LocalDateTime to);
+    Optional<ClockingEvent> findFirstByUserIdOrderByTimestampDesc(UUID id);
     List<ClockingEvent> findAllByOrderByUserIdAscTimestampAsc();
 }
 

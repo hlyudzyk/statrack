@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,14 @@ public class UserService {
 
 
     public List<UserDto> getAllUsersDto() {
-        return userRepository.findAll().stream().map(UserMapper::toDto).toList();
+        List<UserDto> users = userRepository.findAll().stream().map(UserMapper::toDto).toList();
+        for(UserDto userDto : users) {
+             Optional<ClockingEvent> ces = clockingEventRepository.findFirstByUserIdOrderByTimestampDesc(UUID.fromString(userDto.getId()));
+             if(ces.isEmpty()) continue;
+             ClockingEvent event = ces.get();
+             userDto.setStatusComment(event.getComment());
+        };
+        return users;
     }
 
     public List<User> getAllUsers() {
