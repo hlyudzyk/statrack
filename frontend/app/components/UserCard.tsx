@@ -10,6 +10,7 @@ import {User} from "@/app/lib/types";
 interface UserListCardProps {
   user: User;
   onDeleteUser?: (id: string) => void;
+  superuserMode: boolean;
 }
 
 const roleIcons = {
@@ -18,7 +19,7 @@ const roleIcons = {
   TV_VIEWER: "/low_rank.png",
 };
 
-const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser }) => {
+const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser,superuserMode= false }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
@@ -36,9 +37,9 @@ const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser }) => {
               <Dropdown.Item>
                 <a href={`mailto:${user.email}`}>Message</a>
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => setShowModal(true)}>
+              {superuserMode&&(<Dropdown.Item onClick={() => setShowModal(true)}>
                 <span className="text-red-600 dark:text-red-400">Delete</span>
-              </Dropdown.Item>
+              </Dropdown.Item>)}
             </Dropdown>
           </div>
 

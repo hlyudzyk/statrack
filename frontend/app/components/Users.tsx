@@ -15,7 +15,11 @@ const Users = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const signupModal = useSignupModal();
 
-  const fetchTeachers = async () => {
+  const isAdmin = () => {
+    return user.role==="ADMIN";
+  }
+
+  const fetchUsers = async () => {
     try {
       const users: User[] = await getAllUsers();
       console.log(users)
@@ -35,10 +39,10 @@ const Users = () => {
   };
 
   useEffect(() => {
-    fetchTeachers();
+    fetchUsers();
 
     const interval = setInterval(() => {
-      fetchTeachers();
+      fetchUsers();
     }, 30_000);
 
     return () => clearInterval(interval);
@@ -64,7 +68,7 @@ const Users = () => {
           <h2 className="text-2xl 3xl:text-6xl font-semibold" data-testid="users-header">
             Statrack users
           </h2>
-          {user?.role === "ADMIN" && (
+          {isAdmin() && (
               <CustomButton
                   label={"Add user"}
                   onClick={() => signupModal.open()}
@@ -79,6 +83,7 @@ const Users = () => {
                 <UserCard
                     user={user}
                     onDeleteUser={()  => deleteUser(user.id)}
+                    superuserMode={isAdmin()}
                 />
               </div>
           ))}

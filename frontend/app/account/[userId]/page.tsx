@@ -193,7 +193,7 @@ const AccountPage = () => {
                 </div>
           )}
 
-          {isAdmin() && (
+          {(isAdmin() || editMode()) && (
           <button
               onClick={handleSave}
               className="cursor-pointer bg-lightbase hover:bg-lightbase-hover p-5 text-white rounded-xl mt-4"
@@ -216,7 +216,7 @@ const AccountPage = () => {
           </div>
         </div>
 
-        <div className="p-6 rounded-xl border-gray-300 shadow-xl mt-20">
+        {editMode()&&(<div className="p-6 rounded-xl border-gray-300 shadow-xl mt-20">
           <h1 className="my-6 text-2xl">Your queue</h1>
           <div className="mt-4">
             <Timeline>
@@ -239,7 +239,7 @@ const AccountPage = () => {
               }
             </Timeline>
           </div>
-        </div>
+        </div>)}
       </main>
   ) : (
       <AccountPageSkeleton />
