@@ -1,5 +1,11 @@
 import Image from "next/image";
+import {format} from "date-fns";
+import {uk} from "date-fns/locale";
 const EventSlide = ({ eventItem }) => {
+
+  const formatDate = (date: Date) => {
+    return format(date, "EEEE, d MMMM yyyy 'о' HH:mm", { locale: uk });
+  };
   return (
       <div className="flex flex-col lg:flex-row w-full h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden 3xl:gap-12 3xl:p-10">
         {/* Image Section */}
@@ -28,14 +34,7 @@ const EventSlide = ({ eventItem }) => {
           </div>
 
           <p className="mt-4 text-sm 3xl:text-3xl text-gray-500 dark:text-gray-400">
-            {new Date(eventItem.eventDate).toLocaleString("en-US", {
-              weekday: "short",
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {formatDate(new Date(eventItem.eventDate))}
           </p>
         </div>
 

@@ -9,7 +9,10 @@ import {createEvent, getAllEvents} from "@/app/lib/eventActions";
 import {Event} from "@/app/lib/types"
 import TimePickerWithDuration from "@/app/components/forms/TimePickerWithDuration";
 import {ImageUploader} from "@/app/components/forms/ImageUploader";
-import Image from 'next/image'
+import Image from 'next/image';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
+
 const EventsPage = () => {
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -67,23 +70,17 @@ const EventsPage = () => {
     setTime("09:00");
   };
 
-  const formatDate = (date: Date) =>
-      date.toLocaleString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false
-      });
+
+  const formatDate = (date: Date) => {
+    return format(date, "EEEE, d MMMM yyyy 'о' HH:mm", { locale: uk });
+  };
 
   if (!isHydrated) return null; // prevent hydration errors from SSR
 
   return (
       <div>
         <div className="flex items-center justify-between mb-6 m-5">
-          <h3 data-testid="events-header" className="text-2xl">Events</h3>
+          <h3 data-testid="events-header" className="text-2xl">Події</h3>
           <button
               data-testid="expand-button"
               onClick={() => setShowForm((prev) => !prev)}
@@ -98,17 +95,18 @@ const EventsPage = () => {
               <div>
                 <InputField
                     dataTestId="header-input"
-                    label="Header"
+                    label="Заголовок"
                     value={header}
                     onChange={(e) => setHeader(e.target.value)}
                 />
                 <TextareaField
-                    label="Description"
+                    label="Опис"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
                 <div className="flex flex-row p-10">
                   <Datepicker
+                      language="uk"
                       value={date}
                       onChange={setDate}
                   />
@@ -124,7 +122,7 @@ const EventsPage = () => {
                 <div className="mt-6 max-w-md">
                   <CustomButton
                       data-testid="create-event-button"
-                      label="Create Event"
+                      label="Створити подію"
                       onClick={handleCreateEvent}
                       disabled={header.trim() === ""}
                   />
@@ -139,20 +137,21 @@ const EventsPage = () => {
         <div className="flex gap-4 flex-col items-center mb-4 p-5">
           <div className="flex flex-row items-center gap-x-5">
             <InputField
-                label="Search"
+                label="Пошук"
                 value={filterKeyword}
                 onChange={(e) => setFilterKeyword(e.target.value)}
             />
             <span className="space-y-5">
-            <p className="text-sm"> By date</p>
+            <p className="text-sm"> По даті</p>
             <Datepicker
+                language="uk"
                 value={filterDate ?? new Date()}
                 onChange={(date) => setFilterDate(date)}
             />
             </span>
           </div>
           <CustomButton
-              label="Apply Filters"
+              label="Застосувати фільтр"
               className="max-w-xl"
               onClick={() =>
                   fetchEvents(
@@ -164,7 +163,7 @@ const EventsPage = () => {
               }
           />
           <CustomButton
-              label="Clear Filters"
+              label="Очистити фільтр"
               className="max-w-xl"
               onClick={() => {
                 setFilterDate(null);

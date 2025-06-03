@@ -14,9 +14,9 @@ const CentralBar: React.FC<CentralBarProps>  = ({userId}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const navItems = [
-    { label: 'Dashboard', onClick: () => router.push('/dashboard') },
-    { label: 'Account', onClick: () => router.push(`/account/${userId}`) },
-    { label: 'Events', onClick: () => router.push('/events') },
+    { label: 'Активність  ', onClick: () => router.push('/dashboard') },
+    { label: 'Акаунт', onClick: () => router.push(`/account/${userId}`) },
+    { label: 'Події', onClick: () => router.push('/events') },
   ];
 
   return (

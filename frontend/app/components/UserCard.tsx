@@ -33,19 +33,19 @@ const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser,superuserMod
         <Card className="w-full h-full max-w-sm 2xl:max-w-md 3xl:max-w-2xl p-6 3xl:p-10 shadow-lg rounded-2xl bg-white dark:bg-gray-900 min-h-[500px] flex flex-col justify-between">
           <div className="flex justify-end 3xl:hidden">
             <Dropdown inline label="⋮">
-              <Dropdown.Item onClick={() => router.push(`account/${user.id}`)}>View</Dropdown.Item>
+              <Dropdown.Item onClick={() => router.push(`account/${user.id}`)}>Перегляд</Dropdown.Item>
               <Dropdown.Item>
-                <a href={`mailto:${user.email}`}>Message</a>
+                <a href={`mailto:${user.email}`}>Повідомлення</a>
               </Dropdown.Item>
               {superuserMode&&(<Dropdown.Item onClick={() => setShowModal(true)}>
-                <span className="text-red-600 dark:text-red-400">Delete</span>
+                <span className="text-red-600 dark:text-red-400">Видалити</span>
               </Dropdown.Item>)}
             </Dropdown>
           </div>
 
           <div className="flex flex-col items-center gap-6 grow justify-center">
             <Image
-                alt="User image"
+                alt="Аватар користувача"
                 height={160}
                 width={160}
                 src={user.avatarUrl ? `${process.env.NEXT_PUBLIC_API_URL}${user.avatarUrl}` : `/no_pfp.png`}
@@ -63,7 +63,7 @@ const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser,superuserMod
             </h5>
 
             <p className="text-xl md:text-2xl 3xl:text-5xl text-gray-600 dark:text-gray-300 text-center px-2 min-h-[3rem]">
-              {user.statusComment || <span className="opacity-0">No comment</span>}
+              {user.statusComment || <span className="opacity-0">---</span>}
             </p>
 
             <div
@@ -86,14 +86,14 @@ const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser,superuserMod
             <div className="text-center">
               <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                Are you sure you want to delete this user?
+                Ви впевнені що хочете видалити користувача?
               </h3>
               <div className="flex justify-center gap-4">
                 <Button color="failure" onClick={handleDelete}>
-                  Yes, I'm sure
+                 Підтвердити
                 </Button>
                 <Button color="gray" onClick={() => setShowModal(false)}>
-                  No, cancel
+                  Скасувати
                 </Button>
               </div>
             </div>

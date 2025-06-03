@@ -18,23 +18,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-  @NotBlank(message = "First name is required")
-  @Size(min = 1, max = 50, message = "First name length must be between 1 and 50 characters")
+  @NotBlank(message = "Ім'я обов'язкове")
+  @Size(min = 1, max = 50, message = "Довжина імені повинна бути від 1 до 50 символів")
   private String firstname;
 
-  @NotBlank(message = "Last name is required")
-  @Size(min = 1, max = 50, message = "Last name length must be between 1 and 50 characters")
+  @NotBlank(message = "Прізвище обов'язкове")
+  @Size(min = 1, max = 50, message = "Довжина прізвища повинна бути від 1 до 50 символів")
   private String lastname;
 
-  @NotBlank(message = "Email is required")
-  @Email(message = "Invalid email format")
+  @NotBlank(message = "Електронна адреса обов'язкова")
+  @Email(message = "Неправильний формат електронної адреси")
   private String email;
 
-  @NotNull(message = "Birthday is required")
-  @Past(message = "Birthday must be in the past")
+  @Past(message = "Дата народження повинна бути в минулому")
   private LocalDate birthday;
 
-  @NotNull(message = "Role is required")
+  @NotNull(message = "Роль обов'язкова")
   private Role role;
 
 }

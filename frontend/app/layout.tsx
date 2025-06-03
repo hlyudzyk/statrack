@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Statrack",
-  description: "Track your activity",
+  description: "Інформаційна дошка",
 };
 
 export default async function RootLayout({

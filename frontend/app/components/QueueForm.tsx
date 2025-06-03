@@ -98,7 +98,7 @@ const QueueForm = () => {
       setMessage(response.message); // e.g. "Already in queue"
       setMessageType("error");
     } else {
-      setMessage("Successfully joined the queue!");
+      setMessage("Запит надіслано успішно!");
       setMessageType("success");
     }
   };
@@ -106,24 +106,26 @@ const QueueForm = () => {
 
   return (
       <div className="p-10 space-y-4">
-        <h3 className="font-semibold text-xl">Signed in as {session.user.name}</h3>
+        <h1 className="text-2xl font-semibold">Запит про консультацію</h1>
+        <h3 className="text-xl">Ви ввійшли як <span className="font-semibold">{session.user.name}</span></h3>
 
-        <label className="block text-sm font-medium text-gray-700">Select Teacher</label>
+        <label className="block text-sm text-gray-700">Викладач/-ка</label>
         <select
-            className="border rounded p-2 w-full"
+            className="border rounded w-full"
             value={selectedUser?.id ?? ""}
             onChange={(e) => handleUserChange(e)}
         >
-          <option value="">-- Select a user --</option>
+          <option value="">-- Виберіть викладача --</option>
           {availableUsers.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.firstname} {user.lastname} ({user.email})
               </option>
           ))}
         </select>
-        {selectedUser&&selectedUser.queueComment&&(<InputField label="Teacher's comment" value={selectedUser.queueComment} readonly={true}/>)}
+        {selectedUser&&selectedUser.queueComment&&(<InputField label="Примітка від викладача" value={selectedUser.queueComment} readonly={true}/>)}
         <div className="flex flex-row space-x-2">
           <Datepicker
+              language="uk"
               value={date}
               onChange={setDate}
           />
@@ -131,11 +133,11 @@ const QueueForm = () => {
         </div>
 
 
-        <InputField label="Email" value={session.user.email} readonly={true}/>
-        <InputField label="Add comment (optional)" value={comment} onChange={(e)=>setComment(e.target.value)}/>
+        <InputField label="Ваша електронна адреса" value={session.user.email} readonly={true}/>
+        <InputField label="Додайте примітку (необов'язково)" value={comment} onChange={(e)=>setComment(e.target.value)}/>
 
         <CustomButton
-            label="Join Queue"
+            label="Надіслати запит"
             onClick={handleJoinQueue}
         />
         {message && (

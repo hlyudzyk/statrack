@@ -1,6 +1,6 @@
 'use client'
 
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Image from 'next/image';
 import {AccountPageSkeleton} from "@/app/components/skeletons";
 import {useParams} from "next/navigation";
@@ -21,6 +21,9 @@ import {ImageUploader} from "@/app/components/forms/ImageUploader";
 import {useUser} from "@/app/lib/context/UserContext";
 import {HiCalendar} from "react-icons/hi";
 import {getQueueEntriesByUser} from "@/app/lib/queueActions";
+import {format} from "date-fns";
+import {uk} from "date-fns/locale";
+import CustomButton from "@/app/components/forms/CustomButton";
 
 
 const AccountPage = () => {
@@ -40,18 +43,10 @@ const AccountPage = () => {
     return user?.role==="ADMIN";
   }
 
+
   const formatDate = (date: Date) => {
-    const formatted = date.toLocaleString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    });
-    return `${formatted.split(", ")[0]}, ${formatted.split(", ")[1]} at ${formatted.split(", ")[2]}`;
-  }
+    return format(date, "EEEE, d MMMM yyyy 'о' HH:mm", { locale: uk });
+  };
 
   const getMaxDate: () => Date = () => {
     const date = new Date();
@@ -123,32 +118,33 @@ const AccountPage = () => {
             </div>
 
             <div className="w-full pt-20">
-              <h2 data-testid="allowed-action-label" className="mb-6 text-2xl">{editMode()?"Describe yourself":"User's personal data"}</h2>
+              <h2 data-testid="allowed-action-label"
+                  className="mb-6 text-2xl">{editMode() ? "Ваш обліковий запис" : "Обліковий запис користувача"}</h2>
 
               <InputField
-                  label="Firstname"
+                  label="Ім'я"
                   value={fetchedUser.firstname}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     if (!fetchedUser) return;
-                    setFetchedUser({ ...fetchedUser, firstname: e.target.value });
+                    setFetchedUser({...fetchedUser, firstname: e.target.value});
                   }}
                   readonly={!editMode()}
               />
 
               <InputField
-                  label="Lastname"
+                  label="Прізвище"
                   value={fetchedUser.lastname}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     if (!fetchedUser) return;
-                    setFetchedUser({ ...fetchedUser, lastname: e.target.value });
+                    setFetchedUser({...fetchedUser, lastname: e.target.value});
                   }}
                   readonly={!editMode()}
               />
-
               <InputField
-                  label="Email"
+                  label="Електронна адреса"
                   value={fetchedUser.email}
-                  onChange={()=>{}}
+                  onChange={() => {
+                  }}
                   readonly={true}
               />
 
@@ -156,20 +152,24 @@ const AccountPage = () => {
                   value={roleOptions.find(o => o.value === fetchedUser?.role) ?? roleOptions[0]}
                   onChange={(role) => {
                     if (!fetchedUser) return;
-                    setFetchedUser({ ...fetchedUser, role: role.value });
-                  }}                  disabled={!isAdmin()}
+                    setFetchedUser({...fetchedUser, role: role.value});
+                  }} disabled={!isAdmin()}
               />
               <HR/>
+              <div className="space-y-2">
+              <p>Дата народження</p>
               <Datepicker
+                  language="uk"
                   maxDate={getMaxDate()}
                   value={new Date(fetchedUser.birthday)}
                   onChange={(date) => {
                     if (!fetchedUser) return;
                     const formatted = date.toISOString().split('T')[0];
-                    setFetchedUser({ ...fetchedUser, birthday: formatted });
+                    setFetchedUser({...fetchedUser, birthday: formatted});
                   }}
                   disabled={!editMode()}
               />
+              </div>
               <HR/>
             </div>
 
@@ -177,7 +177,7 @@ const AccountPage = () => {
                 <div>
                 <div className="space-y-2">
                   <label htmlFor="queue-range" className="block text-sm font-medium text-gray-700">
-                    Max Queue Size: <span className="font-bold">{fetchedUser.queueSize}</span>
+                    Кількісь консультацій на день: <span className="font-bold">{fetchedUser.queueSize}</span>
                   </label>
                   <RangeSlider
                       id="queue-range"
@@ -187,37 +187,32 @@ const AccountPage = () => {
                       onChange={handleSliderChange}
                   />
                 </div>
-              <InputField label="Queue comment" value={fetchedUser.queueComment || ""} onChange={
+              <InputField label="Додаткова інформація для студентів" value={fetchedUser.queueComment || ""} onChange={
             (e) => setFetchedUser({...fetchedUser, queueComment: e.target.value})
           }/>
                 </div>
           )}
 
           {(isAdmin() || editMode()) && (
-          <button
-              onClick={handleSave}
-              className="cursor-pointer bg-lightbase hover:bg-lightbase-hover p-5 text-white rounded-xl mt-4"
-          >
-            Save Changes
-          </button>
+          <CustomButton label="Зберегти зміни" onClick={handleSave}/>
           )}
 
           {status === 'success' && (
           <div className="mt-4 bg-green-500 rounded-xl text-white p-5">
-                  Changes saved successfully!
+                  Зміни збережено!
                 </div>
             )}
 
             {status === 'error' && (
                 <div className="mt-4 text-red-600">
-                  There was an error saving changes. Please try again.
+                  Виникла помилка. Будь ласка повторіть знову
                 </div>
             )}
           </div>
         </div>
 
         {editMode()&&(<div className="p-6 rounded-xl border-gray-300 shadow-xl mt-20">
-          <h1 className="my-6 text-2xl">Your queue</h1>
+          <h1 className="my-6 text-2xl">Черга консультацій на сьогодні</h1>
           <div className="mt-4">
             <Timeline>
               {queueEntries.map((qe)=>

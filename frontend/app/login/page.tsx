@@ -53,7 +53,7 @@ const LoginPage = () => {
               <header
                   className="h-[80px] 2xl:h-[100px] 3xl:h-[120px] flex items-center justify-center border-b p-6 2xl:p-8 3xl:p-10">
                 <h2 className="text-2xl 2xl:text-3xl 3xl:text-6xl font-bold text-center text-gray-900 dark:text-white">
-                  Log in to your account
+                  Введіть дані для входу в Ваш обліковий запис
                 </h2>
               </header>
 
@@ -64,7 +64,7 @@ const LoginPage = () => {
                   {/* Email input */}
                   <input
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Your e-mail address"
+                      placeholder="Ваша електронна адреса"
                       type="email"
                       className="w-full h-[64px] 2xl:h-[80px] 3xl:h-[100px] px-6 2xl:px-8 3xl:px-10 text-xl 2xl:text-2xl 3xl:text-5xl border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   />
@@ -72,7 +72,7 @@ const LoginPage = () => {
                   {/* Password input */}
                   <input
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Your password"
+                      placeholder="Ваш пароль"
                       type="password"
                       className="w-full h-[64px] 2xl:h-[80px] 3xl:h-[100px] px-6 2xl:px-8 3xl:px-10 text-xl 2xl:text-2xl 3xl:text-5xl border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   />
@@ -90,7 +90,7 @@ const LoginPage = () => {
 
                   {/* Submit button */}
                   <CustomButton
-                      label="Log in"
+                      label="Вхід"
                       onClick={submitLogin}
                       className="w-full text-xl 2xl:text-2xl 3xl:text-5xl py-4 2xl:py-6 3xl:py-8 px-6 2xl:px-8 3xl:px-10 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
                   />
