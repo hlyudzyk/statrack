@@ -134,8 +134,6 @@ public class AuthenticationService {
     userRepository.save(user);
     activationTokenRepository.delete(token);
 
-    UsersQueue queue = UsersQueue.builder().belongsTo(user).maxStudents(5).build();
-    usersQueueRepository.save(queue);
 
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);

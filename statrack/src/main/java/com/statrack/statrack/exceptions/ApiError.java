@@ -3,7 +3,7 @@ package com.statrack.statrack.exceptions;
 import org.springframework.http.HttpStatus;
 
 public enum ApiError {
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "ERR-001", "Користувача не знайдено"),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "ERR-001", "Неправильні дані користувача"),
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "ERR-002", "Адресу електронної пошти вже використано"),
     INVALID_PAYLOAD(HttpStatus.BAD_REQUEST, "ERR-003", "Неправильний формат запиту"),
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "ERR-004", "Несанкціонований доступ"),

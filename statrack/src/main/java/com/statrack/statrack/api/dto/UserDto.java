@@ -16,8 +16,8 @@ public class UserDto implements Serializable {
     private String role;
     private String status;
     private String email;
-    private String department;
     private String avatarUrl;
+    private String accountStatus;
     private String[] authorities;
     private LocalDate birthday;
     private int queueSize;

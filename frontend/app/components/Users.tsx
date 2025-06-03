@@ -79,7 +79,7 @@ const Users = () => {
         </div>
         <div className="flex flex-wrap gap-5 p-5 justify-center">
           {users.map((user: User) => (
-              <div key={user.id} className="basis-[250px] max-w-[100%] grow">
+              <div key={user.id} className="basis-[250px] 3xl:basis-[500px] max-w-[100%] grow">
                 <UserCard
                     user={user}
                     onDeleteUser={()  => deleteUser(user.id)}

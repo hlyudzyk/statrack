@@ -1,12 +1,8 @@
 package com.statrack.statrack;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.statrack.statrack.security.auth.AuthenticationService;
-import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.services.UserService;
-import java.io.InputStream;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class StatrackApplication {
-	private final ObjectMapper mapper;
 	private final UserService userService;
 
 
@@ -44,24 +39,10 @@ public class StatrackApplication {
 		};
 
 	}
-
-	@Transactional
-    public void seedDatabase() {
-		System.out.println("Seeding database...");
-
-
-		try (InputStream stream = getClass().getClassLoader().getResourceAsStream("seed/users.json")) {
-			if (stream == null) {
-				System.out.println("Seed file not found.");
-				return;
-			}
-
-			List<User> users = mapper.readValue(stream, new TypeReference<>() {});
-			userService.seedDatabase(users);
-			System.out.println("Seeded {} users successfully.");
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void seedDatabase() {
+		try {
+			userService.seedDatabase();
 		}
+		catch (Exception ex){ex.printStackTrace();}
 	}
 }

@@ -224,7 +224,7 @@ const AccountPage = () => {
                           <TimelineContent>
                             <div className="flex flex-col">
                               <p className="font-semibol">{qe.studentEmail}</p>
-                              <p>{qe.comment}</p>
+                              <p>{qe.comment || ""}</p>
                             </div>
                           </TimelineContent>
                         </TimelineContent>
