@@ -22,7 +22,6 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException)
         throws IOException {
-        System.out.println(authException.getMessage());
         ApiError error = ApiError.UNAUTHORIZED_ACCESS;
         ErrorResponse errorResponse = new ErrorResponse(
             error.getCode(),
@@ -34,7 +33,6 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json");
 
         String json = objectMapper.writeValueAsString(errorResponse);
-        System.out.println(json); // log it
         response.getWriter().write(json);
     }
 }

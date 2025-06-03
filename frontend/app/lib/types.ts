@@ -7,7 +7,7 @@ export type User = {
   birthday: string;
   avatarUrl: string;
   status: string;
-  department: string;
+  statusComment: string;
   authorities: string[];
   queueSize: number;
   queueComment: string;

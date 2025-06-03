@@ -23,7 +23,8 @@ public class UserMapper {
             user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new),
             user.getBirthday(),
             queue.getMaxStudents(),
-            queue.getComment()
+            queue.getComment(),
+            ""
         );
     }
 

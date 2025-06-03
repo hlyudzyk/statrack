@@ -13,6 +13,7 @@ const apiService = {
       if(auth) {
         headers['Authorization'] = `Bearer ${access_token}`
       }
+      console.log(headers)
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`,{
         method: 'GET',
         headers:headers

@@ -22,4 +22,5 @@ public class UserDto implements Serializable {
     private LocalDate birthday;
     private int queueSize;
     private String queueComment;
+    private String statusComment;
 }

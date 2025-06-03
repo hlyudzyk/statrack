@@ -28,7 +28,7 @@ const Navbar = async () =>{
         </Link>
         {userId &&
             (<>
-                  <div className="flex space-x-6">
+                  <div className="flex space-x-6 3xl:hidden">
                     <CentralBar userId={userId}/>
                   </div>
                   <div>
