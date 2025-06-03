@@ -18,6 +18,9 @@ const CreateNewUserModal = () => {
   const [birthday, setBirthday] = useState<Date>(new Date());
   const [errors, setErrors] = useState<string[]>([]);
 
+  const canSubmit = () => {
+    return email&&firstname&&role&&lastname;
+  }
   const submitSignup = async () => {
     setErrors([]);
 
@@ -61,21 +64,21 @@ const CreateNewUserModal = () => {
         <input
             data-testid="input-firstname"
             onChange={handleChangeWithClear(setFirstname)}
-            placeholder="User's firstname"
+            placeholder="Ім'я"
             type="text"
             className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
         />
         <input
             data-testid="input-lastname"
             onChange={handleChangeWithClear(setLastname)}
-            placeholder="User's lastname"
+            placeholder="Прізвище"
             type="text"
             className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
         />
         <input
             data-testid="input-email"
             onChange={handleChangeWithClear(setEmail)}
-            placeholder="User's e-mail address"
+            placeholder="Електронна адреса"
             type="email"
             className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
         />
@@ -97,7 +100,7 @@ const CreateNewUserModal = () => {
                 setErrors([]);
                 handleDateChange(date);
               }}
-              placeholder="User's birthday"
+              placeholder="Дата народження"
           />
         </div>
 
@@ -112,7 +115,7 @@ const CreateNewUserModal = () => {
         ))}
 
         <div>
-          <CustomButton label="Register user" onClick={submitSignup} data-testid="submit-user-button"/>
+          <CustomButton label="Додати викладача" onClick={submitSignup} data-testid="submit-user-button" disabled={!canSubmit()}/>
         </div>
       </form>
 
@@ -120,7 +123,7 @@ const CreateNewUserModal = () => {
 
   return (
       <Modal
-          label="Register user"
+          label="Додати викладача"
           close={signupModal.close}
           content={content}
           isOpen={signupModal.isOpen}
