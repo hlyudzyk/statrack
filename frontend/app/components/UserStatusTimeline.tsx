@@ -13,6 +13,9 @@ import {useEffect, useState} from "react";
 import {HiCalendar} from "react-icons/hi";
 import {getClockingEventsByUser} from "@/app/lib/clockingEvents";
 import {ClockingEvent} from "@/app/lib/types";
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
+import {UserStatus} from "@/app/components/forms/StatusSelect";
 
 const UserStatusTimeline = () => {
   const {user, setUser } = useUser()
@@ -29,17 +32,14 @@ const UserStatusTimeline = () => {
   };
 
   const formatDate = (date: Date) => {
-    const formatted = date.toLocaleString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    });
-    return `${formatted.split(", ")[0]}, ${formatted.split(", ")[1]} at ${formatted.split(", ")[2]}`;
-  }
+    return format(date, "EEEE, d MMMM yyyy 'о' HH:mm", { locale: uk });
+  };
+
+  const statusTranslations: Record<UserStatus, string> = {
+    ONLINE: "Присутній",
+    ON_BREAK: "На перерві",
+    OFFLINE: "Відсутній",
+  };
 
   useEffect(()=>{
     fetchTimeLine();
@@ -51,7 +51,7 @@ const UserStatusTimeline = () => {
                 <TimelinePoint icon={HiCalendar} />
                 <TimelineContent>
             <TimelineTime>{formatDate(new Date(t.timestamp))}</TimelineTime>
-            <TimelineTitle>{t.status}</TimelineTitle>
+            <TimelineTitle>{statusTranslations[user.status]}</TimelineTitle>
                   <TimelineBody>{t.comment}</TimelineBody>
           </TimelineContent>
         </TimelineItem>

@@ -15,9 +15,9 @@ export type SelectStatusValue = {
 };
 
 export const statusOptions: SelectStatusValue[] = [
-  { label: 'Online', value: UserStatus.ONLINE },
-  { label: 'Offline', value: UserStatus.OFFLINE },
-  { label: 'On Break', value: UserStatus.ON_BREAK },
+  { label: 'Присутній/-я', value: UserStatus.ONLINE },
+  { label: 'Відсутній/-я', value: UserStatus.OFFLINE },
+  { label: 'На перерві', value: UserStatus.ON_BREAK },
 ];
 
 interface SelectStatusProps{

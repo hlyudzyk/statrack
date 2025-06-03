@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import EventSlide from "@/app/components/events/EventSlide";
 
-export default function CustomCarousel({ items, interval = 3000 }) {
+export default function CustomCarousel({ items, interval = 8000 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const timeoutRef = useRef(null);
 

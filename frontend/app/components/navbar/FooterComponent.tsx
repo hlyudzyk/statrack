@@ -27,15 +27,15 @@ const FooterComponent = () => {
 
             {/* Link Group */}
             <div className="flex flex-wrap justify-center gap-3 sm:gap-5 md:gap-8 lg:gap-12 xl:gap-16 text-sm sm:text-base md:text-lg 3xl:text-6xl 2xl:text-xl text-gray-600">
-              <button onClick={() => router.push("/about")} className="hover:text-blue-500">About</button>
-              <button onClick={() => router.push("/privacy-policy")} className="hover:text-blue-500">Privacy Policy</button>
-              <button onClick={() => router.push("/licensing")} className="hover:text-blue-500">Licensing</button>
-              <button onClick={() => router.push("/contacts")} className="hover:text-blue-500">Contact</button>
+              <button onClick={() => router.push("/about")} className="hover:text-blue-500">Про платформу</button>
+              <button onClick={() => router.push("/privacy-policy")} className="hover:text-blue-500">Дані</button>
+              <button onClick={() => router.push("/licensing")} className="hover:text-blue-500">Ліцензії</button>
+              <button onClick={() => router.push("/contacts")} className="hover:text-blue-500">Контакти</button>
             </div>
           </div>
 
           <div className="mt-8 border-t pt-6 text-center text-xs sm:text-sm md:text-xl 3xl:text-5xl text-gray-400">
-            © 2025 Statrack™. All rights reserved.
+            © Statrack™. Всі права захищено.
           </div>
         </div>
       </Footer>

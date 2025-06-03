@@ -66,13 +66,13 @@ const Users = () => {
       <div className="flex flex-col w-full bg-gray-200 rounded-xl 3xl:rounded-3xl ">
         <div className="flex m-5 justify-between 3xl:p-16">
           <h2 className="text-2xl 3xl:text-6xl font-semibold" data-testid="users-header">
-            Statrack users
+            Список викладачів
           </h2>
           {isAdmin() && (
               <CustomButton
-                  label={"Add user"}
+                  label={"Додати викладача"}
                   onClick={() => signupModal.open()}
-                  className="max-w-32 3xl:hidden"
+                  className="max-w-sm 3xl:hidden"
                   data-testid="add-user-button"
               />
           )}

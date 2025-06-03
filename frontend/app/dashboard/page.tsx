@@ -32,6 +32,12 @@ const Dashboard = () => {
     }
   };
 
+  const statusTranslations: Record<UserStatus, string> = {
+    ONLINE: "Присутній",
+    ON_BREAK: "На перерві",
+    OFFLINE: "Відсутній",
+  };
+
   const confirmStatusChange = async () => {
     if (!user) return;
 
@@ -59,11 +65,11 @@ const Dashboard = () => {
 
   return (
       <div className="space-y-6 bg-gray-200 w-full p-12 rounded-2xl">
-        <h3 className="text-3xl font-semibold">Dashboard</h3>
+        <h3 className="text-3xl font-semibold">Панель</h3>
         <h4 className="text-xl text-gray-700">
-          Welcome back, {user?.firstname} {user?.lastname}! You are now {user?.status.toLowerCase()}.
+          Ласкаво просимо, {user?.firstname} {user?.lastname}! Ваш статус зараз: {user?.status ? statusTranslations[user.status] : "Невідомо"}.
         </h4>
-        <h4 className="text-md text-gray-700">What's your status?</h4>
+        <h4 className="text-md text-gray-700">Змінити статус?</h4>
 
         <div className="flex flex-wrap gap-4 justify-start">
           {statusOptions.filter(s => s.value !== user?.status).map((s) => (
@@ -78,7 +84,7 @@ const Dashboard = () => {
         </div>
 
         <div className="pt-12 md:pl-10">
-          <h3 className="text-2xl font-semibold pb-6">Your activity</h3>
+          <h3 className="text-2xl font-semibold pb-6">Ваші записи активності</h3>
           <UserStatusTimeline />
         </div>
 
@@ -87,19 +93,19 @@ const Dashboard = () => {
           <Modal.Body>
             <div className="space-y-6">
               <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                Change your status to <span className="font-bold">{selectedStatus}</span>?
+                Змінити статус на <span className="font-bold">{selectedStatus}</span>?
               </h3>
               <TextInput
-                  placeholder="Optional comment..."
+                  placeholder="Додаткова інформація (необов'язково)..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
               />
               <div className="flex justify-end gap-4">
                 <Button color="gray" onClick={() => setShowModal(false)}>
-                  Cancel
+                  Скасувати
                 </Button>
                 <Button color="blue" onClick={confirmStatusChange}>
-                  Confirm
+                  Підтверити
                 </Button>
               </div>
             </div>
