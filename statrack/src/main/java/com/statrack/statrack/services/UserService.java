@@ -1,5 +1,7 @@
 package com.statrack.statrack.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.statrack.statrack.api.dto.UpdateUserDto;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.api.dto.UserStatsDTO;
@@ -7,6 +9,7 @@ import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.models.Event;
 import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.data.models.user.ActivationToken;
+import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.models.user.User.UserAccountStatus;
@@ -24,6 +27,7 @@ import com.statrack.statrack.services.messages.StatsReportRequest;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,6 +57,7 @@ public class UserService {
     private final UsersQueueRepository usersQueueRepository;
     private final PasswordEncoder passwordEncoder;
     private final EventRepository eventRepository;
+    private final ObjectMapper mapper;
     @Value("${frontend.url}")
     private String frontendUrl;
 
@@ -79,7 +84,7 @@ public class UserService {
             .email(request.getEmail())
             .birthday(request.getBirthday())
             .accountStatus(UserAccountStatus.PENDING_ACTIVATION)
-            .status(Status.ONLINE)
+            .status(Status.OFFLINE)
             .role(request.getRole())
             .build();
 
@@ -87,6 +92,8 @@ public class UserService {
         User savedUser = null;
         try {
             savedUser = userRepository.save(user);
+            UsersQueue queue = UsersQueue.builder().belongsTo(savedUser).maxStudents(5).build();
+            usersQueueRepository.save(queue);
         }
 
         catch (DataIntegrityViolationException e) {
@@ -97,13 +104,30 @@ public class UserService {
         ActivationToken activationToken = new ActivationToken();
         activationToken.setUser(user);
         activationToken.setToken(token);
-        activationToken.setExpiryDate(LocalDateTime.now().plusDays(1)); // Expire in 24h
+        activationToken.setExpiryDate(LocalDateTime.now().plusDays(14)); // Expire in 2 weeks
 
         activationTokenRepository.save(activationToken);
 
         String activationLink = frontendUrl + "/account/activate?token=" + token;
-        emailService.sendMessage(user.getEmail(), "Activate Your Account",
-            "Click the link to activate: " + activationLink);
+        String subject = "Вас було доєднано до платформи – активуйте акаунт";
+        String body = """
+                Вітаємо!
+                
+                Вас було доєднано до Statrack платформи адміністратором.
+                
+                Щоб активувати свій акаунт і розпочати роботу, перейдіть за посиланням нижче:
+                
+                🔗 Активувати акаунт: %s
+                
+                Після активації ви зможете увійти в систему, редагувати свій профіль та користуватись усіма можливостями платформи.
+                
+                Якщо ви не очікували цього листа або маєте запитання, будь ласка, зв’яжіться з адміністратором.
+                
+                З повагою,
+                Розробник платформи Statrack
+                """.formatted(activationLink);
+
+        emailService.sendMessage(user.getEmail(), subject, body);
 
         return RegistrationResponse.builder()
             .id(savedUser.getId().toString())
@@ -219,31 +243,71 @@ public class UserService {
     }
 
     @Transactional
-    public void seedDatabase(List<User> users){
+    public void seedDatabase() throws IOException {
         if(userRepository.count()!=0){
             return;
         }
-        users.forEach(
-            u -> {
-                u.setPassword(passwordEncoder.encode(u.getPassword()));
-            }
-            );
+        System.out.println("Starting seed process...........");
 
-        List<User> savedUsers = userRepository.saveAll(users);
-        savedUsers.forEach(u->{
-            emailService.sendMessage(u.getEmail(),"Welcome to statrack!", "Hello");
-            UsersQueue queue = UsersQueue.builder().belongsTo(u).maxStudents(5).build();
-            usersQueueRepository.save(queue);
+        List<RegisterRequest> users = null;
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("seed/users.json");
+        if (stream == null) {
+            System.out.println("Seed file not found...........");
+            return;
         }
-        );
+        users = mapper.readValue(stream, new TypeReference<>() {});
+        RegisterRequest adminRequest = users.stream().filter(r->r.getRole().equals(Role.ADMIN)).findFirst().get();
+        users.remove(adminRequest);
+        users.forEach(this::registerNewUser);
+        System.out.println("Sent activation emails to users...........");
+
+
+        User admin = User.builder()
+            .firstname(adminRequest.getFirstname())
+            .lastname(adminRequest.getLastname())
+            .email(adminRequest.getEmail())
+            .birthday(adminRequest.getBirthday())
+            .accountStatus(UserAccountStatus.ACTIVE)
+            .password(passwordEncoder.encode("sttr-super@user1-9"))
+            .status(Status.OFFLINE)
+            .role(adminRequest.getRole())
+            .build();
+        userRepository.save(admin);
+        UsersQueue queue = UsersQueue.builder().belongsTo(admin).maxStudents(5).build();
+        usersQueueRepository.save(queue);
+        System.out.println("Added admin...........");
+
+        String subject = "Ваш акаунт адміністратора створено";
+        String body = """
+            Вітаємо!
+            
+            Ваш акаунт адміністратора було успішно створено в системі.
+            
+            Ви можете увійти до платформи за допомогою вказаного нижче тимчасового пароля:
+            
+            🔐 Ваш пароль: %s
+                        
+            Вхід до платформи: %s
+            
+            Якщо у вас виникли запитання або потрібна допомога, звертайтесь до технічної підтримки.
+            
+            З повагою,
+            Команда розробки платформи
+            """.formatted("sttr-super@user1-9", frontendUrl);
+
+        emailService.sendMessage(admin.getEmail(), subject, body);
+        System.out.println("Sent an email to admin...........");
+
+
         Event event = Event.builder()
-            .header("Statrack launch day!")
-            .content("Today was launched Statrack platform!")
-            .createdBy(savedUsers.getFirst())
+            .header("Платформа Statrack починає свою роботу!")
+            .content("Сьогодні відбувся реліз першої версії платформи Statrack! Ласкаво просимо до платформи!")
+            .createdBy(admin)
             .eventDate(LocalDateTime.now())
             .imageUrl("/uploads/launch_day_event_img.png")
             .build();
 
         eventRepository.save(event);
+        System.out.println("Created lauch day event...........");
     }
 }

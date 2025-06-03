@@ -5,6 +5,7 @@
 # === Backend (Java project - statrack) ===
 /statrack/target/
 /statrack/out/
+users.json
 application.yml
 
 # === Maven Wrapper ===

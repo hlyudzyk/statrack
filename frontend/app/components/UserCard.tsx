@@ -52,16 +52,18 @@ const UserCard: React.FC<UserListCardProps> = ({ user, onDeleteUser,superuserMod
                 className={`rounded-full shadow-lg object-cover w-[128px] h-[128px] 2xl:w-[160px] 2xl:h-[160px] 3xl:w-[192px] 3xl:h-[192px] ring-8 ring-offset-2
     ${
                     user.status === "ONLINE"
-                        ? "ring-green-500"
+                        ? "ring-green-400"
                         : user.status === "ON_BREAK"
-                            ? "ring-yellow-500"
+                            ? "ring-yellow-200"
                             : "ring-gray-400"
                 }`}
             />
-            <h5 className="text-xl md:text-2xl 3xl:text-6xl font-semibold text-gray-900 dark:text-white text-center">
+            <h5 className="text-xl md:text-2xl 3xl:text-5xl font-semibold text-gray-900 dark:text-white text-center">
               {user.firstname} {user.lastname}
             </h5>
-
+            {user.accountStatus!=="ACTIVE"&&(
+            <p className="3xl:text-3xl">Ще не під'єднаний/-на</p>)
+            }
             <p className="text-xl md:text-2xl 3xl:text-5xl text-gray-600 dark:text-gray-300 text-center px-2 min-h-[3rem]">
               {user.statusComment || <span className="opacity-0">---</span>}
             </p>

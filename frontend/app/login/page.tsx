@@ -5,6 +5,8 @@ import {handleLogin} from "@/app/lib/actions";
 import CustomButton from "@/app/components/forms/CustomButton";
 import {authenticate} from "@/app/lib/authService";
 import Loader from "@/app/components/Loader";
+import {useUser} from "@/app/lib/context/UserContext";
+import {getUserData} from "@/app/lib/userActions";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -12,6 +14,7 @@ const LoginPage = () => {
   const [password,setPassword] = useState('');
   const [errors,setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const {user, setUser} = useUser();
   const submitLogin = async () => {
     setLoading(true);
     setErrors([]);
@@ -22,7 +25,8 @@ const LoginPage = () => {
 
     if (response.access_token) {
       await handleLogin(response.id, response.access_token, response.refresh_token);
-
+      const userData = await getUserData(response.id);
+      setUser(userData);
       setTimeout(() => {
         router.push('/');
       }, 0);

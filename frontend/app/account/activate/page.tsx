@@ -2,8 +2,10 @@
 import {useEffect, useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 import CustomButton from "@/app/components/forms/CustomButton";
-import apiService from "@/app/services/apiService";
 import {handleLogin} from "@/app/lib/actions";
+import {activateAccountRequest, validateTokenRequest} from "@/app/lib/authService";
+import {getUserData} from "@/app/lib/userActions";
+import {useUser} from "@/app/lib/context/UserContext";
 
 
 const ActivateAccount = () => {
@@ -14,7 +16,7 @@ const ActivateAccount = () => {
   const [error, setError] = useState('');
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const {user, setUser} = useUser();
   const router = useRouter();
 
 
@@ -31,13 +33,15 @@ const ActivateAccount = () => {
 
   const handleActivateAccount = async () => {
     if (password != repeatPassword) {
-      setError("Passwords don't match")
+      setError("Паролі не збігаються")
       return;
     }
     if (password === repeatPassword) {
-      const response = await apiService.postWithoutToken("api/v1/auth/activate-account",JSON.stringify({"token":token,"password":password}),'application/json')
+      const response = await activateAccountRequest(token,password);
       if(response.access_token){
         await handleLogin(response.id, response.access_token, response.refresh_token);
+        const userData = await getUserData(response.id);
+        setUser(userData);
         router.push('/');
       }
     } else {
@@ -49,14 +53,14 @@ const ActivateAccount = () => {
   useEffect(() => {
     const validateToken = async () => {
       try {
-        const response = await apiService.get(`api/v1/auth/validate-activation-token?token=${token}`);
+        const response = await validateTokenRequest(token);
         if (response.status === 200) {
           setValid(true);
         } else {
+
           setValid(false);
         }
       } catch (error) {
-        console.log(error.toString())
         setValid(false);
       } finally {
         setLoading(false);
@@ -72,7 +76,7 @@ const ActivateAccount = () => {
   }, [token]);
 
   if (loading) {
-    return <div>Checking activation token...</div>;
+    return <div>Перевірка токену активації...</div>;
   }
 
   if (valid) {
@@ -82,19 +86,19 @@ const ActivateAccount = () => {
             <div className="translate duration-600 h-full translate-y-0 opacity-100 rounded-2xl shadow-2xl">
               <div className="w-full h-auto rounded-xl relative flex flex-col bg-white">
                 <header className="h-[60px] flex items-center p-6 rounded-t justify-center relative border-b">
-                  <h2 className="text-lg font-bold">Activate your account</h2>
+                  <h2 className="text-lg font-bold">Активація акаунту</h2>
                 </header>
                 <section className="p-6">
                   <form onSubmit={handleActivateAccount} className="space-y-4">
                     <input
                         onChange={handlePasswordChange}
-                        placeholder="Password"
+                        placeholder="Пароль"
                         type="password"
                         className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
                     />
                     <input
                         onChange={handleRepeatPasswordChange}
-                        placeholder="Repeat password"
+                        placeholder="Повторіть пароль"
                         type="password"
                         className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
                     />
@@ -103,7 +107,7 @@ const ActivateAccount = () => {
                           {error}
                         </div>
                     )}
-                    <CustomButton label="Activate account" onClick={handleActivateAccount} className="your-button-class" />
+                    <CustomButton label="Активувати акаунт" onClick={handleActivateAccount} />
                   </form>
                 </section>
               </div>
@@ -113,7 +117,7 @@ const ActivateAccount = () => {
     );
   }
 
-  return <div>Invalid activation token provided</div>;
+  return <div>Недійсний токен активації. Якщо виникла проблема, будь ласка зв'яжіться з адміністратором</div>;
 
 }
 export default ActivateAccount;

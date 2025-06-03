@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -54,6 +55,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundApiException(NoResourceFoundException ex) {
         ApiError err = ApiError.RESOURCE_NOT_FOUND;
+
+        ErrorResponse body = new ErrorResponse(
+            err.getCode(),
+            err.getMessage(),
+            LocalDateTime.now()
+        );
+
+        return ResponseEntity
+            .status(err.getStatus())
+            .body(body);
+    }
+
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
+        ApiError err = ApiError.USER_NOT_FOUND;
 
         ErrorResponse body = new ErrorResponse(
             err.getCode(),
