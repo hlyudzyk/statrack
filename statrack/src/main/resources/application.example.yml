@@ -8,8 +8,8 @@ spring:
   datasource:
     url: jdbc:postgresql://app-db:5432/statrack
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USER:""}
-    password: ${DB_PASSWORD:""}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,18 +18,18 @@ spring:
   flyway:
     baseline-version: 1
     baseline-on-migrate: true
-    user: ${DB_USER:""}
-    password: ${DB_PASSWORD:""}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     url: jdbc:postgresql://app-db:5432/statrack
 
   rabbitmq:
-    password: ${MQ_PASSWORD:""}
-    username: ${MQ_USER:""}
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
     host: app-message-broker
 
   mail:
-    host: ${EMAIL_HOSTNAME}
-    port: 587
+    host: smtp.gmail.com
+    port: ${EMAIL_PORT}
     username: ${EMAIL_USER_NAME}
     password: ${EMAIL_APP_PASSWORD}
     properties:
@@ -49,9 +49,8 @@ logging:
     root: INFO
 
 frontend:
-  url: http://frontend:3000
+  url: ${FRONTEND_URL}
 
-# email domain pattern
 
 springdoc:
   swagger-ui:
@@ -61,11 +60,13 @@ springdoc:
 application:
   security:
     jwt:
-      secret-key: ${JWT_SECRET:your-default-secret-key}
-      expiration: ${JWT_EXPIRATION:86400000}
+      secret-key: ${JWT_SECRET}
+      expiration: 86400000
       refresh-token:
-        expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+        expiration: 604800000
+  cors:
+    origins: http://frontend:3000,http://backend:8080
+
 
 file:
-  upload-dir: ${FILE_UPLOAD_DIR:uploads/}
-
+  upload-dir: uploads/
