@@ -26,12 +26,11 @@ export async function handleRefresh(){
           cookieStore.set('session_access_token',json.access_token,{
             httpOnly:true,
             secure:process.env.NODE_ENV==='production',
-            maxAge:process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
+            maxAge:Number(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY),
             path:'/'
           });
           return json.access_token;
         } else{
-          console.log("RESETING  in else branch")
           resetAuthCookies();
         }
       })
@@ -47,21 +46,21 @@ export async function handleLogin(userId:string,accessToken:string,refreshToken:
   cookieStore.set('session_userid',userId,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
+    maxAge:Number(process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY),
     path:'/'
   });
 
   cookieStore.set('session_access_token',accessToken,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
+    maxAge:Number(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY),
     path:'/'
   });
 
   cookieStore.set('session_refresh_token',refreshToken,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
+    maxAge:Number(process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY),
     path:'/'
   });
 

@@ -1,38 +1,86 @@
 [
   {
-    "firstname": "Admin",
-    "lastname": "Admin",
+    "firstname": "Наталія",
+    "lastname": "Александра",
     "email": "valerijglud0@gmail.com",
-    "password": "password",
     "role": "ADMIN",
-    "birthday": "1990-01-01",
-    "imageUrl": null,
-    "lastSession": null,
-    "status": "OFFLINE",
-    "accountStatus": "ACTIVE"
+    "birthday": "1995-01-01"
   },
   {
-    "firstname": "Alice",
-    "lastname": "Smith",
-    "email": "alice@kkkexample.com",
-    "password": "password",
+    "firstname": "Наталія",
+    "lastname": "Лінчук",
+    "email": "hlyudzykvalerij@gmail.com",
     "role": "TEACHER",
-    "birthday": "1985-05-15",
-    "imageUrl": null,
-    "lastSession": null,
-    "status": "OFFLINE",
-    "accountStatus": "ACTIVE"
+    "birthday": "1995-01-01"
   },
   {
-    "firstname": "Bob",
-    "lastname": "Johnson",
-    "email": "bob@kkkexample.com",
-    "password": "password",
-    "role": "TV_VIEWER",
-    "birthday": "1978-12-03",
-    "imageUrl": null,
-    "lastSession": null,
-    "status": "OFFLINE",
-    "accountStatus": "ACTIVE"
+    "firstname": "Альвіна",
+    "lastname": "Лукавська",
+    "email": "anonymized_user10003@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Олександр",
+    "lastname": "Верещагін",
+    "email": "anonymized_user10004@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Андрій",
+    "lastname": "Саєнко",
+    "email": "anonymized_user10005@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Іван",
+    "lastname": "Матоляк",
+    "email": "anonymized_user10006@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Ілля",
+    "lastname": "Рудчик",
+    "email": "anonymized_user10007@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Себастьян",
+    "lastname": "Біла",
+    "email": "anonymized_user10008@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Яна",
+    "lastname": "Мокрянин",
+    "email": "anonymized_user10009@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Любомир",
+    "lastname": "Кузьма",
+    "email": "anonymized_user10010@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Василь",
+    "lastname": "Баландяк",
+    "email": "anonymized_user10011@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Павло",
+    "lastname": "Ходанич",
+    "email": "anonymized_user10012@example.com",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
   }
 ]
