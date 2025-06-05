@@ -201,7 +201,7 @@ jobs:
           echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.frontend
           echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> .env.frontend
           
-          docker compose pull -q
+          docker compose pull
           docker compose up -d --remove-orphans
           EOF
     
