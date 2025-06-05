@@ -108,7 +108,6 @@ jobs:
           NEXT_PUBLIC_ML_LINK: ${{ secrets.NEXT_PUBLIC_ML_LINK }}
           ACCESS_TOKEN_EXPIRY: ${{ secrets.ACCESS_TOKEN_EXPIRY }}
           REFRESH_TOKEN_EXPIRY: ${{ secrets.REFRESH_TOKEN_EXPIRY }}
-          NODE_ENV: ${{ secrets.NODE_ENV }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
@@ -194,7 +193,6 @@ jobs:
           echo "NEXT_PUBLIC_HOST_NAME=${{ secrets.NEXT_PUBLIC_HOST_NAME }}" >> .env.frontend
           echo "ACCESS_TOKEN_EXPIRY=${{ secrets.ACCESS_TOKEN_EXPIRY }}" >> .env.frontend
           echo "REFRESH_TOKEN_EXPIRY=${{ secrets.REFRESH_TOKEN_EXPIRY }}" >> .env.frontend
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env.frontend
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.frontend
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env.frontend
           echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.frontend
