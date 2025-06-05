@@ -1,13 +1,9 @@
-name: Full Stack Pipeline
+name: Deploy pipeline
 
 on:
   push:
-    paths:
-      - 'statrack/**'
-      - 'frontend/**'
-      - 'frontend/tests/**'
-      - 'docker-compose.deploy.yml'
-      - '.github/workflows/*'
+    branches:
+      - 'release/**'
 
 jobs:
   ### BACKEND JOBS ###
