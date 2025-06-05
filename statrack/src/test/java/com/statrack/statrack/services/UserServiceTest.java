@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import com.statrack.statrack.api.dto.UserDto;
 import com.statrack.statrack.api.dto.UserStatsDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
+import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.data.models.user.ActivationToken;
 import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
@@ -16,8 +17,10 @@ import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.ActivationTokenRepository;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
 import com.statrack.statrack.data.repos.UserRepository;
+import com.statrack.statrack.data.repos.UsersQueueRepository;
 import com.statrack.statrack.security.auth.RegisterRequest;
 import com.statrack.statrack.security.auth.RegistrationResponse;
+import com.statrack.statrack.services.email.EmailService;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,13 +34,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private UsersQueueRepository usersQueueRepository;
     @Mock
     private ActivationTokenRepository activationTokenRepository;
     @Mock
@@ -63,10 +70,14 @@ class UserServiceTest {
             .id(UUID.randomUUID())
             .firstname("John")
             .lastname("Doe")
+            .accountStatus(UserAccountStatus.ACTIVE)
             .email("john@example.com")
             .role(Role.ADMIN)
             .status(Status.ONLINE)
             .build();
+        UsersQueue queue =UsersQueue.builder().belongsTo(user).maxStudents(5).build();
+        usersQueueRepository.save(queue);
+        user.setQueue(queue);
 
         Mockito.when(userRepository.findAll()).thenReturn(List.of(user));
 
@@ -96,6 +107,10 @@ class UserServiceTest {
             .role(Role.ADMIN)
             .build();
 
+        UsersQueue queue =UsersQueue.builder().belongsTo(savedUser).maxStudents(5).build();
+        savedUser.setQueue(queue);
+        usersQueueRepository.save(queue);
+
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(savedUser);
 
         RegistrationResponse response = userService.registerNewUser(request);
@@ -104,8 +119,8 @@ class UserServiceTest {
         Mockito.verify(activationTokenRepository).save(Mockito.any(ActivationToken.class));
         Mockito.verify(emailService).sendMessage(
             eq("alice@example.com"),
-            eq("Activate Your Account"),
-            contains("http://localhost:3000/account/activate?token=")
+            contains("Вас було доєднано до платформи"),
+            contains("/account/activate?token=")
         );
     }
 
@@ -115,6 +130,10 @@ class UserServiceTest {
         User user = new User();
         user.setId(userId);
         user.setEmail("testUser@example.com");
+        user.setAccountStatus(UserAccountStatus.ACTIVE);
+        UsersQueue queue =UsersQueue.builder().belongsTo(user).maxStudents(5).build();
+        user.setQueue(queue);
+        usersQueueRepository.save(queue);
 
         ClockingEvent event1 = new ClockingEvent();
         event1.setUser(user);

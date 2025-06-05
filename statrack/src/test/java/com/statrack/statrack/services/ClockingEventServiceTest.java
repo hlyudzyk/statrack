@@ -14,6 +14,7 @@ import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.Status;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
+import com.statrack.statrack.services.email.EmailService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +29,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.ActiveProfiles;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class ClockingEventServiceTest {
 
     @Mock

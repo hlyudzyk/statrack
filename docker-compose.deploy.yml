@@ -2,11 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    container_name: "backend"
-    build:
-      context: statrack/
-      dockerfile: Dockerfile
-
+    image: hlyudzyk/statrack:latest
     ports:
       - "8080:8080"
     depends_on:
@@ -14,17 +10,12 @@ services:
     env_file:
       - .env.backend
   frontend:
-    container_name: "frontend"
-    build:
-      context: frontend/
-      dockerfile: Dockerfile
-
+    image: hlyudzyk/statrack-frontend:latest
     ports:
       - "3000:3000"
     env_file:
-      - frontend/.env.frontend
+      - .env.frontend
   postgres:
-    container_name: 'app-db'
     image: postgres:16
     env_file:
       - .env.backend
@@ -34,7 +25,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
-    container_name: 'app-message-broker'
     image: 'rabbitmq:latest'
     env_file:
       - .env.backend

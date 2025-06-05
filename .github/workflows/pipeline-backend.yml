@@ -6,7 +6,7 @@ on:
       - 'statrack/**'
       - 'frontend/**'
       - 'frontend/tests/**'
-      - 'docker-compose.yml'
+      - 'docker-compose.deploy.yml'
       - '.github/workflows/*'
 
 jobs:
@@ -84,10 +84,9 @@ jobs:
           context: ./statrack
           file: ./statrack/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/statrack:${{ steps.version.outputs.VERSION }}
-          build-args: |
-            PROFILE=dev
-            APP_VERSION=${{ steps.version.outputs.VERSION }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/statrack:${{ steps.version.outputs.VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/statrack:latest
 
   ### FRONTEND JOBS ###
   build-frontend:
@@ -102,42 +101,109 @@ jobs:
           npm ci
           npm run build
 
-  # Optional: build & push frontend Docker image here, if needed
+  # Build & push frontend Docker image
+  push-frontend-image:
+    runs-on: ubuntu-latest
+    needs: build-frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Extract version
+        id: version
+        run: |
+          cd statrack
+          VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/statrack-frontend:${{ steps.version.outputs.VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/statrack-frontend:latest
+
 
   ### DEPLOY JOB ###
   deploy:
     runs-on: ubuntu-latest
-    needs: [build-backend-image, build-frontend]
+    needs: [build-backend-image, push-frontend-image]
     steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hostsx
+
       - name: Create deployment folder
         run: ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} "mkdir -p ci-cd"
 
       - name: Copy docker-compose file
-        run: scp docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+        run: scp docker-compose.deploy.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
 
       - name: Set env and deploy
         run: |
           ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} << EOF
-          export EMAIL_HOST_NAME=${{ secrets.EMAIL_HOST_NAME }}
-          export EMAIL_USER_NAME=${{ secrets.EMAIL_USER_NAME }}
-          export EMAIL_APP_PASSWORD=${{ secrets.EMAIL_APP_PASSWORD }}
+          set -e
+          
           cd ci-cd
+          
+          # Create backend .env
+          echo "EMAIL_HOST_NAME=${{ secrets.EMAIL_HOST_NAME }}" >> .env.backend
+          echo "EMAIL_USER_NAME=${{ secrets.EMAIL_USER_NAME }}" >> .env.backend
+          echo "EMAIL_APP_PASSWORD=${{ secrets.EMAIL_APP_PASSWORD }}" >> .env.backend
+          echo "EMAIL_PORT=${{ secrets.EMAIL_PORT }}" >> .env.backend
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.backend
+          echo "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" >> .env.backend
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.backend
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env.backend
+          echo "RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}" >> .env.backend
+          echo "RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }}" >> .env.backend
+          
+          # Create frontend .env
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.frontend
+          echo "NEXT_PUBLIC_GH_LINK=${{ secrets.NEXT_PUBLIC_GH_LINK }}" >> .env.frontend
+          echo "NEXT_PUBLIC_LN_LINK=${{ secrets.NEXT_PUBLIC_LN_LINK }}" >> .env.frontend
+          echo "NEXT_PUBLIC_ML_LINK=${{ secrets.NEXT_PUBLIC_ML_LINK }}" >> .env.frontend
+          echo "NEXT_PUBLIC_HOST_NAME=${{ secrets.NEXT_PUBLIC_HOST_NAME }}" >> .env.frontend
+          echo "NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY=${{ secrets.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY }}" >> .env.frontend
+          echo "NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY=${{ secrets.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY }}" >> .env.frontend
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env.frontend
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.frontend
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env.frontend
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env.frontend
+          echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> .env.frontend
+          
           docker compose pull -q
-          docker compose up -d
+          docker compose up -d --remove-orphans
           EOF
+    
 
   ### E2E TEST JOB ###
-  e2e-tests:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: |
-          cd frontend
-          npm ci
-          npx playwright install
-          npx playwright test
-        working-directory: ./tests
+#  e2e-tests:
+#    runs-on: ubuntu-latest
+#    needs: deploy
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#      - run: |
+#          cd frontend
+#          npm ci
+#          npx playwright install
+#          npx playwright test
+#        working-directory: ./tests

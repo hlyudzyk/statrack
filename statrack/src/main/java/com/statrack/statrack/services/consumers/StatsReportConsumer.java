@@ -1,7 +1,7 @@
 package com.statrack.statrack.services.consumers;
 
 import com.statrack.statrack.api.dto.UserStatsDTO;
-import com.statrack.statrack.services.EmailService;
+import com.statrack.statrack.services.email.EmailService;
 import com.statrack.statrack.services.ExcelGenerator;
 import com.statrack.statrack.services.UserService;
 import com.statrack.statrack.services.messages.StatsReportRequest;

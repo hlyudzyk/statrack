@@ -10,6 +10,7 @@ import com.statrack.statrack.data.repos.QueueEntryRepository;
 import com.statrack.statrack.data.repos.UsersQueueRepository;
 import com.statrack.statrack.exceptions.ApiError;
 import com.statrack.statrack.exceptions.ApiException;
+import com.statrack.statrack.services.email.EmailService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
