@@ -6,7 +6,6 @@
 /statrack/target/
 /statrack/out/
 users.json
-application.yml
 
 # === Maven Wrapper ===
 # Allow Maven wrapper scripts and jar

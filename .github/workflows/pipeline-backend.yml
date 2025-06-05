@@ -177,7 +177,7 @@ jobs:
           cd ci-cd
           
           # Create backend .env
-          echo "EMAIL_HOST_NAME=${{ secrets.EMAIL_HOST_NAME }}" >> .env.backend
+          echo "EMAIL_HOST_NAME=${{ secrets.EMAIL_HOST_NAME }}" > .env.backend
           echo "EMAIL_USER_NAME=${{ secrets.EMAIL_USER_NAME }}" >> .env.backend
           echo "EMAIL_APP_PASSWORD=${{ secrets.EMAIL_APP_PASSWORD }}" >> .env.backend
           echo "EMAIL_PORT=${{ secrets.EMAIL_PORT }}" >> .env.backend
@@ -189,7 +189,7 @@ jobs:
           echo "RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }}" >> .env.backend
           
           # Create frontend .env
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.frontend
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env.frontend
           echo "NEXT_PUBLIC_GH_LINK=${{ secrets.NEXT_PUBLIC_GH_LINK }}" >> .env.frontend
           echo "NEXT_PUBLIC_LN_LINK=${{ secrets.NEXT_PUBLIC_LN_LINK }}" >> .env.frontend
           echo "NEXT_PUBLIC_ML_LINK=${{ secrets.NEXT_PUBLIC_ML_LINK }}" >> .env.frontend
