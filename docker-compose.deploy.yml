@@ -2,25 +2,19 @@ version: '3.8'
 
 services:
   backend:
-    build:
-      context: statrack/
-      dockerfile: Dockerfile
-
+    image: hlyudzyk/statrack:latest
     ports:
       - "8080:8080"
     depends_on:
       - postgres
     env_file:
-      - .env.backend.local
+      - .env.backend
   frontend:
-    build:
-      context: frontend/
-      dockerfile: Dockerfile
-
+    image: hlyudzyk/statrack-frontend:latest
     ports:
       - "3000:3000"
     env_file:
-      - frontend/.env.frontend.local
+      - .env.frontend
   nginx:
     image: nginx:latest
     ports:
@@ -42,7 +36,7 @@ services:
   rabbitmq:
     image: 'rabbitmq:latest'
     env_file:
-      - .env.backend.local
+      - .env.backend
     ports:
       - '5672:5672'
 

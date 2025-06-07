@@ -122,7 +122,7 @@ const QueueForm = () => {
               </option>
           ))}
         </select>
-        {selectedUser&&selectedUser.queueComment&&(<InputField label="Примітка від викладача" value={selectedUser.queueComment} readonly={true}/>)}
+        {selectedUser&&selectedUser.queueComment&&(<InputField label="Примітка від викладача" value={selectedUser.queueComment} readonly={true} onChange={()=>{}}/>)}
         <div className="flex flex-row space-x-2">
           <Datepicker
               language="uk"
@@ -133,7 +133,7 @@ const QueueForm = () => {
         </div>
 
 
-        <InputField label="Ваша електронна адреса" value={session.user.email} readonly={true}/>
+        <InputField label="Ваша електронна адреса" value={session.user.email} readonly={true} onChange={()=>{}}/>
         <InputField label="Додайте примітку (необов'язково)" value={comment} onChange={(e)=>setComment(e.target.value)}/>
 
         <CustomButton

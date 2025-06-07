@@ -26,16 +26,7 @@ public class StatrackApplication {
 	public CommandLineRunner commandLineRunner(
 		AuthenticationService service) {
 		return args -> {
-			boolean seed = false;
-			for (String arg : args) {
-				if (arg.equalsIgnoreCase("--seed")) {
-					seed = true;
-					break;
-				}
-			}
-			if (seed) {
-				seedDatabase();
-			}
+			seedDatabase();
 		};
 
 	}

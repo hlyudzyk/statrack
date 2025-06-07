@@ -80,7 +80,7 @@ const AccountPage = () => {
     formData.append('lastname', fetchedUser.lastname);
     formData.append('birthday', fetchedUser.birthday);
     formData.append('role', fetchedUser.role);
-    formData.append('queueSize', fetchedUser.queueSize);
+    formData.append('queueSize', String(fetchedUser.queueSize));
     formData.append('queueComment', fetchedUser.queueComment);
 
     if(image!==null){

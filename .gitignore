@@ -6,7 +6,6 @@
 /statrack/target/
 /statrack/out/
 users.json
-application.yml
 
 # === Maven Wrapper ===
 # Allow Maven wrapper scripts and jar
@@ -61,9 +60,11 @@ frontend/playwright/
 frontend/test-results/
 frontend/playwright-report/
 frontend/blob-report/
-.env
 # === Environment files ===
-frontend/.env.local
+.env.backend
+.env.backend.local
+frontend/.env.frontend
+frontend/.env.frontend.local
 
 # === Debug logs ===
 npm-debug.log*

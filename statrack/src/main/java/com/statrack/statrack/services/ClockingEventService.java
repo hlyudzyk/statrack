@@ -4,7 +4,7 @@ import com.statrack.statrack.api.dto.ClockingEventDTO;
 import com.statrack.statrack.data.models.ClockingEvent;
 import com.statrack.statrack.data.repos.ClockingEventRepository;
 import com.statrack.statrack.data.models.user.User;
-import com.statrack.statrack.data.models.user.User.Status;
+import com.statrack.statrack.services.email.EmailService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

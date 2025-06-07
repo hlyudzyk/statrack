@@ -11,10 +11,13 @@ import static org.mockito.Mockito.when;
 import com.statrack.statrack.api.dto.CreateEventDto;
 import com.statrack.statrack.api.dto.EventDto;
 import com.statrack.statrack.data.models.Event;
+import com.statrack.statrack.data.models.UsersQueue;
 import com.statrack.statrack.data.models.user.Role;
 import com.statrack.statrack.data.models.user.User;
 import com.statrack.statrack.data.models.user.User.Status;
+import com.statrack.statrack.data.models.user.User.UserAccountStatus;
 import com.statrack.statrack.data.repos.EventRepository;
+import com.statrack.statrack.data.repos.UsersQueueRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,13 +32,18 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class EventServiceTest {
 
     @Mock
     private EventRepository eventRepository;
+
+    @Mock
+    private UsersQueueRepository usersQueueRepository;
 
     @Mock
     private UserService userService;
@@ -47,7 +55,8 @@ class EventServiceTest {
     private EventService eventService;
 
     @Test
-    void shouldCreateEventWithImage() {
+    void
+    shouldCreateEventWithImage() {
         MultipartFile mockImage = new MockMultipartFile("image", "test.jpg", "image/jpeg", "fakeimage".getBytes());
         CreateEventDto dto = new CreateEventDto();
         dto.setContent("Sample content");
@@ -56,10 +65,15 @@ class EventServiceTest {
         dto.setImage(mockImage);
 
         User mockUser = new User();
+        UsersQueue queue =UsersQueue.builder().belongsTo(mockUser).maxStudents(5).build();
+        mockUser.setAccountStatus(UserAccountStatus.ACTIVE);
         mockUser.setId(UUID.randomUUID());
         mockUser.setFirstname("John");
         mockUser.setRole(Role.ADMIN);
         mockUser.setStatus(Status.ONLINE);
+        mockUser.setQueue(queue);
+        usersQueueRepository.save(queue);
+
 
         when(fileStorageService.storeFile(mockImage)).thenReturn("http://storage.com/test.jpg");
         when(eventRepository.save(any(Event.class))).thenAnswer(i -> {

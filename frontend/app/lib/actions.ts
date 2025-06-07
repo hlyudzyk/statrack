@@ -8,7 +8,6 @@ export async function getBackendUrl(){
 
 export async function handleRefresh(){
   const refreshToken = await getRefreshToken();
-  console.log(`refreshing with ${refreshToken}`)
 
   const token = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh-token`, {
         method:'POST',
@@ -19,24 +18,21 @@ export async function handleRefresh(){
       })
       .then(response=>response.json())
       .then(async (json)=>{
-        console.log("Response - refresh: ", json)
 
         if(json.access_token){
           const cookieStore =  await cookies();
           cookieStore.set('session_access_token',json.access_token,{
             httpOnly:true,
             secure:process.env.NODE_ENV==='production',
-            maxAge:process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
+            maxAge:Number(process.env.ACCESS_TOKEN_EXPIRY),
             path:'/'
           });
           return json.access_token;
         } else{
-          console.log("RESETING  in else branch")
           resetAuthCookies();
         }
       })
       .catch((error)=>{
-        console.log('Error',error)
         resetAuthCookies();
       })
   return token;
@@ -47,21 +43,21 @@ export async function handleLogin(userId:string,accessToken:string,refreshToken:
   cookieStore.set('session_userid',userId,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
+    maxAge:Number(process.env.REFRESH_TOKEN_EXPIRY),
     path:'/'
   });
 
   cookieStore.set('session_access_token',accessToken,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY,
+    maxAge:Number(process.env.ACCESS_TOKEN_EXPIRY),
     path:'/'
   });
 
   cookieStore.set('session_refresh_token',refreshToken,{
     httpOnly:true,
     secure:process.env.NODE_ENV==='production',
-    maxAge:process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY,
+    maxAge:Number(process.env.REFRESH_TOKEN_EXPIRY),
     path:'/'
   });
 
