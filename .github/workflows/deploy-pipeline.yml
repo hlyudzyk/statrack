@@ -163,8 +163,10 @@ jobs:
       - name: Create deployment folder
         run: ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} "mkdir -p ci-cd"
 
-      - name: Copy docker-compose file
-        run: scp docker-compose.deploy.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+      - name: Copy deployment files
+        run: |
+          scp docker-compose.deploy.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+          scp nginx.conf ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/nginx.conf
 
       - name: Set env and deploy
         run: |
