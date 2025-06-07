@@ -60,9 +60,11 @@ frontend/playwright/
 frontend/test-results/
 frontend/playwright-report/
 frontend/blob-report/
-.env.backend
 # === Environment files ===
+.env.backend
+.env.backend.local
 frontend/.env.frontend
+frontend/.env.frontend.local
 
 # === Debug logs ===
 npm-debug.log*

@@ -8,7 +8,6 @@ export async function getBackendUrl(){
 
 export async function handleRefresh(){
   const refreshToken = await getRefreshToken();
-  console.log(`refreshing with ${refreshToken}`)
 
   const token = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh-token`, {
         method:'POST',
@@ -19,7 +18,6 @@ export async function handleRefresh(){
       })
       .then(response=>response.json())
       .then(async (json)=>{
-        console.log("Response - refresh: ", json)
 
         if(json.access_token){
           const cookieStore =  await cookies();
@@ -35,7 +33,6 @@ export async function handleRefresh(){
         }
       })
       .catch((error)=>{
-        console.log('Error',error)
         resetAuthCookies();
       })
   return token;
