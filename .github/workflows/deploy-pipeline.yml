@@ -163,8 +163,10 @@ jobs:
       - name: Create deployment folder
         run: ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} "mkdir -p ci-cd"
 
-      - name: Copy docker-compose file
-        run: scp docker-compose.deploy.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+      - name: Copy deployment files
+        run: |
+          scp docker-compose.deploy.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+          scp nginx.conf ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/nginx.conf
 
       - name: Set env and deploy
         run: |
@@ -177,6 +179,7 @@ jobs:
           echo "EMAIL_USER_NAME=${{ secrets.EMAIL_USER_NAME }}" >> .env.backend
           echo "EMAIL_APP_PASSWORD=${{ secrets.EMAIL_APP_PASSWORD }}" >> .env.backend
           echo "EMAIL_PORT=${{ secrets.EMAIL_PORT }}" >> .env.backend
+          echo "FRONTEND_URL=${{ secrets.FRONTEND_URL }}" >> .env.backend
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.backend
           echo "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" >> .env.backend
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env.backend
