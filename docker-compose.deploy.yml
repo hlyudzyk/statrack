@@ -9,6 +9,8 @@ services:
       - postgres
     env_file:
       - .env.backend
+    mem_limit: 400m
+    cpus: 0.5
   frontend:
     image: hlyudzyk/statrack-frontend:latest
     ports:
