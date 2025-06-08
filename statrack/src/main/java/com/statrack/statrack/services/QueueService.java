@@ -86,8 +86,9 @@ public class QueueService {
 
         emailService.sendMessage(
             queue.getBelongsTo().getEmail(),
-            "New queue entry!",
-            String.format("%s has requested a meeting!", request.getStudentName())
+            "Новий запит про консультацію!",
+            String.format("Студент %s (%s) надіслав(-ла) Вам запит про консультацію."
+                + " Перегляньте його в особистому кабінеті!", request.getStudentName(), request.getStudentEmail())
         );
 
         return QueueEntryDto.from(entry);

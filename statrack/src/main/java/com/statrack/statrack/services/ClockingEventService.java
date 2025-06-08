@@ -50,8 +50,8 @@ public class ClockingEventService {
             if (!otherUser.getId().equals(clockingEvent.getUser().getId())) {
                 emailService.sendMessage(
                     otherUser.getEmail(),
-                    String.format("%s %s is now %s", clockingEvent.getUser().getFirstname(), clockingEvent.getUser().getLastname(), clockingEvent.getStatus()),
-                    String.format("[ %s ] User %s %s has changed their status to %s",clockingEvent.getTimestamp().format(
+                    String.format("%s %s змінив(-ла) статус на %s", clockingEvent.getUser().getFirstname(), clockingEvent.getUser().getLastname(), clockingEvent.getStatus()),
+                    String.format("[ %s ] Викладач %s %s змінив(-ла) статус на %s",clockingEvent.getTimestamp()c.format(
                         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),  clockingEvent.getUser().getFirstname(), clockingEvent.getUser().getLastname(), clockingEvent.getStatus())
                 );
             }
