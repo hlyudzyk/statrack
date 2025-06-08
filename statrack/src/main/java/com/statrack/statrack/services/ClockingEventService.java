@@ -51,7 +51,7 @@ public class ClockingEventService {
                 emailService.sendMessage(
                     otherUser.getEmail(),
                     String.format("%s %s змінив(-ла) статус на %s", clockingEvent.getUser().getFirstname(), clockingEvent.getUser().getLastname(), clockingEvent.getStatus()),
-                    String.format("[ %s ] Викладач %s %s змінив(-ла) статус на %s",clockingEvent.getTimestamp()c.format(
+                    String.format("[ %s ] Викладач %s %s змінив(-ла) статус на %s",clockingEvent.getTimestamp().format(
                         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),  clockingEvent.getUser().getFirstname(), clockingEvent.getUser().getLastname(), clockingEvent.getStatus())
                 );
             }
