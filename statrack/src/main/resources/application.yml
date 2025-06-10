@@ -61,9 +61,9 @@ application:
   security:
     jwt:
       secret-key: ${JWT_SECRET}
-      expiration: 86400000
+      expiration: ${ACCESS_TOKEN_EXPIRY}
       refresh-token:
-        expiration: 604800000
+        expiration: ${REFRESH_TOKEN_EXPIRY}
   cors:
     origins: http://frontend:3000, http://backend:8080, http://localhost:3000, http://production-frontend.com
 

@@ -96,5 +96,5 @@ export async function getAccessToken(){
 
 async function getRefreshToken() {
   const cookieStore = await cookies();
-  return await cookieStore.get('session_refresh_token')?.value;
+  return cookieStore.get('session_refresh_token')?.value;
 }
