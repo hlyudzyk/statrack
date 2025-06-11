@@ -11,7 +11,7 @@ services:
     env_file:
       - .env.backend
     volumes:
-      - ./uploads:/app/uploads
+      - ./uploads:/uploads
     mem_limit: 400m
     cpus: 0.5
   frontend:
