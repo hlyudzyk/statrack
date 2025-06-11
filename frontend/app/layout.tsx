@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Statrack",
-  description: "Інформаційна дошка",
+  title: "Інформаційна дошка",
+  description: "Інформаційна дошка циклової комісії програмування та інформаційних технологі",
 };
 
 export default async function RootLayout({

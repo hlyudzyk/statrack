@@ -7,13 +7,12 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '5mb',
     }
   },
-  output: 'standalone',
+  output: "standalone",
   images: {
     remotePatterns: [
       {
         protocol: 'http',
         hostname: process.env.NEXT_PUBLIC_HOST_NAME || 'localhost',
-        port: '8080',
         pathname: '/uploads/**',
       },
     ],

@@ -37,6 +37,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.passay.CharacterData;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -261,14 +265,14 @@ public class UserService {
         users.forEach(this::registerNewUser);
         System.out.println("Sent activation emails to users...........");
 
-
+        String password = generatePassayPassword();
         User admin = User.builder()
             .firstname(adminRequest.getFirstname())
             .lastname(adminRequest.getLastname())
             .email(adminRequest.getEmail())
             .birthday(adminRequest.getBirthday())
             .accountStatus(UserAccountStatus.ACTIVE)
-            .password(passwordEncoder.encode("sttr-super@user1-9"))
+            .password(passwordEncoder.encode(password))
             .status(Status.OFFLINE)
             .role(adminRequest.getRole())
             .build();
@@ -291,9 +295,9 @@ public class UserService {
             
             Якщо у вас виникли запитання або потрібна допомога, звертайтесь до технічної підтримки.
             
-            З повагою,
+            З повагою,  
             Команда розробки платформи
-            """.formatted("sttr-super@user1-9", frontendUrl);
+            """.formatted(password, frontendUrl);
 
         emailService.sendMessage(admin.getEmail(), subject, body);
         System.out.println("Sent an email to admin...........");
@@ -304,10 +308,41 @@ public class UserService {
             .content("Сьогодні відбувся реліз першої версії платформи Statrack! Ласкаво просимо до платформи!")
             .createdBy(admin)
             .eventDate(LocalDateTime.now())
-            .imageUrl("/uploads/launch_day_event_img.png")
+            .imageUrl(null)
             .build();
 
         eventRepository.save(event);
         System.out.println("Created lauch day event...........");
+    }
+
+    public String generatePassayPassword() {
+        PasswordGenerator gen = new PasswordGenerator();
+        CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
+        CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
+        lowerCaseRule.setNumberOfCharacters(2);
+
+        CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
+        CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
+        upperCaseRule.setNumberOfCharacters(2);
+
+        CharacterData digitChars = EnglishCharacterData.Digit;
+        CharacterRule digitRule = new CharacterRule(digitChars);
+        digitRule.setNumberOfCharacters(2);
+
+        CharacterData specialChars = new CharacterData() {
+            public String getErrorCode() {
+                return "";
+            }
+
+            public String getCharacters() {
+                return "!@#$%^&*()_+";
+            }
+        };
+        CharacterRule splCharRule = new CharacterRule(specialChars);
+        splCharRule.setNumberOfCharacters(2);
+
+        String password = gen.generatePassword(10, splCharRule, lowerCaseRule,
+            upperCaseRule, digitRule);
+        return password;
     }
 }

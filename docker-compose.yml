@@ -10,17 +10,27 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+      - rabbitmq
     env_file:
       - .env.backend.local
+    volumes:
+      - ./uploads:/app/uploads
   frontend:
     build:
       context: frontend/
       dockerfile: Dockerfile
-
+      args:
+        NEXT_PUBLIC_API_URL: http://backend:8080
+        NEXT_PUBLIC_GH_LINK: https://github.com/hlyudzyk
+        NEXT_PUBLIC_LN_LINK: https://linkedin.com/in/valerii-hlyudzyk
+        NEXT_PUBLIC_ML_LINK: hlyudzykvalerij@gmail.com
+        NEXT_PUBLIC_HOST_NAME: backend
     ports:
       - "3000:3000"
     env_file:
       - frontend/.env.frontend.local
+    depends_on:
+      - backend
   nginx:
     image: nginx:latest
     ports:

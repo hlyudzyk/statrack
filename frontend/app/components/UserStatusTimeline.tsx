@@ -36,9 +36,9 @@ const UserStatusTimeline = () => {
   };
 
   const statusTranslations: Record<UserStatus, string> = {
-    ONLINE: "Присутній",
+    ONLINE: "Присутній/-я",
     ON_BREAK: "На перерві",
-    OFFLINE: "Відсутній",
+    OFFLINE: "Відсутній/-я",
   };
 
   useEffect(()=>{

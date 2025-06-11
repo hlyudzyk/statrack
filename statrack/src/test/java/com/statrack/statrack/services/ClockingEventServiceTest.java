@@ -93,8 +93,8 @@ class ClockingEventServiceTest {
 
         verify(emailService).sendMessage(
             eq(otherUser.getEmail()),
-            contains("is now ONLINE"),
-            contains("has changed their status to ONLINE")
+            contains("змінив(-ла) статус на "),
+            contains("Викладач")
         );
     }
 

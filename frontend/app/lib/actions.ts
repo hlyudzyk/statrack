@@ -23,7 +23,7 @@ export async function handleRefresh(){
           const cookieStore =  await cookies();
           cookieStore.set('session_access_token',json.access_token,{
             httpOnly:true,
-            secure:process.env.NODE_ENV==='production',
+            secure:false, //process.env.NODE_ENV==='production',
             maxAge:Number(process.env.ACCESS_TOKEN_EXPIRY),
             path:'/'
           });
@@ -42,21 +42,21 @@ export async function handleLogin(userId:string,accessToken:string,refreshToken:
   const cookieStore = await cookies();
   cookieStore.set('session_userid',userId,{
     httpOnly:true,
-    secure:process.env.NODE_ENV==='production',
+    secure:false,
     maxAge:Number(process.env.REFRESH_TOKEN_EXPIRY),
     path:'/'
   });
 
   cookieStore.set('session_access_token',accessToken,{
     httpOnly:true,
-    secure:process.env.NODE_ENV==='production',
+    secure:false,
     maxAge:Number(process.env.ACCESS_TOKEN_EXPIRY),
     path:'/'
   });
 
   cookieStore.set('session_refresh_token',refreshToken,{
     httpOnly:true,
-    secure:process.env.NODE_ENV==='production',
+    secure:false,
     maxAge:Number(process.env.REFRESH_TOKEN_EXPIRY),
     path:'/'
   });
@@ -96,5 +96,5 @@ export async function getAccessToken(){
 
 async function getRefreshToken() {
   const cookieStore = await cookies();
-  return await cookieStore.get('session_refresh_token')?.value;
+  return cookieStore.get('session_refresh_token')?.value;
 }

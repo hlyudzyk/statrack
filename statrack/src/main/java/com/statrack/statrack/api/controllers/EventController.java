@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EventController {
     private final EventService eventService;
-    private final AuditorAware<User> auditorAware;
 
     @GetMapping
     public ResponseEntity<Page<EventDto>> getEvents(

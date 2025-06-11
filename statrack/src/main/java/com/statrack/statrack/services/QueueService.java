@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public class QueueService {
     private final UsersQueueRepository usersQueueRepository;
     private final QueueEntryRepository queueEntryRepository;
     private final EmailService emailService;
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     public List<QueueEntryDto> getTodayEntries(UUID userId) {
         LocalDate today = LocalDate.now();
@@ -86,8 +89,9 @@ public class QueueService {
 
         emailService.sendMessage(
             queue.getBelongsTo().getEmail(),
-            "New queue entry!",
-            String.format("%s has requested a meeting!", request.getStudentName())
+            "Новий запит про консультацію!",
+            String.format("Студент %s (%s) надіслав(-ла) Вам запит про консультацію."
+                + " Перегляньте його в особистому кабінеті: %s", request.getStudentName(), request.getStudentEmail(), frontendUrl)
         );
 
         return QueueEntryDto.from(entry);

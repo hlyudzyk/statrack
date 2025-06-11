@@ -21,7 +21,7 @@ const Navbar = async () =>{
             />
             <span
                 className="text-xl sm:text-2xl md:text-3xl lg:text-2xl 3xl:text-5xl font-semibold text-blue-500">
-            Statrack
+            Інформаційна дошка
         </span>
           </div>
 
