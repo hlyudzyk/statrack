@@ -183,7 +183,9 @@ const EventsPage = () => {
                     renderImage={() => (
                         <Image
                             src={
-                              e.imageUrl || '/mountain.png'
+                              e.imageUrl
+                                  ? `${process.env.NEXT_PUBLIC_API_URL}${e.imageUrl}`
+                                  : '/mountain.png'
                             }
                             width={200}
                             height={100}

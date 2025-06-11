@@ -13,7 +13,7 @@ const EventSlide = ({ eventItem }) => {
           <Image
               src={
                 eventItem.imageUrl
-                    ? eventItem.imageUrl
+                    ? `${process.env.NEXT_PUBLIC_API_URL}${eventItem.imageUrl}`
                     : "/mountain.png"
               }
               alt="Event"
@@ -45,7 +45,9 @@ const EventSlide = ({ eventItem }) => {
               height={96}
               width={96}
               src={
-                eventItem.createdBy.avatarUrl || "/no_pfp.png"
+                eventItem.createdBy.avatarUrl
+                    ? `${process.env.NEXT_PUBLIC_API_URL}${eventItem.createdBy.avatarUrl}`
+                    : "/no_pfp.png"
               }
               className="mb-4 rounded-full shadow-lg w-24 h-24 3xl:w-40 3xl:h-40 object-cover"
           />

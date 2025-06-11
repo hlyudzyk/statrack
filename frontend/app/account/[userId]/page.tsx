@@ -107,7 +107,7 @@ const AccountPage = () => {
                       width={200}
                       height={200}
                       alt="Profile image"
-                      src={fetchedUser.avatarUrl || `/no_pfp.png`}
+                      src={fetchedUser.avatarUrl?`${process.env.NEXT_PUBLIC_API_URL}${fetchedUser.avatarUrl}`:`/no_pfp.png`}
                       className="rounded-full object-cover w-full h-full"
                   />
                 </div>
