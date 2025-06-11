@@ -72,4 +72,4 @@ application:
 
 
 file:
-  upload-dir: uploads/
+  upload-dir: app/uploads/
