@@ -4,6 +4,8 @@ COPY package.json package-lock.json* ./
 RUN npm ci
 
 FROM node:20-alpine AS builder
+ENV NEXT_PUBLIC_HOST_NAME=backend
+ENV NEXT_PUBLIC_API_URL=http://backend:8080
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

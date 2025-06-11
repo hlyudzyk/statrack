@@ -39,10 +39,10 @@ public class SecurityConfiguration {
         "/api/v1/users/available",
         "/api/v1/queues/public/**",
         "/uploads/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html",
-        "/swagger-resources/*",
-        "/v3/api-docs/**",
+        "/api/v1/swagger-ui/**",
+        "/api/v1/swagger-ui.html",
+        "/api/v1/swagger-resources/*",
+        "/api/v1/openapi.json",
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;

@@ -53,9 +53,12 @@ frontend:
 
 
 springdoc:
+  api-docs:
+    path: /api/v1/openapi.json
   swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
+    path: /api/v1/swagger-ui.html
+    disable-swagger-default-url: true
+    url: /api/v1/openapi.json
 
 application:
   security:

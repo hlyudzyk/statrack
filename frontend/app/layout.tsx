@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Інформаційна дошка циклової комісії",
-  description: "Інформаційна дошка циклової комісії ",
+  title: "Інформаційна дошка",
+  description: "Інформаційна дошка циклової комісії програмування та інформаційних технологі",
 };
 
 export default async function RootLayout({
