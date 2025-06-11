@@ -33,9 +33,9 @@ const Dashboard = () => {
   };
 
   const statusTranslations: Record<UserStatus, string> = {
-    ONLINE: "Присутній",
+    ONLINE: "Присутній/-я",
     ON_BREAK: "На перерві",
-    OFFLINE: "Відсутній",
+    OFFLINE: "Відсутній/-я",
   };
 
   const confirmStatusChange = async () => {
