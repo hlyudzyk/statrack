@@ -24,8 +24,8 @@ public class StatsReportConsumer {
 
             emailService.sendMessage(
                 request.getEmail(),
-                "User Statistics Report",
-                "Please find the attached Excel file with user statistics.",
+                "Звіт про статистику користувачів",
+                "Будь ласка знайдіть прикріплений Excel файл з статистикою.",
                 excelFile,
                 "user_stats.xlsx",
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
