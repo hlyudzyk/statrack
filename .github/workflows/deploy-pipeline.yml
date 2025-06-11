@@ -189,6 +189,7 @@ jobs:
           echo "RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}" >> .env.backend
           echo "RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }}" >> .env.backend
           echo "JAVA_TOOL_OPTIONS=${{ secrets.JAVA_TOOL_OPTIONS }}" >> .env.backend
+          echo "ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }}" >> .env.backend
           
           # Create frontend .env
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env.frontend

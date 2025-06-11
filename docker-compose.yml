@@ -10,6 +10,7 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+      - rabbitmq
     env_file:
       - .env.backend.local
     volumes:
@@ -28,6 +29,8 @@ services:
       - "3000:3000"
     env_file:
       - frontend/.env.frontend.local
+    depends_on:
+      - backend
   nginx:
     image: nginx:latest
     ports:
