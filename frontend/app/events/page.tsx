@@ -185,7 +185,7 @@ const EventsPage = () => {
                             src={
                               e.imageUrl
                                   ? `${process.env.NEXT_PUBLIC_API_URL}${e.imageUrl}`
-                                  : '/mountain.png'
+                                  : '/default_event.png'
                             }
                             width={200}
                             height={100}

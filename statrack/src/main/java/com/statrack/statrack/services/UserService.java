@@ -308,7 +308,7 @@ public class UserService {
             .content("Сьогодні відбувся реліз першої версії платформи Statrack! Ласкаво просимо до платформи!")
             .createdBy(admin)
             .eventDate(LocalDateTime.now())
-            .imageUrl("/uploads/launch_day_event_img.png")
+            .imageUrl(null)
             .build();
 
         eventRepository.save(event);

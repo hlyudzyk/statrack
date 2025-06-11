@@ -14,7 +14,7 @@ const EventSlide = ({ eventItem }) => {
               src={
                 eventItem.imageUrl
                     ? `${process.env.NEXT_PUBLIC_API_URL}${eventItem.imageUrl}`
-                    : "/mountain.png"
+                    : "/default_event.png"
               }
               alt="Event"
               fill
