@@ -7,22 +7,29 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileStorageService {
 
-    private final Path fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
-    public FileStorageService() throws IOException {
+    private Path fileStorageLocation;
+
+    @PostConstruct
+    public void init() throws IOException {
+        fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         Files.createDirectories(fileStorageLocation);
     }
 
     public String storeFile(MultipartFile file) {
         String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(filename);
+            Path targetLocation = fileStorageLocation.resolve(filename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return "/uploads/" + filename;
         } catch (IOException ex) {
