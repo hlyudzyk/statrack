@@ -27,7 +27,6 @@ const UserStatusTimeline = () => {
       const data = await getClockingEventsByUser(user?.id, page,size);
       setTimeline(data);
     } catch (err) {
-      console.log(err);
     }
   };
 

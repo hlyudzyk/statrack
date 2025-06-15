@@ -14,14 +14,10 @@ const handler = NextAuth({
       if (account && profile) {
         token.email = profile.email;
         token.name = profile.name;
-        console.log(token.email)
-        console.log(token.name)
       }
       return token;
     },
     async session({ session, token }) {
-      console.log(token.email)
-      console.log(token.name)
       session.user.email = token.email;
       session.user.name = token.name;
       return session;

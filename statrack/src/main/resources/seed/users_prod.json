@@ -1,0 +1,86 @@
+[
+  {
+    "firstname": "Наталія",
+    "lastname": "Александра",
+    "email": "nataliya.aleksandra@uzhnu.edu.ua",
+    "role": "ADMIN",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Наталія",
+    "lastname": "Лінчук",
+    "email": "nataliya.linchuk@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Альвіна",
+    "lastname": "Лукавська",
+    "email": "alvina.lukavska@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Олександр",
+    "lastname": "Верещагін",
+    "email": "oleksand.vereshchahin@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Андрій",
+    "lastname": "Саєнко",
+    "email": "andrii.saienko@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Іван",
+    "lastname": "Матоляк",
+    "email": "ivan.matoliak@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Ілля",
+    "lastname": "Рудчик",
+    "email": "illia.rudchyk@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Себастьян",
+    "lastname": "Біла",
+    "email": "sebastian.bila@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Яна",
+    "lastname": "Мокрянин",
+    "email": "yana.mokryanyn@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Любомир",
+    "lastname": "Кузьма",
+    "email": "liubomyr.kuzma@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Василь",
+    "lastname": "Баландяк",
+    "email": "vasyl.balandyak@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  },
+  {
+    "firstname": "Павло",
+    "lastname": "Ходанич",
+    "email": "pavlo.khodanych1@uzhnu.edu.ua",
+    "role": "TEACHER",
+    "birthday": "1995-01-01"
+  }
+]

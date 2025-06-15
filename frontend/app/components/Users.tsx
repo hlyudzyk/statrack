@@ -22,10 +22,8 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       const users: User[] = await getAllUsers();
-      console.log(users)
       setUsers(users);
     } catch (error) {
-      console.error("Failed to fetch teachers:", error);
     } finally {
       setLoading(false);
     }

@@ -18,7 +18,6 @@ const EventSlider = () => {
         const response = await getAllEvents(0, 10);
 
         if (!Array.isArray(response)) {
-          console.log(response)
           setEvents([]);
           setError("No events to show");
           return;

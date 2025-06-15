@@ -16,7 +16,6 @@ function secondsToHours(seconds: number) {
 }
 
 export default function StatsChart({ stats }: { stats: UserStats[] }) {
-  console.log(stats)
   const data = stats.map((stat) => ({
     username: stat.username,
     hours: secondsToHours(stat.totalOnlineTime),

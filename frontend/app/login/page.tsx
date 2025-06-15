@@ -21,7 +21,6 @@ const LoginPage = () => {
     const formData = { email, password };
 
     const response = await authenticate(JSON.stringify(formData));
-    console.log(response)
 
     if (response.access_token) {
       await handleLogin(response.id, response.access_token, response.refresh_token);

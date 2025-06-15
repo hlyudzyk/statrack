@@ -74,7 +74,6 @@ const QueueForm = () => {
       const user = availableUsers.find((u) => u.id === e.target.value);
       setSelectedUser(user ?? null);
       setQueueEntries(await getQueueEntriesByUserPublic(user.id));
-      console.log(queueEntries)
   }
 
   const handleJoinQueue = async () => {

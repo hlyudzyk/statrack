@@ -86,7 +86,6 @@ const CreateNewUserModal = () => {
           <RoleSelect
               value={roleOptions[0]}
               onChange={(role) => {
-                console.log(role.value)
                 setErrors([]);
                 setRole(role.value);
               }}

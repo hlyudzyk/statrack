@@ -61,7 +61,6 @@ const AccountPage = () => {
         const qe = await getQueueEntriesByUser(userId);
         setQueueEntries(qe);
       } catch (err) {
-        console.log(err)
         setStatus("error")
       } finally {
         setStatus("idle");
