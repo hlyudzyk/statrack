@@ -254,7 +254,7 @@ public class UserService {
         System.out.println("Starting seed process...........");
 
         List<RegisterRequest> users = null;
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("seed/users.json");
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("seed/users_prod.json");
         if (stream == null) {
             System.out.println("Seed file not found...........");
             return;
