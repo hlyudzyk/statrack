@@ -110,6 +110,8 @@ const apiService = {
       headers["Content-Type"] = contentType
     }
 
+    console.log('post utl', `${process.env.NEXT_PUBLIC_API_URL}/${url}`)
+
     return new Promise((resolve,reject)=>{
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`,{
         method: 'POST',
