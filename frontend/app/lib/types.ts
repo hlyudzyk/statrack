@@ -1,13 +1,15 @@
+import {AccountStatus, UserRole, UserStatus} from "@/enums";
+
 export type User = {
   id: string;
   firstname: string;
   lastname: string;
   email: string;
-  role: string;
+  role: UserRole;
   birthday: string;
   avatarUrl: string;
-  status: string;
-  accountStatus: string;
+  status: UserStatus;
+  accountStatus: AccountStatus;
   statusComment: string;
   authorities: string[];
   queueSize: number;
