@@ -15,7 +15,7 @@ import {getClockingEventsByUser} from "@/app/lib/clockingEvents";
 import {ClockingEvent} from "@/app/lib/types";
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
-import {UserStatus} from "@/app/components/forms/StatusSelect";
+import {UserStatus} from "@/enums";
 
 const UserStatusTimeline = () => {
   const {user, setUser } = useUser()
