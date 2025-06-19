@@ -44,6 +44,15 @@ const UserStatusTimeline = () => {
   useEffect(()=>{
     fetchTimeLine();
   },[])
+
+  if (!timeline?.length) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-gray-500">Немає записів про статус користувача</p>
+      </div>
+    );
+  }
+
   return (
       <Timeline>
         {timeline.map((t)=>
