@@ -1,12 +1,13 @@
 'use client'
 
 import {useUser} from "@/app/lib/context/UserContext";
-import {statusOptions, UserStatus} from "@/app/components/forms/StatusSelect";
+import {statusOptions} from "@/app/components/forms/StatusSelect";
 import CustomButton from "@/app/components/forms/CustomButton";
 import {changeUserStatus} from "@/app/lib/userActions";
 import UserStatusTimeline from "@/app/components/UserStatusTimeline";
 import { useEffect, useState } from "react";
 import { Modal, TextInput, Button } from "flowbite-react";
+import { UserStatus } from "@/enums";
 
 const Dashboard = () => {
   const { user, setUser } = useUser();
