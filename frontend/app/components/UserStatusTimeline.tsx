@@ -15,7 +15,7 @@ import {getClockingEventsByUser} from "@/app/lib/clockingEvents";
 import {ClockingEvent} from "@/app/lib/types";
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
-import {UserStatus} from "@/app/components/forms/StatusSelect";
+import {UserStatus} from "@/enums";
 
 const UserStatusTimeline = () => {
   const {user, setUser } = useUser()
@@ -44,6 +44,15 @@ const UserStatusTimeline = () => {
   useEffect(()=>{
     fetchTimeLine();
   },[])
+
+  if (!timeline?.length) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-gray-500">Немає записів про статус користувача</p>
+      </div>
+    );
+  }
+
   return (
       <Timeline>
         {timeline.map((t)=>

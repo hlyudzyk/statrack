@@ -51,6 +51,10 @@ const Users = () => {
 
 
     const usersArr = useMemo(() => {
+        if (!users?.length) {
+            return [];
+        }
+
         const statusOrder = {
             [UserStatus.ONLINE]: 0,
             [UserStatus.ON_BREAK]: 1,
