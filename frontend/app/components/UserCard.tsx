@@ -79,7 +79,7 @@ const UserCard: React.FC<UserListCardProps> = ({user, onDeleteUser, superuserMod
                         width={160}
                         src={user.avatarUrl ? `${process.env.NEXT_PUBLIC_API_URL}${user.avatarUrl}` : `/no_pfp.png`}
                         className={cn(
-                            "rounded-full shadow-lg object-cover w-[128px] h-[128px] 2xl:w-[160px] 2xl:h-[160px] 3xl:w-[192px] 3xl:h-[192px] ring-8 ring-offset-2 ring-red-200",
+                            "rounded-full shadow-lg object-cover w-[128px] h-[128px] 2xl:w-[160px] 2xl:h-[160px] 3xl:w-[192px] 3xl:h-[192px] ring-8 ring-offset-2",
                             mapUserStatusToRingColor(user.status)
                         )}
                     />
